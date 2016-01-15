@@ -101,5 +101,6 @@
     <string name="menu_filter">Filter</string>
     <string name="menu_exportdb">Export DB</string>
     <string name="menu_importdb">Import DB</string>
+    <string name="menu_add_log_entry">Add Log Entry</string>
 
 </resources>

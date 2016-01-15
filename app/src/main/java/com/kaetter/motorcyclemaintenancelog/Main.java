@@ -26,6 +26,10 @@ public class Main extends AppCompatActivity {
 		ButterKnife.bind(this);
 
 		setSupportActionBar(mToolbar);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setTitle("");
+			getSupportActionBar().setIcon(R.mipmap.app_icon);
+		}
 
 		mViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), this));
 		mTabLayout.setupWithViewPager(mViewPager);
