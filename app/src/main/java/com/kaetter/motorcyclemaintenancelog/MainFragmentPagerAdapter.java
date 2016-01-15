@@ -7,15 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 	final int mPageCount = 3;
-	String[] mTabTitles;
 	Context mContext;
 
 	public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		mContext = context;
-		mTabTitles = new String[] {mContext.getString(R.string.title_log),
-				mContext.getString(R.string.title_reminder),
-				mContext.getString(R.string.title_config)};
 	}
 
 	@Override
@@ -26,6 +22,16 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 			case 2: return ConfigFragment.newInstance();
 		}
 		return null; // should never happen
+	}
+
+	@Override
+	 public CharSequence getPageTitle(int position) {
+		switch(position) {
+			case 0: return mContext.getString(R.string.title_log);
+			case 1: return mContext.getString(R.string.title_reminder);
+			case 2: return mContext.getString(R.string.title_config);
+		}
+		return "";
 	}
 
 	@Override
