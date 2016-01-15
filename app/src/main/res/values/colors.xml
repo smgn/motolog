@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#FFC107</color>
-    <color name="colorPrimaryDark">#FFA000</color>
+    <!--<color name="colorPrimary">#FFC107</color>-->
+    <!--<color name="colorPrimaryDark">#FFA000</color>-->
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#FFC107</color>
 
     <color name="word_bar">#FF0000</color>

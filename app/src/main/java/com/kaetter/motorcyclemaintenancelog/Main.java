@@ -1,21 +1,32 @@
 package com.kaetter.motorcyclemaintenancelog;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.Window;
 
-public class Main extends FragmentActivity {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class Main extends AppCompatActivity {
+
+	@Bind(R.id.toolbar) Toolbar mToolbar;
+	@Bind(R.id.tabLayout) TabLayout mTabLayout;
+	@Bind(R.id.viewPager) ViewPager mViewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.main);
-		
-		
 
+		setContentView(R.layout.main);
+		ButterKnife.bind(this);
+
+		setSupportActionBar(mToolbar);
+
+		mViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), this));
+		mTabLayout.setupWithViewPager(mViewPager);
 	}
 
 	@Override
@@ -23,7 +34,4 @@ public class Main extends FragmentActivity {
 
 		return true;
 	}
-
-	
-	
 }

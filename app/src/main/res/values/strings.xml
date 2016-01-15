@@ -95,5 +95,8 @@
     <string name="interval_preference_file_key">com.example.motorcyclemaintenancelog.interval_preference_file_key</string>
     <string name="elem_preference_file_key">com.example.motorcyclemaintenancelog.elem_preference_file_key</string>
     <string name="general_preference_file_key">com.example.motorcyclemaintenancelog.elem_preference_file_key</string>
+    <string name="title_log">Log</string>
+    <string name="title_reminder">Reminder</string>
+    <string name="title_config">Config</string>
 
 </resources>
