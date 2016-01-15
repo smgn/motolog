@@ -37,7 +37,6 @@
 
         <EditText
             android:id="@+id/bikenametext"
-            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/dateofpurchaset"
@@ -86,7 +85,6 @@
 
         <EditText
             android:id="@+id/initialodometert"
-            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/dateofpurchaset"
@@ -101,7 +99,6 @@
 
         <EditText
             android:id="@+id/otherdetails"
-            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -136,7 +133,6 @@
 
             <Button
                 android:id="@+id/from"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/otherdetails"
@@ -159,7 +155,6 @@
 
             <Button
                 android:id="@+id/to"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/otherdetails"
@@ -310,7 +305,6 @@
             
 			 <Spinner
 			     android:id="@+id/maintelemspinner"
-			     style="@style/SpinnerStyle"
 			     android:layout_width="150dp"
 			     android:layout_height="wrap_content"
 			      />

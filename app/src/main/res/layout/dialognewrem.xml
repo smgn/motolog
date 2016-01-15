@@ -76,7 +76,6 @@
 
             <Button
                 android:id="@+id/updateButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
             
@@ -91,7 +90,6 @@
 
             <Button
                 android:id="@+id/cancelButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
               

@@ -21,14 +21,12 @@
 
         <Spinner
             android:id="@+id/mainttypespinner"
-            style="@style/SpinnerStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
              />
 
         <Spinner
             android:id="@+id/maintelemspinner"
-            style="@style/SpinnerStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/mainttypespinner"
@@ -57,7 +55,6 @@
 
         <EditText
             android:id="@+id/intervalo"
-            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/maintelemspinner"
@@ -69,7 +66,6 @@
 
         <Spinner
             android:id="@+id/interval"
-            style="@style/SpinnerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/datecheckbox"
@@ -79,7 +75,6 @@
 
         <Spinner
             android:id="@+id/intervaltype"
-            style="@style/SpinnerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/interval"
@@ -96,7 +91,6 @@
 
         <EditText
             android:id="@+id/odometer"
-            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/starting"
@@ -134,7 +128,6 @@
 
         <EditText
             android:id="@+id/editdetails"
-            style="@style/EditTextStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -146,7 +139,6 @@
 
     <Button
         android:id="@+id/CreateRemButton"
-        style="@style/BlackButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
        

@@ -22,7 +22,6 @@
 
     <EditText
         android:id="@+id/newelem"
-        style="@style/EditTextStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="12" 
@@ -38,7 +37,6 @@
 
         <Button
             android:id="@+id/ok"
-            style="@style/BlackButton"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -52,7 +50,6 @@
 
         <Button
             android:id="@+id/nok"
-            style="@style/BlackButton"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"

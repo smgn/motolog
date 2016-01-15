@@ -28,7 +28,6 @@
 
     <Spinner
         android:id="@+id/maintelemspinner"
-        style="@style/SpinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -51,7 +50,6 @@
 
     <Spinner
         android:id="@+id/mainttypespinner"
-        style="@style/SpinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/maintelemspinner"
@@ -117,7 +115,6 @@
 
     <EditText
         android:id="@+id/odoInterval"
-        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/checkBox2"
@@ -129,7 +126,6 @@
 
     <Spinner
         android:id="@+id/dateIntervalNumber"
-        style="@style/SpinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/checkBox2"
@@ -139,7 +135,6 @@
 
     <Spinner
         android:id="@+id/dateIntervalType"
-        style="@style/SpinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/checkBox2"
@@ -170,7 +165,6 @@
 
     <EditText
         android:id="@+id/fueltext"
-        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/mainttypespinner"
@@ -195,7 +189,6 @@
 
     <EditText
         android:id="@+id/memotext"
-        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/mainttypespinner"
@@ -220,7 +213,6 @@
 
     <EditText
         android:id="@+id/odotext"
-        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/mainttypespinner"
@@ -245,7 +237,6 @@
 
     <EditText
         android:id="@+id/cash"
-        style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/cashLabel"
@@ -280,7 +271,6 @@
 
     <DatePicker
         android:id="@+id/datepick"
-        style="@style/DateStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -298,7 +288,6 @@
 
         <Button
             android:id="@+id/create"
-            style="@style/BlackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -314,7 +303,6 @@
 
         <Button
             android:id="@+id/cancel"
-            style="@style/BlackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

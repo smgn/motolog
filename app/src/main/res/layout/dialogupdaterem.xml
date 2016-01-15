@@ -50,7 +50,6 @@
 
             <Button
                 android:id="@+id/updateButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,7 +62,6 @@
 
             <Button
                 android:id="@+id/deleteButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,7 +74,6 @@
 
             <Button
                 android:id="@+id/doneButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -89,7 +86,6 @@
 
             <Button
                 android:id="@+id/cancelButton"
-                style="@style/BlackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
