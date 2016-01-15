@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.kaetter.motorcyclemaintenancelog"
         minSdkVersion 7
-        targetSdkVersion 10
+        targetSdkVersion 23
     }
 
     buildTypes {
@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.0.0'
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.android.support:gridlayout-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:gridlayout-v7:23.1.1'
 }
