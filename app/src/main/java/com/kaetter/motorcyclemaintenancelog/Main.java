@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +33,28 @@ public class Main extends AppCompatActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_importdb:
+				//TODO: transplant code
+				return true;
+			case R.id.menu_exportdb:
+				//TODO: transplant code
+				return true;
+			case R.id.menu_filter:
+				//TODO: transplant code
+				return true;
+			case R.id.menu_settings:
+				//TODO: transplant code
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }

@@ -1,27 +1,33 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_importdb"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/menu_importdb"
+        />
+
+    <item
+        android:id="@+id/menu_exportdb"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        android:title="@string/menu_exportdb"
+        />
 
     <item
         android:id="@+id/menu_filter"
         android:orderInCategory="300"
-        android:showAsAction="always"
-        android:title="Filter"/> 
+        app:showAsAction="never"
+        android:title="@string/menu_filter"
+        />
 
-        <item
-        android:id="@+id/menu_exportdb"
-        android:orderInCategory="200"
-        android:showAsAction="always"
-        android:title="Export Db"/> 
-    
-        <item
-        android:id="@+id/menu_importdb"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="Import Db"/>
-        
-            <item
+    <item
         android:id="@+id/menu_settings"
         android:orderInCategory="400"
-        android:showAsAction="always"
-        android:title="Settings"/> 
+        app:showAsAction="never"
+        android:title="@string/menu_settings"
+        />
     
 </menu>
