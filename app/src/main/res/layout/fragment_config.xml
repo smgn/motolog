@@ -1,7 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</LinearLayout>
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/bikenametext"
+            android:layout_width="0dp"
+            app:layout_widthPercent="60%"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:inputType="text"
+            tools:text="Honda Phantom TA200"
+            />
+
+        <EditText
+            android:id="@+id/dateofpurchaset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="60%"
+            android:layout_below="@id/bikenametext"
+            android:layout_alignParentRight="true"
+            tools:text="04 May 2016"/>
+
+        <EditText
+            android:id="@+id/initialodometert"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="60%"
+            android:layout_below="@id/dateofpurchaset"
+            android:layout_alignParentRight="true"
+            android:inputType="number"
+            tools:text="12345"
+            />
+
+        <TextView
+            android:id="@+id/bikename"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%"
+            android:layout_alignTop="@id/bikenametext"
+            android:layout_alignBottom="@id/bikenametext"
+            android:gravity="center_vertical"
+            android:text="@string/text_bike_name"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/dateofpur"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%"
+            android:layout_alignTop="@id/dateofpurchaset"
+            android:layout_alignBottom="@id/dateofpurchaset"
+            android:gravity="center_vertical"
+            android:layout_below="@id/bikename"
+            android:text="@string/text_date_of_purchase"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/initialodometer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_widthPercent="40%"
+            android:layout_alignTop="@id/initialodometert"
+            android:layout_alignBottom="@id/initialodometert"
+            android:gravity="center_vertical"
+            android:layout_below="@id/dateofpur"
+            android:text="@string/text_initial_odo"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/textOtherDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_other_details"
+            android:layout_below="@id/initialodometer"
+            android:textSize="20sp"
+            />
+
+        <EditText
+            android:id="@+id/otherdetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textOtherDetails"
+            android:inputType="text"
+            />
+
+        <TextView
+            android:id="@+id/textFrom"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            app:layout_widthPercent="15%"
+            android:layout_below="@id/otherdetails"
+            android:gravity="center"
+            android:text="@string/text_from"
+            />
+
+        <Button
+            android:id="@+id/from"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/otherdetails"
+            android:layout_toRightOf="@id/textFrom"
+            app:layout_widthPercent="35%"
+            android:text="00/00/0000"
+            />
+
+        <TextView
+            android:id="@+id/textTo"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            app:layout_widthPercent="15%"
+            android:layout_below="@id/otherdetails"
+            android:layout_toRightOf="@id/from"
+            android:gravity="center"
+            android:text="@string/text_to"
+            />
+
+        <Button
+            android:id="@+id/to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/otherdetails"
+            app:layout_widthPercent="35%"
+            android:layout_toRightOf="@id/textTo"
+            android:text="00/00/0000"
+            />
+
+        <TextView
+            android:id="@+id/textTotalCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="30%"
+            android:layout_below="@id/textFrom"
+            android:text="@string/text_total_cost"
+            />
+
+        <TextView
+            android:id="@+id/totalcash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="30%"
+            android:layout_below="@id/textFrom"
+            android:layout_toRightOf="@id/textTotalCost"
+            tools:text="$12345"
+            />
+
+        <TextView
+            android:id="@+id/cashperday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%"
+            android:layout_below="@id/textFrom"
+            android:layout_toRightOf="@id/totalcash"
+            tools:text="$100/day"
+            />
+
+        <TextView
+            android:id="@+id/textTotalDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="30%"
+            android:layout_below="@id/textTotalCost"
+            android:text="@string/text_total_distance"
+            />
+
+        <TextView
+            android:id="@+id/totalkm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="30%"
+            android:layout_below="@id/totalcash"
+            android:layout_toRightOf="@id/textTotalDistance"
+            tools:text="12345"
+            />
+
+        <TextView
+            android:id="@+id/cashperkm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%"
+            android:layout_below="@id/cashperday"
+            android:layout_toRightOf="@id/totalkm"
+            tools:text="$100/km"
+            />
+
+        <TextView
+            android:id="@+id/textNumberOfEntries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textTotalDistance"
+            android:text="@string/text_number_of_entries"
+            />
+
+        <TextView
+            android:id="@+id/entries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textNumberOfEntries"
+            android:layout_below="@id/textTotalDistance"
+            android:layout_alignLeft="@id/cashperkm"
+            tools:text="12345"
+            />
+
+        <Spinner
+            android:id="@+id/maintelemspinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textNumberOfEntries"
+            app:layout_widthPercent="50%"
+            />
+
+        <TextView
+            android:id="@+id/cashperelementvalue"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/maintelemspinner"
+            android:layout_below="@id/textNumberOfEntries"
+            android:layout_marginLeft="8dp"
+            android:singleLine="true"
+            tools:text="$123"
+            />
+
+        <TextView
+            android:id="@+id/cashperelement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cashperelementvalue"
+            android:layout_below="@id/textNumberOfEntries"
+            android:layout_marginLeft="8dp"
+            android:text="@string/text_in"
+            />
+
+        <TextView
+            android:id="@+id/countperelementvalue"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cashperelement"
+            android:layout_below="@id/textNumberOfEntries"
+            android:singleLine="true"
+            android:layout_marginLeft="8dp"
+            android:text="0"
+            />
+
+        <TextView
+            android:id="@+id/countperelementLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/countperelementvalue"
+            android:layout_below="@id/textNumberOfEntries"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:text="entries"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</ScrollView>

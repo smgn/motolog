@@ -102,5 +102,17 @@
     <string name="menu_exportdb">Export DB</string>
     <string name="menu_importdb">Import DB</string>
     <string name="menu_add_log_entry">Add Log Entry</string>
+    <string name="text_general_data">General Data</string>
+    <string name="text_bike_name">Bike Name</string>
+    <string name="text_date_of_purchase">Date of Purchase</string>
+    <string name="text_initial_odo">Initial Odo</string>
+    <string name="text_other_details">Other details</string>
+    <string name="text_from">From</string>
+    <string name="text_to">To</string>
+    <string name="text_total">Total</string>
+    <string name="text_total_cost">Total cost</string>
+    <string name="text_total_distance">Total distance</string>
+    <string name="text_number_of_entries">Number of log entries</string>
+    <string name="text_in">in</string>
 
 </resources>

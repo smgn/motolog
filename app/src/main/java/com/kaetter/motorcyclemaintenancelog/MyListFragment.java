@@ -1,21 +1,5 @@
 package com.kaetter.motorcyclemaintenancelog;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import listeners.OnItemChangedListener;
-import utils.FuellyScraper;
-import utils.Summarize;
-import adapter.MainLogCursorAdapter;
-import adapter.RemLogCursorAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,11 +21,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayout;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -58,9 +40,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+
+import adapter.MainLogCursorAdapter;
+import adapter.RemLogCursorAdapter;
 import beans.MaintenanceItem;
 import beans.ReminderItem;
 import dbcontrollers.MainHelper;
@@ -71,7 +65,9 @@ import dialogs.DatePickerFragment.EditDateDialogListener;
 import dialogs.NewRemDialog.onRemElementListener;
 import dialogs.UpdateDialog;
 import dialogs.UpdateRemDialog;
-import com.kaetter.motorcyclemaintenancelog.R;
+import listeners.OnItemChangedListener;
+import utils.FuellyScraper;
+import utils.Summarize;
 
 @SuppressLint("ValidFragment")
 public class MyListFragment extends Fragment implements
@@ -322,7 +318,7 @@ public class MyListFragment extends Fragment implements
 		if (mTag.equals(TabsFragment.TAB_CONF)) {
 
 			  confView = inflater
-					.inflate(R.layout.logconf, container, false);
+					.inflate(R.layout.fragment_config, container, false);
 			  confView.setOnTouchListener(gestureListener);
 			  getGeneralBikeData();
 			  
