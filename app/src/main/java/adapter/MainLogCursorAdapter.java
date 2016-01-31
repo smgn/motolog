@@ -53,9 +53,7 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
         holder.dateView = (TextView) view.findViewById(R.id.rowDate);
         holder.odometerView = (TextView) view.findViewById(R.id.rowOdometer);
         holder.cashLabel = (TextView) view.findViewById(R.id.cashLabel);
-
-        holder.maintTypeImageView = (ImageView) view
-                .findViewById(R.id.imageView1);
+        holder.maintTypeImageView = (ImageView) view.findViewById(R.id.imageView1);
         view.setTag(holder);
         return view;
     }
@@ -177,7 +175,7 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
             }
 
             if (b.getString(MAINT_ELEM).equals("Fuel")) {
-                holder.detailsView.setVisibility(View.GONE);
+                holder.detailsView.setVisibility(View.INVISIBLE);
                 holder.fuelAmountView.setText(b.getString("fuelAmount"));
                 holder.fuelConsumptionView.setText(b.getString("consumption"));
                 holder.fuelLabelView.setText(b.getString("fuelLabel"));

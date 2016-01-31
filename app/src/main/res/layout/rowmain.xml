@@ -1,163 +1,139 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/databackgroundColor" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null">
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/tabselected"
+        />
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:paddingBottom="1sp"
-        android:paddingTop="1sp"
-        android:src="@drawable/other"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
         />
-
-    <LinearLayout
-        android:id="@+id/toprow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/rowConsumption"
-        android:layout_toRightOf="@id/imageView1"
-        android:layout_toStartOf="@id/rowConsumption" >
-
-        <TextView
-            android:id="@+id/rowMaintElem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:layout_weight="0.01"
-            android:text="Fuel"
-            android:textColor="@color/tabtextcolor"
-            android:textSize="@dimen/text_default"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/rowMaintType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:layout_weight="1"
-            android:text="(Refuel)"
-            android:textColor="@color/tabtextcolor"
-            android:textSize="@dimen/text_default" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/dateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/toprow"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/toprow"
-        android:gravity="right"
-        android:text=" "
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/rowDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginRight="8dp"
         android:layout_toRightOf="@id/dateLabel"
-        android:ems="3"
-        android:gravity="left"
-        android:paddingLeft="8dip"
-        android:text="2013/10/09"
-        android:textColor="@color/tabtextcolor"
+        tools:text="2013/10/09"
         android:textSize="12sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        />
+
+    <LinearLayout
+        android:id="@+id/toprow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/rowDate"
+        android:layout_toStartOf="@id/rowDate"
+        android:layout_toRightOf="@id/imageView1"
+        android:layout_toEndOf="@id/imageView1"
+        android:orientation="vertical"
+        android:background="@null">
+
+        <TextView
+            android:id="@+id/rowMaintElem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            tools:text="Fuel"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/rowMaintType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            tools:text="(Refuel)"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/cashLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/rowConsumptionLabel"
-        android:layout_toRightOf="@+id/cash"
-        android:gravity="right"
+        android:layout_below="@id/rowDate"
+        android:layout_alignParentRight="true"
         android:text="$"
-        android:paddingLeft="2dip"
+        android:layout_marginRight="8dp"
+        android:textSize="12sp"
         android:textColor="@color/cashcolor" />
 
     <TextView
         android:id="@+id/cash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rowConsumptionLabel"
-        android:layout_alignLeft="@+id/rowConsumptionLabel"
-        android:paddingTop="2sp"
-        android:layout_alignRight="@+id/kmLabel"
-        android:layout_toLeftOf="@+id/rowConsumptionLabel"
-        android:gravity="right"
-        android:textSize="13sp"
-        android:text="33231.5"
+        android:layout_below="@id/rowDate"
+        android:layout_toLeftOf="@id/cashLabel"
+        android:layout_marginRight="4dp"
+        android:textSize="12sp"
+        tools:text="33231.5"
          />
 
     <TextView
         android:id="@+id/rowKmLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageView1"
         android:layout_below="@id/toprow"
         android:layout_toRightOf="@id/imageView1"
-        android:gravity="bottom"
-        android:paddingLeft="4dp"
+        android:layout_toEndOf="@id/imageView1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/kmLabel"
-        android:textColor="@color/tabselected" />
+        android:textColor="@color/tabselected"
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/rowOdometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_alignBottom="@id/rowKmLabel"
         android:layout_toRightOf="@id/rowKmLabel"
-        android:ems="3"
         android:gravity="right"
-        android:text="000000"
-        android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
+        tools:text="000000"
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/odoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/rowOdometer"
+        android:layout_below="@id/toprow"
         android:layout_toRightOf="@id/rowOdometer"
-        android:gravity="left"
-        android:paddingRight="4dp"
+        android:layout_marginRight="8dp"
         android:text="km"
         android:textSize="12sp"
-        android:textStyle="italic" />
-
-    <TextView
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/odoLabel"
-        android:layout_toRightOf="@id/odoLabel"
-        android:background="@color/tabselected" />
+        android:textStyle="italic"
+        />
 
     <TextView
         android:id="@+id/rowFuelAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/rowKmLabel"
-        android:layout_toRightOf="@id/divider"
-        android:ems="3"
-        android:gravity="right"
-        android:paddingLeft="8dip"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="23.45"
-        android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
+        android:layout_toRightOf="@id/odoLabel"
+        android:layout_marginLeft="8dp"
+        tools:text="23.45"
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/rowFuelLabel"
@@ -176,7 +152,9 @@
         android:layout_alignBottom="@+id/rowFuelLabel"
         android:layout_toRightOf="@id/rowFuelLabel"
         android:text="@string/MileageShort"
-        android:textColor="@color/tabselected" />
+        android:textColor="@color/tabselected"
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/rowConsumption"
@@ -184,12 +162,13 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
-        android:layout_alignBaseline="@id/rowConsumptionLabel"
+        android:layout_marginLeft="8dp"
+        android:layout_below="@id/toprow"
         android:layout_toRightOf="@id/rowConsumptionLabel"
-        android:ems="3"
         android:gravity="right"
         android:text="14.72"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/kmLabel"
@@ -200,31 +179,36 @@
         android:gravity="left"
         android:text="l/100km"
         android:textSize="12sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        />
 
     <TextView
         android:id="@+id/rowDetails"
         android:layout_width="wrap_content"
-        android:layout_height="24dip"
-        android:layout_alignBottom="@+id/rowFuelAmount"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/cashLabel"
         android:layout_toRightOf="@id/odoLabel"
-        android:paddingLeft="8dp"
+        android:layout_marginLeft="8dp"
         android:text="@string/Details"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toprow"
+        android:layout_alignBottom="@id/rowDetails"
+        android:layout_toRightOf="@id/odoLabel"
+        android:background="@color/tabselected"
+        />
 
     <TextView
         android:id="@+id/key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/imageView1"
-        android:background="@color/tabselected" />
+        android:visibility="gone"
+        />
 
 </RelativeLayout>
