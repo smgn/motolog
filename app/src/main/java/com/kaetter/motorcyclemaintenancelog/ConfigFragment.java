@@ -1,14 +1,33 @@
 package com.kaetter.motorcyclemaintenancelog;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import events.DatePickedEvent;
 
 public class ConfigFragment extends Fragment {
+
+	@Bind(R.id.bikenametext) EditText bikeName;
+	@Bind(R.id.dateofpurchaset) EditText bikeDate;
+	@Bind(R.id.initialodometert) EditText bikeOdo;
+	@Bind(R.id.otherdetails) EditText bikeOtherDetails;
 
 	public static ConfigFragment newInstance() {
 		Bundle args = new Bundle();
@@ -25,10 +44,112 @@ public class ConfigFragment extends Fragment {
 		ButterKnife.bind(this, root);
 
 		// get general bike data
-
-
+		getGeneralBikeData();
 
 		return root;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		EventBus.getDefault().register(this);
+	}
+
+	@Override
+	public void onPause() {
+		EventBus.getDefault().unregister(this);
+		super.onPause();
+	}
+
+	public void onEvent(DatePickedEvent event) {
+		if (event.type == 0) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			Calendar cal = Calendar.getInstance();
+			cal.set(event.year, event.month, event.day);
+
+			bikeDate.setText(sdf.format(cal.getTime()));
+		}
+	}
+
+	public void getGeneralBikeData() {
+
+		SharedPreferences generalPref = getActivity().getSharedPreferences(
+				getString(R.string.general_preference_file_key),
+				Context.MODE_PRIVATE);
+
+		final SharedPreferences.Editor generalEditor = generalPref.edit();
+
+		// bike name
+		bikeName.setText(generalPref.getString("bikenametext", ""));
+		bikeName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					generalEditor.putString("bikenametext", bikeName
+							.getText().toString().trim());
+					generalEditor.commit();
+				}
+			}
+		});
+
+		// bike date
+		bikeDate.setText(generalPref.getString("dateofpurchaset", ""));
+		bikeDate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new DatePickerFragment();
+				newFragment.show(getChildFragmentManager(), "");
+			}
+		});
+
+		// bike odometer
+		bikeOdo.setText(generalPref.getString("initialodometert", ""));
+		bikeOdo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					generalEditor.putString("initialodometert", bikeOdo
+							.getText().toString().trim());
+					generalEditor.commit();
+				}
+			}
+		});
+
+		bikeOtherDetails.setText(generalPref.getString("otherdetails", ""));
+		bikeOtherDetails.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+
+				if (!hasFocus) {
+
+					generalEditor.putString("otherdetails", bikeOtherDetails
+							.getText().toString().trim());
+					generalEditor.commit();
+				}
+			}
+		});
+	}
+
+	public static class DatePickerFragment extends DialogFragment
+			implements DatePickerDialog.OnDateSetListener {
+
+		@NonNull
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current date as the default date in the picker
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			EventBus.getDefault().post(new DatePickedEvent(0, year, month, day));
+		}
 	}
 }
 

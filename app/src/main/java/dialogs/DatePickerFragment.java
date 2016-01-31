@@ -1,15 +1,15 @@
 package dialogs;
 
-import java.util.Calendar;
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
+import java.util.Calendar;
+
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-	
+
 	public interface EditDateDialogListener {
 	    void onFinishEditDialog(String b,String inputText);
 	}
@@ -30,8 +30,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		return new DatePickerDialog(getActivity(), this, year, month, day);
 	}
 
-	public void onDateSet(DatePicker view, int year, int month, int day) {	
-		String b= getArguments().getString("button");		
+	public void onDateSet(DatePicker view, int year, int month, int day) {
+		String b= getArguments().getString("button");
 		EditDateDialogListener activity = (EditDateDialogListener) getParentFragment();
 		String days;
 		if (day<10) {
@@ -40,8 +40,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		} else {
 			days = ""+ day;
 		}
-		
-		
+
+
 		if (month<9) {
 		activity.onFinishEditDialog(b,new String(year+ "-0"+ (month +1) + "-"+ days));
 		} else {
