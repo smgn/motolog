@@ -10,7 +10,8 @@
         android:layout_alignParentLeft="true"
         android:paddingBottom="1sp"
         android:paddingTop="1sp"
-        android:src="@drawable/other" />
+        android:src="@drawable/other"
+        />
 
     <LinearLayout
         android:id="@+id/toprow"

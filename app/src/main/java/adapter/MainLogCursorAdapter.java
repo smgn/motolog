@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
@@ -19,15 +18,12 @@ import com.kaetter.motorcyclemaintenancelog.R;
 import dbcontrollers.MainHelper;
 
 public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
-    private LayoutInflater mLayoutInflater;
-    private Context context;
-    private String TAG = "MainLogCursorAdapter";
-    private Rowloader r;
+    Context mContext;
+    Rowloader rowLoader;
 
     public MainLogCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
-        mLayoutInflater = LayoutInflater.from(context);
-        this.context = context;
+        mContext = context;
         mCursor = c;
     }
 
@@ -35,30 +31,23 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
     public void bindView(View view, Context context, Cursor cursora) {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.position = cursora.getPosition();
-        r = new Rowloader(holder, view, cursora);
-        r.execute(context);
+	    rowLoader = new Rowloader(holder, view, cursora);
+	    rowLoader.execute(context);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
-        View view = mLayoutInflater.inflate(R.layout.rowmain, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.rowmain, parent, false);
         ViewHolder holder = new ViewHolder();
         holder.keyView = (TextView) view.findViewById(R.id.key);
-        holder.maintElemView = (TextView) view
-                .findViewById(R.id.rowMaintElem);
-        holder.maintTypeView = (TextView) view
-                .findViewById(R.id.rowMaintType);
-        holder.fuelAmountView = (TextView) view
-                .findViewById(R.id.rowFuelAmount);
-        holder.fuelConsumptionView = (TextView) view
-                .findViewById(R.id.rowConsumption);
-        holder.rowConsumptionLabelView = (TextView) view
-                .findViewById(R.id.rowConsumptionLabel);
+        holder.maintElemView = (TextView) view.findViewById(R.id.rowMaintElem);
+        holder.maintTypeView = (TextView) view.findViewById(R.id.rowMaintType);
+        holder.fuelAmountView = (TextView) view.findViewById(R.id.rowFuelAmount);
+        holder.fuelConsumptionView = (TextView) view.findViewById(R.id.rowConsumption);
+        holder.rowConsumptionLabelView = (TextView) view.findViewById(R.id.rowConsumptionLabel);
         holder.kmLabelView = (TextView) view.findViewById(R.id.kmLabel);
         holder.detailsView = (TextView) view.findViewById(R.id.rowDetails);
-        holder.fuelLabelView = (TextView) view
-                .findViewById(R.id.rowFuelLabel);
+        holder.fuelLabelView = (TextView) view.findViewById(R.id.rowFuelLabel);
         holder.cashView = (TextView) view.findViewById(R.id.cash);
         holder.odoLabel = (TextView) view.findViewById(R.id.odoLabel);
         holder.dateView = (TextView) view.findViewById(R.id.rowDate);
@@ -91,12 +80,12 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
     }
 }
 
-
 class Rowloader extends AsyncTask<Object, Void, Bundle> {
-    public static final String MAINT_ELEM = "maintElem";
-    private Integer position;
+    static final String MAINT_ELEM = "maintElem";
+    Integer position;
     MainLogCursorAdapter.ViewHolder holder;
     View view;
+	Context context;
     private Cursor cursor;
 
     public Rowloader(MainLogCursorAdapter.ViewHolder holder, View view, Cursor cursor) {
@@ -105,13 +94,6 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
         this.position = holder.position;
         this.cursor = cursor;
     }
-
-    TextView keyView, maintElemView, maintTypeView, fuelAmountView, fuelConsumptionView, rowConsumptionLabelView, kmLabelView, detailsView, fuelLabelView, cashView;
-    TextView cashLabel, odoLabel, dateView, odometerView;
-    ImageView maintTypeImageView;
-    Context context;
-    ListView listView;
-    String tag;
 
     @Override
     protected Bundle doInBackground(Object... params) {
@@ -138,7 +120,6 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
                 .getColumnIndex(MainHelper.FIELD9)));
         b.putString("cash", String.valueOf(this.cursor.getDouble(this.cursor
                 .getColumnIndex(MainHelper.FIELD10))));
-
 
         switch (this.cursor.getInt(this.cursor
                 .getColumnIndex(MainHelper.FIELD9))) {
@@ -173,8 +154,6 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
 
     @Override
     protected void onPostExecute(Bundle b) {
-
-//		System.out.println("onPost" + holder.position+ " " +tag + " "+ position + " "+ b.getString("odometer"));
 
         if (holder.position == position && holder == view.getTag()) {
             holder.keyView.setText(b.getString("key"));
@@ -219,8 +198,6 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
                 holder.kmLabelView.setText("");
             }
         }
-
     }
-
 }
 

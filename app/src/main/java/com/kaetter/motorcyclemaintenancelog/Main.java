@@ -30,7 +30,8 @@ import java.io.FilenameFilter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
-import dbcontrollers.MainLogSource;
+import de.greenrobot.event.EventBus;
+import events.CopyDatabaseEvent;
 
 public class Main extends AppCompatActivity {
 
@@ -47,8 +48,6 @@ public class Main extends AppCompatActivity {
 	SharedPreferences sharedPrefs;
 	int mileageType;
 
-	MainLogSource mainLogSource;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,11 +63,10 @@ public class Main extends AppCompatActivity {
 
 		mViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), this));
 		mTabLayout.setupWithViewPager(mViewPager);
+		mViewPager.setOffscreenPageLimit(2);
 
-		sharedPrefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		mileageType = Integer.parseInt(sharedPrefs.getString(
-				"pref_MileageType", "0"));
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		mileageType = Integer.parseInt(sharedPrefs.getString("pref_MileageType", "0"));
 	}
 
 	@Override
@@ -182,7 +180,8 @@ public class Main extends AppCompatActivity {
 						public void onClick(DialogInterface dialog, int which) {
 							File toDbPath = getDatabasePath(MainHelper.DATABASE_NAME);
 							try {
-								mainLogSource.copyDatabase(fromDbPath, toDbPath.toString());
+								EventBus.getDefault().post(
+										new CopyDatabaseEvent(fromDbPath, toDbPath.toString()));
 								recreate();
 							} catch (Exception e) {
 								Toast.makeText(getApplicationContext(),
