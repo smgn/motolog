@@ -115,5 +115,12 @@
     <string name="text_number_of_entries">Number of log entries</string>
     <string name="text_in">in</string>
     <string name="select_date">Select Date</string>
+    <string name="dialog_title_choose_db_to_import">Choose DB file to import</string>
+    <string name="your_current_data_will_be_overwritten">YOUR CURRENT DATA WILL BE OVERWRITTEN.</string>
+    <string name="importing">Importing</string>
+    <string name="db_import_error">Failed to import DB.</string>
+    <string name="dialog_title_permission_needed">Permission needed</string>
+    <string name="dialog_message_read_ext_storage">Motolog needs to read your external storage to find DB files.</string>
+    <string name="dialog_message_read_ext_storage_retry">Motolog was previously denied access to external storage. Tap RETRY to open app settings and grant this permission.</string>
 
 </resources>
