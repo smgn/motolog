@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,10 +45,13 @@ public class ConfigFragment extends Fragment implements
 	@Bind(R.id.from) Button from;
 	@Bind(R.id.to) Button to;
 	@Bind(R.id.maintelemspinner) Spinner maintelemspinner;
+	@Bind(R.id.cashperelementvalue) TextView cashperelementvalue;
 
 	MainLogSource mainLogSource;
 	Cursor currentCursor;
 	Summarize sum;
+
+	View root;
 
 	public static ConfigFragment newInstance() {
 		Bundle args = new Bundle();
@@ -59,7 +63,7 @@ public class ConfigFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		View root = inflater.inflate(R.layout.fragment_config, container, false);
+		root = inflater.inflate(R.layout.fragment_config, container, false);
 
 		ButterKnife.bind(this, root);
 
@@ -103,25 +107,23 @@ public class ConfigFragment extends Fragment implements
 		});
 
 		// populate spinner
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		list.add("...");
 
-		ArrayAdapter<String> maintElemAdapter = new ArrayAdapter<String>(
-				getActivity(), R.layout.generalspinner, list);
+		ArrayAdapter<String> maintElemAdapter = new ArrayAdapter<>(
+				getActivity(), android.R.layout.simple_list_item_1, list);
 
 		maintelemspinner.setAdapter(maintElemAdapter);
-
 		maintelemspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos , long id) {
-//				if(pos!=0) {
-//					sum = new Summarize();
-//
-//					sum.execute(2,currentCursor,from.getText().toString(), confView,MyListFragment.this);
-//				} else {
-//					TextView cashperelementvalue = (TextView)  confView.findViewById(R.id.cashperelementvalue);
-//					cashperelementvalue.setText("0");
-//				}
+				if (pos != 0) {
+					sum = new Summarize();
+					sum.execute(2,currentCursor,from.getText().toString(), root,
+							bikeDate.getText().toString());
+				} else {
+					cashperelementvalue.setText("0");
+				}
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -256,17 +258,19 @@ public class ConfigFragment extends Fragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//		if(loader.getId()==2) {
-//			currentCursor = data;
-//			if(!data.isAfterLast()) {
-//				sum = new Summarize();
-//				sum.execute(1,data,from.getText().toString(), this.getView(), this);
-//			} else {
-//				sum = new Summarize();
-//				sum.execute(0,data,from.getText().toString(), this.getView(), this);
-//			}
-//
-//		}
+		if(loader.getId()==2) {
+			currentCursor = data;
+			if(!data.isAfterLast()) {
+				sum = new Summarize();
+				sum.execute(1, data, from.getText().toString(), root,
+						bikeDate.getText().toString());
+			} else {
+				sum = new Summarize();
+				sum.execute(0, data, from.getText().toString(), root,
+						bikeDate.getText().toString());
+			}
+
+		}
 	}
 
 	@Override

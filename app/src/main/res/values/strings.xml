@@ -112,7 +112,7 @@
     <string name="text_total">Total</string>
     <string name="text_total_cost">Total cost</string>
     <string name="text_total_distance">Total distance</string>
-    <string name="text_number_of_entries">Number of log entries</string>
+    <string name="text_number_of_entries">No. of entries</string>
     <string name="text_in">in</string>
     <string name="select_date">Select Date</string>
     <string name="dialog_title_choose_db_to_import">Choose DB file to import</string>
@@ -123,5 +123,7 @@
     <string name="dialog_message_read_ext_storage">Motolog needs to read your external storage to find DB files.</string>
     <string name="dialog_message_read_ext_storage_retry">Motolog was previously denied access to external storage. Tap RETRY to open app settings and grant this permission.</string>
     <string name="text_no_logs">No logs yet</string>
+    <string name="text_cost_summary">Bike Cost Summary</string>
+    <string name="text_sort_by_element">Sort by Element:</string>
 
 </resources>

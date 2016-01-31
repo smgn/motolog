@@ -9,7 +9,8 @@
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <EditText
             android:id="@+id/bikenametext"
@@ -87,7 +88,6 @@
             android:layout_marginTop="8dp"
             android:text="@string/text_other_details"
             android:layout_below="@id/initialodometer"
-            android:textSize="20sp"
             />
 
         <EditText
@@ -99,11 +99,22 @@
             />
 
         <TextView
+            android:id="@+id/labelCostSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/text_cost_summary"
+            android:layout_below="@id/otherdetails"
+            android:textSize="18sp"
+            />
+
+        <TextView
             android:id="@+id/textFrom"
             android:layout_width="0dp"
             android:layout_height="48dp"
             app:layout_widthPercent="15%"
-            android:layout_below="@id/otherdetails"
+            android:layout_below="@id/labelCostSummary"
             android:gravity="center"
             android:text="@string/text_from"
             />
@@ -112,7 +123,7 @@
             android:id="@+id/from"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/otherdetails"
+            android:layout_below="@id/labelCostSummary"
             android:layout_toRightOf="@id/textFrom"
             app:layout_widthPercent="30%"
             android:text="00/00/0000"
@@ -123,7 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             app:layout_widthPercent="15%"
-            android:layout_below="@id/otherdetails"
+            android:layout_below="@id/labelCostSummary"
             android:layout_toRightOf="@id/from"
             android:gravity="center"
             android:text="@string/text_to"
@@ -133,11 +144,13 @@
             android:id="@+id/to"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/otherdetails"
+            android:layout_below="@id/labelCostSummary"
             app:layout_widthPercent="30%"
             android:layout_toRightOf="@id/textTo"
             android:text="00/00/0000"
             />
+
+
 
         <TextView
             android:id="@+id/textTotalCost"
@@ -145,13 +158,16 @@
             android:layout_height="wrap_content"
             app:layout_widthPercent="30%"
             android:layout_below="@id/textFrom"
+            android:layout_marginTop="8dp"
             android:text="@string/text_total_cost"
+            android:textColor="@color/tabselected"
             />
 
         <TextView
             android:id="@+id/totalcash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_widthPercent="30%"
             android:layout_below="@id/textFrom"
             android:layout_toRightOf="@id/textTotalCost"
@@ -162,6 +178,7 @@
             android:id="@+id/cashperday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_widthPercent="40%"
             android:layout_below="@id/textFrom"
             android:layout_toRightOf="@id/totalcash"
@@ -175,6 +192,7 @@
             app:layout_widthPercent="30%"
             android:layout_below="@id/textTotalCost"
             android:text="@string/text_total_distance"
+            android:textColor="@color/tabselected"
             />
 
         <TextView
@@ -203,6 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textTotalDistance"
             android:text="@string/text_number_of_entries"
+            android:textColor="@color/tabselected"
             />
 
         <TextView
@@ -211,63 +230,83 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/textNumberOfEntries"
             android:layout_below="@id/textTotalDistance"
-            android:layout_alignLeft="@id/cashperkm"
+            android:layout_alignLeft="@id/totalkm"
             tools:text="12345"
             />
+
+        <TextView
+            android:id="@+id/labelSortByElement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@id/textNumberOfEntries"
+            android:text="@string/text_sort_by_element"/>
 
         <Spinner
             android:id="@+id/maintelemspinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textNumberOfEntries"
+            android:layout_below="@id/labelSortByElement"
             app:layout_widthPercent="50%"
             />
 
-        <TextView
-            android:id="@+id/cashperelementvalue"
-            android:layout_centerVertical="true"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/maintelemspinner"
             android:layout_toRightOf="@id/maintelemspinner"
-            android:layout_below="@id/textNumberOfEntries"
+            android:layout_below="@id/labelSortByElement"
             android:layout_marginLeft="8dp"
-            android:singleLine="true"
-            tools:text="$123"
-            />
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/cashperelement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/cashperelementvalue"
-            android:layout_below="@id/textNumberOfEntries"
-            android:layout_marginLeft="8dp"
-            android:text="@string/text_in"
-            />
+            <TextView
+                android:id="@+id/cashperelementvalue"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/maintelemspinner"
+                android:layout_below="@id/textNumberOfEntries"
+                android:layout_marginLeft="8dp"
+                android:singleLine="true"
+                tools:text="$123"
+                />
 
-        <TextView
-            android:id="@+id/countperelementvalue"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/cashperelement"
-            android:layout_below="@id/textNumberOfEntries"
-            android:singleLine="true"
-            android:layout_marginLeft="8dp"
-            android:text="0"
-            />
+            <TextView
+                android:id="@+id/cashperelement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cashperelementvalue"
+                android:layout_below="@id/textNumberOfEntries"
+                android:layout_marginLeft="4dp"
+                android:text="@string/text_in"
+                />
 
-        <TextView
-            android:id="@+id/countperelementLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/countperelementvalue"
-            android:layout_below="@id/textNumberOfEntries"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:text="entries"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            />
+            <TextView
+                android:id="@+id/countperelementvalue"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cashperelement"
+                android:layout_below="@id/textNumberOfEntries"
+                android:singleLine="true"
+                android:layout_marginLeft="4dp"
+                android:text="0"
+                />
+
+            <TextView
+                android:id="@+id/countperelementLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/countperelementvalue"
+                android:layout_below="@id/textNumberOfEntries"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:text="entries"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+
+        </LinearLayout>
 
     </android.support.percent.PercentRelativeLayout>
 
