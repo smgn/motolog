@@ -1,33 +1,16 @@
 package com.kaetter.motorcyclemaintenancelog;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.support.v7.app.AppCompatActivity;
 
-
-public class SettingsActivity extends PreferenceActivity {
-	
-	@SuppressWarnings("deprecation")
+public class SettingsActivity extends AppCompatActivity {
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.preferences);
-//		final Preference pref_UseFuelly = (Preference) findPreference("pref_UseFuelly");
-//		
-//		pref_UseFuelly.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-//			
-//			@Override
-//			public boolean onPreferenceClick(Preference preference) {
-//				
-//				if (preference.isEnabled()) {
-//					
-//					
-//					
-//				}
-//				
-//				
-//				return false;
-//			}
-//		});
-		
+
+		// Display the fragment as the main content.
+		getFragmentManager().beginTransaction()
+				.replace(android.R.id.content, new SettingsFragment())
+				.commit();
 	}
 }

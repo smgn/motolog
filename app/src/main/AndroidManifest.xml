@@ -47,8 +47,7 @@
         <activity
             android:name="com.kaetter.motorcyclemaintenancelog.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.kaetter.motorcyclemaintenancelog.Main"
-            android:theme="@android:style/Theme.Black" >
+            android:parentActivityName="com.kaetter.motorcyclemaintenancelog.Main">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kaetter.motorcyclemaintenancelog.Main" />

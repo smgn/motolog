@@ -73,7 +73,8 @@ public class Main extends AppCompatActivity {
 				//TODO: transplant code
 				return true;
 			case R.id.menu_settings:
-				//TODO: transplant code
+				Intent intent2 = new Intent(this, SettingsActivity.class);
+				startActivityForResult(intent2, START_SETTINGS);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
