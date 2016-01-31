@@ -114,5 +114,6 @@
     <string name="text_total_distance">Total distance</string>
     <string name="text_number_of_entries">Number of log entries</string>
     <string name="text_in">in</string>
+    <string name="select_date">Select Date</string>
 
 </resources>

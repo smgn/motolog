@@ -5,13 +5,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.kaetter.motorcyclemaintenancelog.MyListFragment;
+import com.kaetter.motorcyclemaintenancelog.Main;
 import com.kaetter.motorcyclemaintenancelog.R;
 
 import java.text.ParseException;
@@ -25,7 +26,7 @@ import java.util.Set;
 
 public class Summarize extends AsyncTask<Object, String, Bundle> {
 	View confview;
-	MyListFragment activity;
+	Fragment activity;
 	private int firstOdo,lastOdo,days,entries;
 	private double cash, cashperelem;
 	private double cashperday, kmperday;
@@ -46,7 +47,7 @@ public class Summarize extends AsyncTask<Object, String, Bundle> {
 		Cursor cursor = (Cursor)  params[1];
 		String from = (String) params[2];
 		confview = (View) params[3];
-		activity = (MyListFragment) params[4];
+		activity = (Fragment) params[4];
 		//check for null of cursor before sending to async.	
 		
 		if(action==1) {
@@ -131,7 +132,7 @@ public class Summarize extends AsyncTask<Object, String, Bundle> {
 		
 		if (action==2) {
 			cashperelem=0;
-			 maintElemSpinner = (Spinner)  confview.findViewById(R.id.maintelemspinner);
+			 maintElemSpinner = (Spinner) confview.findViewById(R.id.maintelemspinner);
 			String elem = maintElemSpinner.getSelectedItem().toString();
 			
 			

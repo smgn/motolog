@@ -17,7 +17,7 @@
             app:layout_widthPercent="60%"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:inputType="text"
+            android:inputType="textCapWords"
             tools:text="Honda Phantom TA200"
             />
 
@@ -28,6 +28,7 @@
             app:layout_widthPercent="60%"
             android:layout_below="@id/bikenametext"
             android:layout_alignParentRight="true"
+            android:focusable="false"
             tools:text="04 May 2016"/>
 
         <EditText
@@ -94,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textOtherDetails"
-            android:inputType="text"
+            android:inputType="textCapSentences"
             />
 
         <TextView
