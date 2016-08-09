@@ -29,4 +29,6 @@
     <color name="chaincolor">#93b79c</color>
      <color name="cashcolor">#12CC6F</color>
 
+    <color name="black">#000000</color>
+
 </resources>

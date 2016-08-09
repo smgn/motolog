@@ -1,151 +1,130 @@
 package dialogs;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kaetter.motorcyclemaintenancelog.NewLog;
+import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.NewRem;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class NewElementDialog extends DialogFragment {
-	String type;
-	String callingActivity;
 
-	public NewElementDialog() {
+	@Bind(R.id.title) TextView title;
+	@Bind(R.id.newelem) EditText et;
+	@Bind(R.id.ok) Button ok;
+	@Bind(R.id.nok) Button nok;
 
-	}
+	private String type;
+	private String callingActivity;
 
 	public interface OnNewElementListener {
 		void addNewSharedPreference(String sharedPreference, String value);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		getDialog().getWindow().requestFeature(STYLE_NO_TITLE);
-
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		type = getArguments().getString("newelementdialog");
 		callingActivity = getArguments().getString("callingActivity");
-
-		View view = inflater.inflate(R.layout.dialognewelement, null);
-
-		TextView title = (TextView) view.findViewById(R.id.title);
-
-		if (type.equals(NewLog.ELEMVAL)) {
-
-			title.setText("Add new element!");
-		}
-		if (type.equals(NewLog.ELEMTYPEVAL)) {
-
-			title.setText("Add new element type!");
-		}
-
-		final EditText et = (EditText) view.findViewById(R.id.newelem);
-		
-		Button ok = (Button) view.findViewById(R.id.ok);
-	
-
-		ok.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				
-				
-				if (String.valueOf(et.getText()).trim().equals("")) {
-					Toast.makeText(getActivity(), "A text must be entered! ",  Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				if (type.equals(NewLog.ELEMVAL)) {
-
-					String etString = et.getText().toString();
-
-					if (callingActivity.equals(NewLog.tag)) {
-
-						NewLog activity = (NewLog) getActivity();
-						if (activity!=null) {
-								activity.addNewSharedPreference(NewLog.ELEMVAL,
-										String.valueOf(et.getText()));
-								dismiss();
-
-						}
-					}
-
-					if (callingActivity.equals(NewRem.tag)) {
-
-						NewRem activity = (NewRem) getActivity();
-						if (activity!=null) {
-
-								activity.addNewSharedPreference(NewLog.ELEMVAL,
-										String.valueOf(et.getText()));
-								dismiss();
-							
-						}
-
-					}
-
-				}
-
-				if (type.equals(NewLog.ELEMTYPEVAL)) {
-
-					String etString = et.getText().toString();
-
-					if (callingActivity.equals(NewRem.tag)) {
-
-						NewRem activity = (NewRem) getActivity();
-
-						if (activity!=null) {
-							activity.addNewSharedPreference(NewLog.ELEMTYPEVAL,
-									String.valueOf(et.getText()));
-							dismiss();
-						}
-					}
-
-					if (callingActivity.equals(NewLog.tag)) {
-
-						NewLog activity = (NewLog) getActivity();
-
-						if (activity!=null) {
-	
-								activity.addNewSharedPreference(NewLog.ELEMTYPEVAL,
-										String.valueOf(et.getText()));
-	
-								dismiss();
-								} 
-						}
-					}
-			}
-			
-		});
-
-		Button nok = (Button) view.findViewById(R.id.nok);
-
-		nok.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				getDialog().dismiss();
-			}
-		});
-
-		return view;
 	}
 
 	@Override
-	public void dismiss() {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
 
-		super.dismiss();
+		getDialog().getWindow().requestFeature(STYLE_NO_TITLE);
+
+		View root = inflater.inflate(R.layout.dialognewelement, container, false);
+
+		ButterKnife.bind(this, root);
+
+		if (type.equals(NewLogActivity.ELEMVAL)) {
+			title.setText("Add new element!");
+		}
+		if (type.equals(NewLogActivity.ELEMTYPEVAL)) {
+			title.setText("Add new element type!");
+		}
+
+		return root;
 	}
 
+	@OnClick(R.id.ok)
+	public void addNewElement() {
+		if (String.valueOf(et.getText()).trim().equals("")) {
+			Toast.makeText(getActivity(), "A text must be entered! ",  Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		if (type.equals(NewLogActivity.ELEMVAL)) {
+
+			String etString = et.getText().toString();
+
+			if (callingActivity.equals(NewLogActivity.TAG)) {
+
+				NewLogActivity activity = (NewLogActivity) getActivity();
+				if (activity!=null) {
+					activity.addNewSharedPreference(NewLogActivity.ELEMVAL,
+							String.valueOf(et.getText()));
+					dismiss();
+
+				}
+			}
+
+			if (callingActivity.equals(NewRem.tag)) {
+
+				NewRem activity = (NewRem) getActivity();
+				if (activity!=null) {
+
+					activity.addNewSharedPreference(NewLogActivity.ELEMVAL,
+							String.valueOf(et.getText()));
+					dismiss();
+
+				}
+			}
+		}
+
+		if (type.equals(NewLogActivity.ELEMTYPEVAL)) {
+
+			if (callingActivity.equals(NewRem.tag)) {
+
+				NewRem activity = (NewRem) getActivity();
+
+				if (activity!=null) {
+					activity.addNewSharedPreference(NewLogActivity.ELEMTYPEVAL,
+							String.valueOf(et.getText()));
+					dismiss();
+				}
+			}
+
+			if (callingActivity.equals(NewLogActivity.TAG)) {
+
+				NewLogActivity activity = (NewLogActivity) getActivity();
+
+				if (activity!=null) {
+
+					activity.addNewSharedPreference(NewLogActivity.ELEMTYPEVAL,
+							String.valueOf(et.getText()));
+
+					dismiss();
+				}
+			}
+		}
+	}
+
+	@OnClick(R.id.nok)
+	public void dismissDialog() {
+		getDialog().dismiss();
+	}
 }

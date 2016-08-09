@@ -16,7 +16,7 @@ import android.widget.Toast;
 import beans.MaintenanceItem;
 
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
-import com.kaetter.motorcyclemaintenancelog.NewLog;
+import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.R;
 
 import dbcontrollers.MainLogSource;
@@ -111,7 +111,7 @@ public class UpdateDialog extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 
-				Intent intent = new Intent(getActivity(), NewLog.class);
+				Intent intent = new Intent(getActivity(), NewLogActivity.class);
 				intent.putExtra("Maintenanceitem", item);
 				intent.putExtra("isModification", true);
 

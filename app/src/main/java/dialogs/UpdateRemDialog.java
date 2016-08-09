@@ -18,7 +18,7 @@ import beans.MaintenanceItem;
 import beans.ReminderItem;
 
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
-import com.kaetter.motorcyclemaintenancelog.NewLog;
+import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.NewRem;
 import com.kaetter.motorcyclemaintenancelog.R;
 
@@ -119,7 +119,7 @@ public class UpdateRemDialog extends DialogFragment {
 								.getMaintType(), 0, 0, today, 0, remItem
 								.getDetails(), MyListFragment.mileageType);
 
-				Intent intent = new Intent(getActivity(), NewLog.class);
+				Intent intent = new Intent(getActivity(), NewLogActivity.class);
 				intent.putExtra("Maintenanceitem", item);
 				intent.putExtra("isModification", false);
 				intent.putExtra("ReminderItem", remItem);

@@ -208,7 +208,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 			  Iterator it = m.entrySet().iterator();
 			  while(it.hasNext()) {
 					Map.Entry<String, ?> me= (Entry<String, ?>) it.next();
-					if (me.getKey().startsWith(NewLog.ELEMVAL.toString())) {
+					if (me.getKey().startsWith(NewLogActivity.ELEMVAL.toString())) {
 						elemcount++;
 					}
 				}
@@ -222,7 +222,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 			  Iterator itt = mt.entrySet().iterator();
 			  while(itt.hasNext()) {
 					Map.Entry<String, ?> mte= (Entry<String, ?>) itt.next();
-					if (mte.getKey().startsWith(NewLog.ELEMTYPEVAL.toString())) {
+					if (mte.getKey().startsWith(NewLogActivity.ELEMTYPEVAL.toString())) {
 						elemtypecount++;
 					}
 				}	
@@ -256,7 +256,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 		maintTypeAdapter
 				.setDropDownViewResource(R.layout.generalspinnerdropdown);
 
-		maintTypeSpinner = (Spinner) findViewById(R.id.mainttypespinner);
+		maintTypeSpinner = (Spinner) findViewById(R.id.spinnerType);
 
 		maintTypeSpinner.setAdapter(maintTypeAdapter);
 
@@ -302,7 +302,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 		maintElemAdapter
 				.setDropDownViewResource(R.layout.generalspinnerdropdown);
 
-		maintElemSpinner = (Spinner) findViewById(R.id.maintelemspinner);
+		maintElemSpinner = (Spinner) findViewById(R.id.spinnerElement);
 		maintElemSpinner.setAdapter(maintElemAdapter);
 
 		maintElemSpinner
@@ -584,7 +584,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 	@Override
 	public void addNewSharedPreference(String preferenceType, String value) {
 
-		if (preferenceType.equals(NewLog.ELEMVAL)) {
+		if (preferenceType.equals(NewLogActivity.ELEMVAL)) {
 
 			SharedPreferences elemPref = getSharedPreferences(
 					getString(R.string.elem_preference_file_key),
@@ -592,7 +592,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 
 			Editor ed = elemPref.edit();
 
-			int elemCount = elemPref.getInt(NewLog.ELEMCOUNTSTRING, 0);
+			int elemCount = elemPref.getInt(NewLogActivity.ELEMCOUNTSTRING, 0);
 
 			if (elemCount == 0) {
 
@@ -601,9 +601,9 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 						.show();
 
 			} else {
-				ed.putString(NewLog.ELEMVAL + elemCount, value);
+				ed.putString(NewLogActivity.ELEMVAL + elemCount, value);
 				elemCount++;		
-				ed.putInt(NewLog.ELEMCOUNTSTRING, elemCount);
+				ed.putInt(NewLogActivity.ELEMCOUNTSTRING, elemCount);
 				ed.commit();
 				
 				setPreferences();
@@ -611,7 +611,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 			}
 		}
 
-		if (preferenceType.equals(NewLog.ELEMTYPEVAL)) {
+		if (preferenceType.equals(NewLogActivity.ELEMTYPEVAL)) {
 
 			SharedPreferences elemTypePref = getSharedPreferences(
 					getString(R.string.elemtype_preference_file_key),
@@ -619,7 +619,7 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 
 			Editor edType = elemTypePref.edit();
 
-			int elemTypeCount = elemTypePref.getInt(NewLog.ELEMTYPECOUNTSTRING,
+			int elemTypeCount = elemTypePref.getInt(NewLogActivity.ELEMTYPECOUNTSTRING,
 					0);
 
 			if (elemTypeCount == 0) {
@@ -627,14 +627,14 @@ public class NewRem extends FragmentActivity implements OnNewElementListener {
 				Toast.makeText(
 						getApplicationContext(),
 						"somethign wrong with shared pref on "
-								+ NewLog.ELEMTYPECOUNTSTRING, Toast.LENGTH_LONG)
+								+ NewLogActivity.ELEMTYPECOUNTSTRING, Toast.LENGTH_LONG)
 						.show();
 
 			} else {
 				
-				edType.putString(NewLog.ELEMTYPEVAL + elemTypeCount, value);
+				edType.putString(NewLogActivity.ELEMTYPEVAL + elemTypeCount, value);
 				elemTypeCount++;
-				edType.putInt(NewLog.ELEMTYPECOUNTSTRING, elemTypeCount);
+				edType.putInt(NewLogActivity.ELEMTYPECOUNTSTRING, elemTypeCount);
 				edType.commit();
 				setPreferences();
 				setMaintTypeSpinner(elemTypeCount);

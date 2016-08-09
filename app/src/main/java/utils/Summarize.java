@@ -15,11 +15,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 public class Summarize extends AsyncTask<Object, String, Bundle> {
@@ -125,7 +123,7 @@ public class Summarize extends AsyncTask<Object, String, Bundle> {
 						
 		} else if (action == 2) {
 			cashperelem = 0;
-			maintElemSpinner = (Spinner) confview.findViewById(R.id.maintelemspinner);
+			maintElemSpinner = (Spinner) confview.findViewById(R.id.spinnerElement);
 			String elem = maintElemSpinner.getSelectedItem().toString();
 
 			cursor.moveToFirst();
@@ -165,7 +163,7 @@ public class Summarize extends AsyncTask<Object, String, Bundle> {
 			cashperdayView = (TextView) confview.findViewById(R.id.cashperday);
 			cashperdayView.setText(String.valueOf(b.getDouble("cashperday")) + "$" + "/day");
 
-			maintElemSpinner = (Spinner) confview.findViewById(R.id.maintelemspinner);
+			maintElemSpinner = (Spinner) confview.findViewById(R.id.spinnerElement);
 
 			ArrayAdapter<String> maintElemAdapter =
 					(ArrayAdapter<String>) maintElemSpinner.getAdapter();

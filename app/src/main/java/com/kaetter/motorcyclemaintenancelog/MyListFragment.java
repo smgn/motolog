@@ -62,7 +62,6 @@ import dbcontrollers.MainLogSource;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
 import dialogs.DatePickerFragment.EditDateDialogListener;
-import dialogs.NewRemDialog.onRemElementListener;
 import dialogs.UpdateDialog;
 import dialogs.UpdateRemDialog;
 import listeners.OnItemChangedListener;
@@ -71,8 +70,7 @@ import utils.Summarize;
 
 @SuppressLint("ValidFragment")
 public class MyListFragment extends Fragment implements
-		LoaderCallbacks<Cursor>, OnItemChangedListener, onRemElementListener,
-		EditDateDialogListener {
+		LoaderCallbacks<Cursor>, OnItemChangedListener, EditDateDialogListener {
 
 	private static final String TAG = "MyListFragment";
 
@@ -371,7 +369,7 @@ public class MyListFragment extends Fragment implements
 			 ArrayList<String> list = new ArrayList<String>();
 			 list.add("...");
 			 
-			 Spinner maintelemspinner = (Spinner) confView.findViewById(R.id.maintelemspinner) ;
+			 Spinner maintelemspinner = (Spinner) confView.findViewById(R.id.spinnerElement) ;
 			 
 			 ArrayAdapter<String> maintElemAdapter = new ArrayAdapter<String>(
 						 getActivity().getApplicationContext(), R.layout.generalspinner,list);
@@ -459,7 +457,7 @@ public class MyListFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 
-				Intent intent = new Intent(getActivity(), NewLog.class);
+				Intent intent = new Intent(getActivity(), NewLogActivity.class);
 
 				startActivityForResult(intent, START_NEW_LOG);
 
@@ -700,14 +698,14 @@ public class MyListFragment extends Fragment implements
 
 	}
 
-	@Override
-	public void onRemElementModify() {
-
-		if (mTag.equals("Rem")) {
-			remAdapter.changeCursor(remLogSource.getCursor());
-			remAdapter.notifyDataSetChanged();
-		}
-	}
+//	@Override
+//	public void onRemElementModify() {
+//
+//		if (mTag.equals("Rem")) {
+//			remAdapter.changeCursor(remLogSource.getCursor());
+//			remAdapter.notifyDataSetChanged();
+//		}
+//	}
 
 	public void setSpinnerFilter(boolean show) {
 
@@ -722,15 +720,15 @@ public class MyListFragment extends Fragment implements
 		ArrayList<String> maintElemArrayList = new ArrayList<String>(
 				Arrays.asList(maintElemList));
 
-		int elemCount = elemPref.getInt(NewLog.ELEMCOUNTSTRING, 0);
+		int elemCount = elemPref.getInt(NewLogActivity.ELEMCOUNTSTRING, 0);
 
 		if (elemCount == 0) {
 			elemCount = maintElemList.length - 1;
-			elemEditor.putInt(NewLog.ELEMCOUNTSTRING, elemCount);
+			elemEditor.putInt(NewLogActivity.ELEMCOUNTSTRING, elemCount);
 			elemEditor.commit();
 
 			for (int i = 0; i <= elemCount; i++) {
-				elemEditor.putString(NewLog.ELEMVAL + i, maintElemList[i]);
+				elemEditor.putString(NewLogActivity.ELEMVAL + i, maintElemList[i]);
 				elemEditor.commit();
 			}
 		}
@@ -738,7 +736,7 @@ public class MyListFragment extends Fragment implements
 		if (elemCount > maintElemList.length - 1) {
 
 			for (int i = maintElemList.length; i <= elemCount; i++) {
-				maintElemArrayList.add(elemPref.getString(NewLog.ELEMVAL + i,
+				maintElemArrayList.add(elemPref.getString(NewLogActivity.ELEMVAL + i,
 						" "));
 			}
 		}

@@ -1,16 +1,10 @@
 package com.kaetter.motorcyclemaintenancelog;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import utils.FuellyScraper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -22,9 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import beans.MaintenanceItem;
 import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
+import utils.FuellyScraper;
 
 public class RefuelActivity extends FragmentActivity {
 
@@ -41,9 +41,9 @@ public class RefuelActivity extends FragmentActivity {
 		super.onCreate(arg0);
 
 		setContentView(R.layout.refuelactivity);
-		final EditText fuelAmountView = (EditText) findViewById(R.id.fueltext);
+		final EditText fuelAmountView = (EditText) findViewById(R.id.editTextFuel);
 		final EditText odoTextView = (EditText) findViewById(R.id.odoText);
-		final EditText cashTextView = (EditText) findViewById(R.id.cash);
+		final EditText cashTextView = (EditText) findViewById(R.id.editTextPrice);
 
 		sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());

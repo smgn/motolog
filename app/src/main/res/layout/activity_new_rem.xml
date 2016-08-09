@@ -20,23 +20,23 @@
         android:layout_weight="0.9" >
 
         <Spinner
-            android:id="@+id/mainttypespinner"
+            android:id="@+id/spinnerType"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
              />
 
         <Spinner
-            android:id="@+id/maintelemspinner"
+            android:id="@+id/spinnerElement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mainttypespinner"
+            android:layout_below="@id/spinnerType"
             />
 
         <TextView
             android:id="@+id/every"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/maintelemspinner"
+            android:layout_below="@id/spinnerElement"
             android:layout_marginLeft="10dp"
             android:ems="4"
             android:paddingTop="10dp"
@@ -48,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/every"
-            android:button="@drawable/checkbox_selector"
             android:gravity="left"
             android:text="Date?"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -57,7 +56,7 @@
             android:id="@+id/intervalo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/maintelemspinner"
+            android:layout_below="@id/spinnerElement"
             android:layout_toRightOf="@id/every"
             android:hint="interval in km&apos;s"
             android:inputType="number"
@@ -69,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/datecheckbox"
-            android:layout_below="@id/maintelemspinner"
+            android:layout_below="@id/spinnerElement"
             android:paddingRight="10dp"
             android:layout_toRightOf="@id/every" />
 
@@ -78,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/interval"
-            android:layout_below="@id/maintelemspinner"
+            android:layout_below="@id/spinnerElement"
             android:layout_toRightOf="@id/interval" />
 
         <TextView

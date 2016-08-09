@@ -24,14 +24,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dbcontrollers.MainLogSource;
-import de.greenrobot.event.EventBus;
 import events.DatePickedEvent;
 import utils.Summarize;
 
@@ -44,7 +47,7 @@ public class ConfigFragment extends Fragment implements
 	@Bind(R.id.otherdetails) EditText bikeOtherDetails;
 	@Bind(R.id.from) Button from;
 	@Bind(R.id.to) Button to;
-	@Bind(R.id.maintelemspinner) Spinner maintelemspinner;
+	@Bind(R.id.spinnerElement) Spinner maintelemspinner;
 	@Bind(R.id.cashperelementvalue) TextView cashperelementvalue;
 
 	MainLogSource mainLogSource;
@@ -92,7 +95,7 @@ public class ConfigFragment extends Fragment implements
 		});
 
 		// set TO date
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		to.setText(sdf.format(Calendar.getInstance().getTime()));
 
 		to.setOnClickListener(new View.OnClickListener() {
@@ -151,9 +154,10 @@ public class ConfigFragment extends Fragment implements
 		super.onPause();
 	}
 
+	@Subscribe
 	public void onEvent(DatePickedEvent event) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
 		Calendar cal = Calendar.getInstance();
 		cal.set(event.year, event.month, event.day);
@@ -166,7 +170,7 @@ public class ConfigFragment extends Fragment implements
 					Context.MODE_PRIVATE);
 			final SharedPreferences.Editor generalEditor = generalPref.edit();
 			generalEditor.putString("dateofpurchaset", sdf.format(cal.getTime()));
-			generalEditor.commit();
+			generalEditor.apply();
 		} else if (event.type == 1) {
 			from.setText(sdf.format(cal.getTime()));
 		} else if (event.type == 2) {
@@ -190,7 +194,7 @@ public class ConfigFragment extends Fragment implements
 				if (!hasFocus) {
 					generalEditor.putString("bikenametext", bikeName
 							.getText().toString().trim());
-					generalEditor.commit();
+					generalEditor.apply();
 				}
 			}
 		});
@@ -216,7 +220,7 @@ public class ConfigFragment extends Fragment implements
 				if (!hasFocus) {
 					generalEditor.putString("initialodometert", bikeOdo
 							.getText().toString().trim());
-					generalEditor.commit();
+					generalEditor.apply();
 				}
 			}
 		});
@@ -231,7 +235,7 @@ public class ConfigFragment extends Fragment implements
 
 					generalEditor.putString("otherdetails", bikeOtherDetails
 							.getText().toString().trim());
-					generalEditor.commit();
+					generalEditor.apply();
 				}
 			}
 		});

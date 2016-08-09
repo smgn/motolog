@@ -1,313 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/newlogfragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/databackgroundColor"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".NewLogActivity">
 
-    <TextView
-        android:id="@+id/title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Create new entry!"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
 
-    <TextView
-        android:id="@+id/maintelem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/maintelemspinner"
-        android:layout_below="@id/title"
-        android:gravity="center_vertical"
-        android:text="Maint Elem"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
 
-    <Spinner
-        android:id="@+id/maintelemspinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/title"
-        android:layout_toRightOf="@id/maintelem"
-        android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
 
-    <TextView
-        android:id="@+id/mainttype"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/mainttypespinner"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/maintelem"
-        android:layout_toStartOf="@id/maintelemspinner"
-        android:gravity="center_vertical"
-        android:text="Maint type"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/layoutWhen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    <Spinner
-        android:id="@+id/mainttypespinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/maintelemspinner"
-        android:layout_toRightOf="@id/mainttype" />
+                <TextView
+                    android:id="@+id/textWhen"
+                    app:layout_widthPercent="25%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:text="@string/text_when"
+                    />
 
-    <TextView
-        android:id="@+id/divider1"
-        android:layout_width="1px"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/mainttypespinner"
-        android:layout_toRightOf="@id/mainttypespinner"
-        android:background="#DADADA"
-        android:textColor="@color/tabtextcolor" />
+                <Button
+                    android:id="@+id/buttonDate"
+                    app:layout_widthPercent="75%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/textWhen"
+                    android:layout_toEndOf="@id/textWhen"
+                    android:text="@string/button_choose_date"
+                    />
 
-    <TextView
-        android:id="@+id/rem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/divider1"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/divider1"
-        android:gravity="center_vertical"
-        android:text="Remind?"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+            </android.support.percent.PercentRelativeLayout>
 
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/rem"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/rem"
-        android:button="@drawable/checkbox_selector" />
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/layoutElement"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    <View
-        android:id="@+id/blankspace"
-        android:layout_width="1dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/mainttype" />
+                <TextView
+                    android:id="@+id/textElement"
+                    app:layout_widthPercent="25%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_maintenance_element"
+                    android:textSize="20sp"
+                    />
 
-    <TextView
-        android:id="@+id/forDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/blankspace"
-        android:layout_below="@id/mainttype"
-        android:layout_toRightOf="@id/blankspace"
-        android:gravity="center_vertical"
-        android:text="Date? "
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/tabtextcolor" />
+                <Spinner
+                    android:id="@+id/spinnerElement"
+                    app:layout_widthPercent="75%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/textElement"
+                    android:layout_toEndOf="@id/textElement"
+                    />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/forDate"
-        android:layout_toRightOf="@id/forDate"
-        android:layout_toStartOf="@id/mainttypespinner"
-        android:button="@drawable/checkbox_selector"
-        android:textColor="@color/tabtextcolor" />
+            </android.support.percent.PercentRelativeLayout>
 
-    <EditText
-        android:id="@+id/odoInterval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/checkBox2"
-        android:layout_below="@id/mainttypespinner"
-        android:layout_toRightOf="@id/checkBox2"
-        android:hint="Reminder interval"
-        android:numeric="integer"
-        android:textColor="@color/tabtextcolor" />
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/layoutType"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    <Spinner
-        android:id="@+id/dateIntervalNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/checkBox2"
-        android:layout_below="@id/mainttypespinner"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/checkBox2" />
+                <TextView
+                    android:id="@+id/textType"
+                    app:layout_widthPercent="25%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/text_maintenance_type"
+                    android:textSize="20sp"
+                    />
 
-    <Spinner
-        android:id="@+id/dateIntervalType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/checkBox2"
-        android:layout_below="@id/mainttypespinner"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/dateIntervalNumber" />
+                <Spinner
+                    android:id="@+id/spinnerType"
+                    app:layout_widthPercent="50%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/textType"
+                    android:layout_toEndOf="@id/textType"
+                    />
 
-    <TextView
-        android:id="@+id/kmlabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/odoInterval"
-        android:layout_below="@id/mainttype"
-        android:layout_toRightOf="@id/odoInterval"
-        android:text="km&apos;s"
-        android:textColor="@color/tabtextcolor" />
+                <CheckBox
+                    android:id="@+id/checkBoxReminder"
+                    app:layout_widthPercent="25%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/spinnerType"
+                    android:layout_toEndOf="@id/spinnerType"
+                    android:text="@string/text_remind"
+                    />
 
-    <TextView
-        android:id="@+id/fuel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/fueltext"
-        android:layout_below="@id/blankspace"
-        android:layout_toStartOf="@id/mainttypespinner"
-        android:text="Fuel"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+                </android.support.percent.PercentRelativeLayout>
 
-    <EditText
-        android:id="@+id/fueltext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/mainttypespinner"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/blankspace"
-        android:layout_toRightOf="@id/fuel"
-        android:hint="Amount?"
-        android:inputType="numberDecimal"
-        android:textColor="@color/tabtextcolor" >
-    </EditText>
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/layoutReminder"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-    <TextView
-        android:id="@+id/memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/memotext"
-        android:layout_below="@id/fuel"
-        android:layout_toStartOf="@id/mainttypespinner"
-        android:text="Memo"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+                <EditText
+                    android:id="@+id/editTextReminderInterval"
+                    app:layout_widthPercent="60%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="@string/hint_reminder_interval"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    />
 
-    <EditText
-        android:id="@+id/memotext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/mainttypespinner"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/fueltext"
-        android:layout_toRightOf="@id/memo"
-        android:hint="Details?"
-        android:textColor="@color/tabtextcolor" >
-    </EditText>
+                <TextView
+                    android:id="@+id/textReminderIntervalUnit"
+                    app:layout_widthPercent="15%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/editTextReminderInterval"
+                    android:layout_alignBottom="@id/editTextReminderInterval"
+                    android:layout_toRightOf="@id/editTextReminderInterval"
+                    android:layout_toEndOf="@id/editTextReminderInterval"
+                    android:gravity="center"
+                    android:text="@string/text_distance_unit"
+                    />
 
-    <TextView
-        android:id="@+id/odo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/odotext"
-        android:layout_below="@id/memo"
-        android:layout_toStartOf="@id/memotext"
-        android:gravity="left"
-        android:text="Odo"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+                <CheckBox
+                    android:id="@+id/checkBoxDate"
+                    app:layout_widthPercent="25%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/editTextReminderInterval"
+                    android:layout_alignBottom="@id/editTextReminderInterval"
+                    android:text="@string/text_date"
+                    />
 
-    <EditText
-        android:id="@+id/odotext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/mainttypespinner"
-        android:layout_below="@id/memotext"
-        android:layout_toRightOf="@id/odo"
-        android:ems="4"
-        android:hint="Odo"
-        android:inputType="number"
-        android:textColor="@color/tabtextcolor" />
+                <Spinner
+                    android:id="@+id/spinnerReminderIntervalDateNumber"
+                    app:layout_widthPercent="30%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
-    <TextView
-        android:id="@+id/cashLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/odotext"
-        android:layout_below="@id/memotext"
-        android:layout_toRightOf="@id/odotext"
-        android:ems="1"
-        android:text="$:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/cashcolor" />
+                <Spinner
+                    android:id="@+id/spinnerReminderIntervalDateType"
+                    app:layout_widthPercent="30%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/spinnerReminderIntervalDateNumber"
+                    android:layout_toEndOf="@id/spinnerReminderIntervalDateNumber"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
-    <EditText
-        android:id="@+id/cash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/cashLabel"
-		android:ems="5"
-        android:layout_toRightOf="@id/cashLabel"
-        android:inputType="numberDecimal"
-        android:textColor="@color/tabtextcolor" />
+            </android.support.percent.PercentRelativeLayout>
 
-    <TextView
-        android:id="@+id/perLitre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/cashLabel"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/cash"
-        android:inputType="numberDecimal"
-        android:text="/l"
-        android:textColor="@color/tabtextcolor" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/editTextFuel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_fuel_amount"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/datepick"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/odo"
-        android:layout_toLeftOf="@id/odotext"
-        android:gravity="left|center_vertical"
-        android:text="When"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <DatePicker
-        android:id="@+id/datepick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/odotext"
-        android:layout_toRightOf="@id/odo"
-        android:calendarViewShown="false" >
-    </DatePicker>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/editTextPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:hint="@string/hint_price"
+                        />
+                </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" >
+                <TextView
+                    android:id="@+id/textPriceUnit"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="/l"
+                    />
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/editTextOdometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text_odometer_reading"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/editTextMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_notes"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.v7.widget.ButtonBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/create"
+            android:id="@+id/buttonCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="createLog"
-            android:text="Create" />
-
-        <TextView
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:background="@color/databackgroundColor"
-            android:textColor="@color/tabtextcolor" />
+            android:text="@string/button_cancel"
+            />
 
         <Button
-            android:id="@+id/cancel"
+            android:id="@+id/buttonCreate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="cancelLog"
-            android:text="Cancel" />
-    </LinearLayout>
+            android:text="@string/button_create"
+            />
 
-</RelativeLayout>
+    </android.support.v7.widget.ButtonBarLayout>
+
+</LinearLayout>

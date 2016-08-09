@@ -8,7 +8,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/fuel"
+        android:id="@+id/textFuel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,12 +17,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/fueltext"
+        android:id="@+id/editTextFuel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/fuel"
+        android:layout_alignBaseline="@id/textFuel"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/fuel"
+        android:layout_toRightOf="@+id/textFuel"
         android:ems="10"
         android:hint="amount"
         android:inputType="numberDecimal"
@@ -35,18 +35,18 @@
         android:id="@+id/litres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/fuel"
-        android:layout_alignBottom="@id/fuel"
-        android:layout_toRightOf="@id/fueltext"
+        android:layout_alignBaseline="@id/textFuel"
+        android:layout_alignBottom="@id/textFuel"
+        android:layout_toRightOf="@id/editTextFuel"
         android:text="litres" />
 
     <TextView
-        android:id="@+id/odo"
+        android:id="@+id/textOdometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/odoText"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/fuel"
+        android:layout_below="@id/textFuel"
         android:text="Odo:"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -54,9 +54,9 @@
         android:id="@+id/odoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/fueltext"
-        android:layout_below="@id/fueltext"
-        android:layout_toRightOf="@id/odo"
+        android:layout_alignLeft="@id/editTextFuel"
+        android:layout_below="@id/editTextFuel"
+        android:layout_toRightOf="@id/textOdometer"
         android:ems="10"
         android:inputType="number"
         android:textColor="@color/tabtextcolor" />
@@ -71,14 +71,14 @@
         android:text="km&apos;s" />
 
     <TextView
-        android:id="@+id/cashLabel"
+        android:id="@+id/textPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/cash"
+        android:layout_alignBottom="@+id/editTextPrice"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/fuel"
+        android:layout_alignRight="@+id/textFuel"
         android:layout_below="@id/odoLabel"
-        android:layout_toRightOf="@id/odo"
+        android:layout_toRightOf="@id/textOdometer"
         android:ems="1"
         android:gravity="center"
         android:text="$:"
@@ -86,7 +86,7 @@
         android:textColor="@color/cashcolor" />
 
     <EditText
-        android:id="@+id/cash"
+        android:id="@+id/editTextPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/odoText"
@@ -99,9 +99,9 @@
         android:id="@+id/cashType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/cash"
-        android:layout_alignBottom="@+id/cash"
-        android:layout_toRightOf="@id/cash"
+        android:layout_alignBaseline="@id/editTextPrice"
+        android:layout_alignBottom="@+id/editTextPrice"
+        android:layout_toRightOf="@id/editTextPrice"
         android:text="pret pe litru"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/tabtextcolor" />
@@ -112,7 +112,7 @@
         android:paddingTop="8sp"
         android:paddingLeft="8sp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cash"
+        android:layout_below="@id/editTextPrice"
         android:text="Price/unit should not be > 15 else 0 will be sent!"
         android:visibility="invisible"
         android:textAppearance="?android:attr/textAppearanceSmall"

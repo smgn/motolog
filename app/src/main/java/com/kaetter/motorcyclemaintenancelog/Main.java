@@ -24,13 +24,14 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FilenameFilter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
-import de.greenrobot.event.EventBus;
 import events.CopyDatabaseEvent;
 
 public class Main extends AppCompatActivity {
@@ -52,7 +53,7 @@ public class Main extends AppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
 		setSupportActionBar(mToolbar);
@@ -80,7 +81,7 @@ public class Main extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_addLogEntry:
-				Intent intent = new Intent(this, NewLog.class);
+				Intent intent = new Intent(this, NewLogActivity.class);
 				startActivityForResult(intent, START_NEW_LOG);
 				return true;
 			case R.id.menu_importdb:

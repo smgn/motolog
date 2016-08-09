@@ -3,21 +3,26 @@ package com.kaetter.motorcyclemaintenancelog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import adapter.MainLogCursorAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
-import de.greenrobot.event.EventBus;
 import events.CopyDatabaseEvent;
 
 public class LogFragment extends Fragment implements
@@ -51,6 +56,42 @@ public class LogFragment extends Fragment implements
 		mainLogListView.setAdapter(mainAdapter);
 		mainLogListView.setSelection(mainAdapter.getCount() - 1);
 
+		mainLogListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				Cursor cursorAt = (Cursor) mainLogListView.getItemAtPosition(position);
+				int key = cursorAt.getInt(cursorAt.getColumnIndex(MainHelper.KEY));
+
+				String vehicle = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD1));
+				String maintElem = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD2));
+				String maintType = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD3));
+				double fuelAmount = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD4));
+				double consumption = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD5));
+				String date = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD6));
+				int odometer = cursorAt.getInt(cursorAt.getColumnIndex(MainHelper.FIELD7));
+				String details = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD8));
+				double cash = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD10));
+
+//				MaintenanceItem item = new MaintenanceItem(key, vehicle,
+//						maintElem, maintType, fuelAmount, consumption, date,
+//						odometer, details, mileageType, cash);
+
+				// UpdateDialog updateDialog = new UpdateDialog(item);
+
+//				UpdateDialog updateDialog1 = new UpdateDialog();
+//
+//				Bundle args = new Bundle();
+//				args.putSerializable("MaintItem", item);
+//				updateDialog1.setArguments(args);
+//
+//				updateDialog1.show(fm, "fragment_edit_name");
+
+			}
+
+		});
+
 		getLoaderManager().initLoader(1, null, this);
 
 		return root;
@@ -68,6 +109,7 @@ public class LogFragment extends Fragment implements
 		super.onPause();
 	}
 
+	@Subscribe
 	public void onEvent(CopyDatabaseEvent event) {
 		try {
 			mainLogSource.copyDatabase(event.fromDbPath, event.toDbPath);

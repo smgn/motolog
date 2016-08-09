@@ -1,195 +1,147 @@
 package dialogs;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import beans.ReminderItem;
 
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import beans.ReminderItem;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dbcontrollers.RemLogSource;
 
 public class NewRemDialog extends DialogFragment {
-	ReminderItem remItem;
-	String remDescription;
-	Activity activity;
-	public NewRemDialog() {
 
-	}
+	@Bind(R.id.nextInterval) TextView nextIntervalView;
+	@Bind(R.id.reminderdescription) TextView reminderDescription;
+	@Bind(R.id.description) TextView descriptionView;
+	@Bind(R.id.updateButton) Button updateEntry;
+	@Bind(R.id.cancelButton) Button cancelEntry;
+
+	private ReminderItem remItem;
+	private String remDescription;
+	private boolean isModification;
+	private String[] intervalSizeArray;
+	private String[] intervalSizeArrayP;
 
 	@Override
-	public void onAttach(Activity activity) {
-		 super.onAttach(activity);
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		isModification = getArguments().getBoolean("isModification");
+		remItem = (ReminderItem) getArguments().getSerializable("reminderItem");
+		remDescription = getArguments().getString("remDescription");
+		intervalSizeArray = getArguments().getStringArray("intervalSizeArray");
+		intervalSizeArrayP = getArguments().getStringArray("intervalSizeArrayP");
 	}
 
-	public interface onRemElementListener {
-		public void onRemElementModify();
-
-	}
-	
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		getDialog().getWindow().requestFeature(STYLE_NO_TITLE);
-
-		remDescription = getArguments().getString("remDescription");
-		remItem = (ReminderItem) getArguments().getSerializable("reminderItem");
-
-		final boolean isModification = getArguments().getBoolean(
-				"isModification");
-
-		View view = inflater.inflate(R.layout.dialognewrem, container);
+		View view = inflater.inflate(R.layout.dialognewrem, container, false);
+		ButterKnife.bind(this, view);
 
 		setNextInterval(remItem);
-
-		TextView nextIntervalView = (TextView) view
-				.findViewById(R.id.nextInterval);
 
 		nextIntervalView.setText(remItem.getNextInterval());
 
 		if (remItem.getReminderType() == 0) {
-			if (MyListFragment.mileageType == 0||MyListFragment.mileageType == 2)
-				nextIntervalView.append(" km's");
+			if (MyListFragment.mileageType == 0 || MyListFragment.mileageType == 2)
+				nextIntervalView.append(getString(R.string.text_km));
 			else
-				nextIntervalView.append(" miles");
+				nextIntervalView.append(getString(R.string.text_miles));
 		}
-
-		TextView reminderDescription = (TextView) view
-				.findViewById(R.id.reminderdescription);
 
 		reminderDescription.setText(remDescription);
 
-		TextView descriptionView = (TextView) view
-				.findViewById(R.id.description);
-
 		descriptionView.setText(remItem.getDetails());
 
-		Button updateEntry = (Button) view.findViewById(R.id.updateButton);
-
 		if (isModification) {
-			updateEntry.setText("Update Entry");
-
+			updateEntry.setText(getString(R.string.text_update));
 		}
 
-		Button cancelEntry = (Button) view.findViewById(R.id.cancelButton);
-
-		updateEntry.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				RemLogSource rml = new RemLogSource(getActivity());
-				if (isModification) {
-
-					rml.updateEntry(remItem);
-
-				} else {
-					rml.addMaintenanceItem(remItem);
-				}
-
-				dismiss();
-
-				getActivity().finish();
-
-			}
-		});
-
-		cancelEntry.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Log.i("UpdateDialog", "dismiss dialogue");
-				dismiss();
-			}
-		});
-
 		return view;
+	}
+
+	@OnClick(R.id.updateButton)
+	public void updateEntry() {
+		RemLogSource rml = new RemLogSource(getActivity());
+		if (isModification) {
+
+			rml.updateEntry(remItem);
+
+		} else {
+			rml.addMaintenanceItem(remItem);
+		}
+
+		dismiss();
+		getActivity().finish();
+	}
+
+	@OnClick(R.id.cancelButton)
+	public void cancelEntry() {
+		Log.i("UpdateDialog", "dismiss dialogue");
+		dismiss();
 	}
 
 	public ReminderItem setNextInterval(ReminderItem remItem) {
 
 		if (remItem.getReminderType() == 0) { // mileage
-
 			int nextInterval = Integer.parseInt(remItem.getLastInterval())
 					+ Integer.parseInt(remItem.getInterval());
 
 			remItem.setNextInterval(String.valueOf(nextInterval));
-
 		} else { // date
 
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-			String lastIntervalDateString = String.valueOf(remItem
-					.getLastInterval());
+			String lastIntervalDateString = String.valueOf(remItem.getLastInterval());
 
 			Calendar c = Calendar.getInstance();
 
 			try {
 				c.setTime(sdf.parse(lastIntervalDateString));
 			} catch (ParseException e) {
-
 				e.printStackTrace();
 			}
-			
-			String[] intervalSizeArray = getArguments().getStringArray("intervalSizeArray");
-			
-			String[] intervalSizeArrayP = getArguments().getStringArray("intervalSizeArrayP");
 
-			if (remItem.getIntervalSize().equals(intervalSizeArray[0])
-					|| remItem.getIntervalSize().equals(intervalSizeArrayP[0])) {
+			if (remItem.getIntervalSize().equals(intervalSizeArray[0]) ||
+					remItem.getIntervalSize().equals(intervalSizeArrayP[0])) {
 				// weeks
-
-				c.add(Calendar.WEEK_OF_YEAR,
-						Integer.parseInt(remItem.getInterval()));
-
+				c.add(Calendar.WEEK_OF_YEAR, Integer.parseInt(remItem.getInterval()));
 			}
 
-			if (remItem.getIntervalSize().equals(intervalSizeArray[1])
-					|| remItem.getIntervalSize().equals(intervalSizeArrayP[1])) {
+			if (remItem.getIntervalSize().equals(intervalSizeArray[1]) ||
+					remItem.getIntervalSize().equals(intervalSizeArrayP[1])) {
 				// months
-
 				c.add(Calendar.MONTH, Integer.parseInt(remItem.getInterval()));
-
 			}
 
-			if (remItem.getIntervalSize().equals(intervalSizeArray[2])
-					|| remItem.getIntervalSize().equals(intervalSizeArrayP[2])) {
+			if (remItem.getIntervalSize().equals(intervalSizeArray[2]) ||
+					remItem.getIntervalSize().equals(intervalSizeArrayP[2])) {
 				// years
-
 				c.add(Calendar.YEAR, Integer.parseInt(remItem.getInterval()));
-
 			}
 
 			Date d = c.getTime();
 			remItem.setNextInterval(sdf.format(d));
-
 		}
-
 		return remItem;
-
 	}
-
-	@Override
-	public void dismiss() {
-
-		super.dismiss();
-	}
-
 }

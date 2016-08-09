@@ -12,4 +12,10 @@ public class DatePickedEvent {
 		this.month = month;
 		this.day = day;
 	}
+
+	public DatePickedEvent(int year, int month, int day) {
+		this.year = year;
+		this.month = month;
+		this.day = day;
+	}
 }
