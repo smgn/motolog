@@ -39,8 +39,7 @@ import dbcontrollers.MainLogSource;
 import events.DatePickedEvent;
 import utils.Summarize;
 
-public class ConfigFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+public class ConfigFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	@BindView(R.id.bikenametext) EditText bikeName;
 	@BindView(R.id.dateofpurchaset) EditText bikeDate;
@@ -80,7 +79,6 @@ public class ConfigFragment extends Fragment implements
 				Context.MODE_PRIVATE);
         from.setText(generalPref.getString("dateofpurchaset", getString(R.string.select_date)));
 
-
 		// set TO date
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		to.setText(sdf.format(Calendar.getInstance().getTime()));
@@ -105,8 +103,7 @@ public class ConfigFragment extends Fragment implements
 				}
 			}
 			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
 
 		Bundle b = new Bundle();
