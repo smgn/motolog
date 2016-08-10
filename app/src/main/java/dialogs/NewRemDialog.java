@@ -20,18 +20,18 @@ import java.util.Date;
 import java.util.Locale;
 
 import beans.ReminderItem;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dbcontrollers.RemLogSource;
 
 public class NewRemDialog extends DialogFragment {
 
-	@Bind(R.id.nextInterval) TextView nextIntervalView;
-	@Bind(R.id.reminderdescription) TextView reminderDescription;
-	@Bind(R.id.description) TextView descriptionView;
-	@Bind(R.id.updateButton) Button updateEntry;
-	@Bind(R.id.cancelButton) Button cancelEntry;
+	@BindView(R.id.nextInterval) TextView nextIntervalView;
+	@BindView(R.id.reminderdescription) TextView reminderDescription;
+	@BindView(R.id.description) TextView descriptionView;
+	@BindView(R.id.updateButton) Button updateEntry;
+	@BindView(R.id.cancelButton) Button cancelEntry;
 
 	private ReminderItem remItem;
 	private String remDescription;

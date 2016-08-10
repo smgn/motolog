@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -22,12 +23,13 @@ android {
 }
 
 dependencies {
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:gridlayout-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:percent:24.1.1'
     compile 'com.android.support:preference-v7:24.1.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
 }

@@ -29,16 +29,16 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
 import events.CopyDatabaseEvent;
 
 public class Main extends AppCompatActivity {
 
-	@Bind(R.id.toolbar) Toolbar mToolbar;
-	@Bind(R.id.tabLayout) TabLayout mTabLayout;
-	@Bind(R.id.viewPager) ViewPager mViewPager;
+	@BindView(R.id.toolbar) Toolbar mToolbar;
+	@BindView(R.id.tabLayout) TabLayout mTabLayout;
+	@BindView(R.id.viewPager) ViewPager mViewPager;
 
 	final int START_NEW_LOG = 0;
 	final int START_SETTINGS = 1;

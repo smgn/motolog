@@ -32,8 +32,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dbcontrollers.MainLogSource;
 import events.DatePickedEvent;
 import utils.Summarize;
@@ -41,14 +42,14 @@ import utils.Summarize;
 public class ConfigFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
-	@Bind(R.id.bikenametext) EditText bikeName;
-	@Bind(R.id.dateofpurchaset) EditText bikeDate;
-	@Bind(R.id.initialodometert) EditText bikeOdo;
-	@Bind(R.id.otherdetails) EditText bikeOtherDetails;
-	@Bind(R.id.from) Button from;
-	@Bind(R.id.to) Button to;
-	@Bind(R.id.spinnerElement) Spinner maintelemspinner;
-	@Bind(R.id.cashperelementvalue) TextView cashperelementvalue;
+	@BindView(R.id.bikenametext) EditText bikeName;
+	@BindView(R.id.dateofpurchaset) EditText bikeDate;
+	@BindView(R.id.initialodometert) EditText bikeOdo;
+	@BindView(R.id.otherdetails) EditText bikeOtherDetails;
+	@BindView(R.id.from) Button from;
+	@BindView(R.id.to) Button to;
+	@BindView(R.id.spinnerElement) Spinner maintelemspinner;
+	@BindView(R.id.cashperelementvalue) TextView cashperelementvalue;
 
 	MainLogSource mainLogSource;
 	Cursor currentCursor;
@@ -77,37 +78,12 @@ public class ConfigFragment extends Fragment implements
 		SharedPreferences generalPref = getActivity().getSharedPreferences(
 				getString(R.string.general_preference_file_key),
 				Context.MODE_PRIVATE);
-		if (TextUtils.isEmpty(generalPref.getString("dateofpurchaset", ""))) {
-			from.setText(getString(R.string.select_date));
-		} else {
-			from.setText(generalPref.getString("dateofpurchaset", ""));
-		}
+        from.setText(generalPref.getString("dateofpurchaset", getString(R.string.select_date)));
 
-		from.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new DatePickerFragment();
-				Bundle args = new Bundle();
-				args.putInt("type", 1);
-				newFragment.setArguments(args);
-				newFragment.show(getChildFragmentManager(), "");
-			}
-		});
 
 		// set TO date
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		to.setText(sdf.format(Calendar.getInstance().getTime()));
-
-		to.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new DatePickerFragment();
-				Bundle args = new Bundle();
-				args.putInt("type", 2);
-				newFragment.setArguments(args);
-				newFragment.show(getChildFragmentManager(), "");
-			}
-		});
 
 		// populate spinner
 		ArrayList<String> list = new ArrayList<>();
@@ -141,6 +117,33 @@ public class ConfigFragment extends Fragment implements
 
 		return root;
 	}
+
+    @OnClick(R.id.from)
+    public void fromOnClick() {
+        DialogFragment newFragment = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putInt("type", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getChildFragmentManager(), "");
+    }
+
+    @OnClick(R.id.to)
+    public void toOnClick() {
+        DialogFragment newFragment = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putInt("type", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getChildFragmentManager(), "");
+    }
+
+    @OnClick(R.id.dateofpurchaset)
+    public void dateOfPurchasetOnClick() {
+        DialogFragment newFragment = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putInt("type", 0);
+        newFragment.setArguments(args);
+        newFragment.show(getChildFragmentManager(), "");
+    }
 
 	@Override
 	public void onResume() {
@@ -201,16 +204,6 @@ public class ConfigFragment extends Fragment implements
 
 		// bike date
 		bikeDate.setText(generalPref.getString("dateofpurchaset", ""));
-		bikeDate.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new DatePickerFragment();
-				Bundle args = new Bundle();
-				args.putInt("type", 0);
-				newFragment.setArguments(args);
-				newFragment.show(getChildFragmentManager(), "");
-			}
-		});
 
 		// bike odometer
 		bikeOdo.setText(generalPref.getString("initialodometert", ""));
@@ -230,9 +223,7 @@ public class ConfigFragment extends Fragment implements
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-
 				if (!hasFocus) {
-
 					generalEditor.putString("otherdetails", bikeOtherDetails
 							.getText().toString().trim());
 					generalEditor.apply();

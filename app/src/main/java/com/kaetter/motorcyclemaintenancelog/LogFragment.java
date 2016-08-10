@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import adapter.MainLogCursorAdapter;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
@@ -28,9 +28,9 @@ import events.CopyDatabaseEvent;
 public class LogFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
-	@Bind(R.id.filter) Spinner filter;
-	@Bind(R.id.mainList) ListView mainLogListView;
-	@Bind(R.id.textNoLogsYet) TextView textNoLogsYet;
+	@BindView(R.id.filter) Spinner filter;
+	@BindView(R.id.mainList) ListView mainLogListView;
+	@BindView(R.id.textNoLogsYet) TextView textNoLogsYet;
 
 	MainLogSource mainLogSource;
 	MainLogCursorAdapter mainAdapter;

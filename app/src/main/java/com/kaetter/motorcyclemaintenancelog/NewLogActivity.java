@@ -46,7 +46,7 @@ import java.util.Map.Entry;
 
 import beans.MaintenanceItem;
 import beans.ReminderItem;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dbcontrollers.MainHelper;
@@ -60,24 +60,24 @@ import events.DatePickedEvent;
 
 public class NewLogActivity extends AppCompatActivity implements OnNewElementListener {
 
-	@Bind(R.id.toolbar) Toolbar toolbar;
-	@Bind(R.id.spinnerElement) Spinner spinnerElement;
-	@Bind(R.id.spinnerType) Spinner spinnerType;
-	@Bind(R.id.checkBoxReminder) CheckBox checkBoxReminder;
-	@Bind(R.id.editTextReminderInterval) EditText editTextReminderInterval;
-	@Bind(R.id.textReminderIntervalUnit) TextView textReminderIntervalUnit;
-	@Bind(R.id.checkBoxDate) CheckBox checkBoxDate;
-	@Bind(R.id.spinnerReminderIntervalDateType) Spinner spinnerReminderIntervalDateType;
-	@Bind(R.id.spinnerReminderIntervalDateNumber) Spinner spinnerReminderIntervalDateNumber;
-	@Bind(R.id.editTextFuel) EditText editTextFuel;
-	@Bind(R.id.editTextMemo) EditText editTextMemo;
-	@Bind(R.id.editTextOdometer) EditText editTextOdometer;
-	@Bind(R.id.editTextPrice) EditText editTextPrice;
-	@Bind(R.id.buttonCreate) Button buttonCreate;
-	@Bind(R.id.buttonCancel) Button buttonCancel;
-	@Bind(R.id.buttonDate) Button buttonDate;
-	@Bind(R.id.textPriceUnit) TextView textPriceUnit;
-	@Bind(R.id.layoutReminder) View layoutReminder;
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.spinnerElement) Spinner spinnerElement;
+	@BindView(R.id.spinnerType) Spinner spinnerType;
+	@BindView(R.id.checkBoxReminder) CheckBox checkBoxReminder;
+	@BindView(R.id.editTextReminderInterval) EditText editTextReminderInterval;
+	@BindView(R.id.textReminderIntervalUnit) TextView textReminderIntervalUnit;
+	@BindView(R.id.checkBoxDate) CheckBox checkBoxDate;
+	@BindView(R.id.spinnerReminderIntervalDateType) Spinner spinnerReminderIntervalDateType;
+	@BindView(R.id.spinnerReminderIntervalDateNumber) Spinner spinnerReminderIntervalDateNumber;
+	@BindView(R.id.editTextFuel) EditText editTextFuel;
+	@BindView(R.id.editTextMemo) EditText editTextMemo;
+	@BindView(R.id.editTextOdometer) EditText editTextOdometer;
+	@BindView(R.id.editTextPrice) EditText editTextPrice;
+	@BindView(R.id.buttonCreate) Button buttonCreate;
+	@BindView(R.id.buttonCancel) Button buttonCancel;
+	@BindView(R.id.buttonDate) Button buttonDate;
+	@BindView(R.id.textPriceUnit) TextView textPriceUnit;
+	@BindView(R.id.layoutReminder) View layoutReminder;
 
 	private final int NEWELEMDIALOG = 10,DELETEELEM=1;
 
@@ -442,20 +442,22 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		spinnerType.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String select = spinnerType.getItemAtPosition(pos).toString() ;
-				if (select.equals(getString(R.string.text_other))&&
-						!spinnerElement.getSelectedItem().toString().equals(
-								getString(R.string.text_fuel)) &&
-						!spinnerElement.getSelectedItem().toString().equals(
-								getString(R.string.text_oil))) {
+				if (pos != -1) {
+					String select = spinnerType.getItemAtPosition(pos).toString();
+					if (select.equals(getString(R.string.text_other)) &&
+							!spinnerElement.getSelectedItem().toString().equals(
+									getString(R.string.text_fuel)) &&
+							!spinnerElement.getSelectedItem().toString().equals(
+									getString(R.string.text_oil))) {
 
-					NewElementDialog elemDialog = new NewElementDialog();
-					FragmentManager fm = getSupportFragmentManager();
-					Bundle args = new Bundle();
-					args.putString("newelementdialog", ELEMTYPEVAL);
-					args.putString("callingActivity", TAG);
-					elemDialog.setArguments(args);
-					elemDialog.show(fm, TAG);
+						NewElementDialog elemDialog = new NewElementDialog();
+						FragmentManager fm = getSupportFragmentManager();
+						Bundle args = new Bundle();
+						args.putString("newelementdialog", ELEMTYPEVAL);
+						args.putString("callingActivity", TAG);
+						elemDialog.setArguments(args);
+						elemDialog.show(fm, TAG);
+					}
 				}
 			}
 

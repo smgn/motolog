@@ -15,16 +15,16 @@ import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.NewRem;
 import com.kaetter.motorcyclemaintenancelog.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class NewElementDialog extends DialogFragment {
 
-	@Bind(R.id.title) TextView title;
-	@Bind(R.id.newelem) EditText et;
-	@Bind(R.id.ok) Button ok;
-	@Bind(R.id.nok) Button nok;
+	@BindView(R.id.title) TextView title;
+	@BindView(R.id.newelem) EditText et;
+	@BindView(R.id.ok) Button ok;
+	@BindView(R.id.nok) Button nok;
 
 	private String type;
 	private String callingActivity;
