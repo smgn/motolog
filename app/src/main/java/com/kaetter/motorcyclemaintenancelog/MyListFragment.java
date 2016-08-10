@@ -65,7 +65,6 @@ import dialogs.DatePickerFragment.EditDateDialogListener;
 import dialogs.UpdateDialog;
 import dialogs.UpdateRemDialog;
 import listeners.OnItemChangedListener;
-import utils.FuellyScraper;
 import utils.Summarize;
 
 @SuppressLint("ValidFragment")
@@ -1032,23 +1031,6 @@ public class MyListFragment extends Fragment implements
 		});
 		
 		
-	}
-
-
-	public void startFuellyScraper() {
-
-		class StartFuellyScraperClass extends AsyncTask<String, String, String> {
-
-			@Override
-			protected String doInBackground(String... params) {
-				FuellyScraper fuellyScraper = new FuellyScraper(getActivity());
-				fuellyScraper.scrapeAndSubmit();
-				return null;
-			}
-		}
-		StartFuellyScraperClass sFScraperClass = new StartFuellyScraperClass();
-		sFScraperClass.execute();
-
 	}
 
 	@Override

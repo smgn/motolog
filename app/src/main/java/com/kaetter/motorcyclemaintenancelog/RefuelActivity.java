@@ -24,7 +24,6 @@ import java.util.Date;
 import beans.MaintenanceItem;
 import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
-import utils.FuellyScraper;
 
 public class RefuelActivity extends FragmentActivity {
 
@@ -190,8 +189,6 @@ public class RefuelActivity extends FragmentActivity {
 						}
 
 					}
-
-					sendToFuelly();
 				}
 				return false;
 			}
@@ -310,38 +307,10 @@ public class RefuelActivity extends FragmentActivity {
 						}
 
 					}
-
-					sendToFuelly();
-
 				}
 				return false;
 			}
 		});
-
-	}
-
-	public void sendToFuelly() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-		FuellyScraper scraper = new FuellyScraper(getApplicationContext());
-		Calendar cal = Calendar.getInstance();
-
-		if (networkInfo == null) {
-			Toast.makeText(getApplicationContext(),
-					"No internet connection! Fuelly submission postponed! ",
-					Toast.LENGTH_LONG).show();
-			sharedPrefs.edit().putString("Submit", "1").commit();
-			scraper.setFuellySharedPrefs(odometer, fuelAmount, cashPerLitre,
-					cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
-					cal.get(Calendar.DAY_OF_MONTH));
-		} else {
-
-			scraper.setFuellySharedPrefs(odometer, fuelAmount, cashPerLitre,
-					cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
-					cal.get(Calendar.DAY_OF_MONTH));
-			scraper.scrapeAndSubmit();
-
-		}
 
 	}
 
