@@ -1,27 +1,31 @@
 package com.kaetter.motorcyclemaintenancelog;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
-	final int mPageCount = 3;
 	Context mContext;
+
+	List<Fragment> fragmentList = new ArrayList<>();
 
 	public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		mContext = context;
+
+        fragmentList.add(LogFragment.newInstance());
+        fragmentList.add(ReminderFragment.newInstance());
+        fragmentList.add(ConfigFragment.newInstance());
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		switch(position) {
-			case 0: return LogFragment.newInstance();
-			case 1: return ReminderFragment.newInstance();
-			case 2: return ConfigFragment.newInstance();
-		}
-		return null; // should never happen
+        return fragmentList.get(position);
 	}
 
 	@Override
@@ -36,6 +40,6 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return mPageCount;
+		return fragmentList.size();
 	}
 }
