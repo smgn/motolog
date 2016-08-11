@@ -26,6 +26,4 @@ public class RefuelWidgetProvider extends AppWidgetProvider {
             mgr.updateAppWidget(appWidgetId, views);
         }
 	}
-
-
 }
