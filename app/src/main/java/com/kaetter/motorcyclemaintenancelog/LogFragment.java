@@ -36,10 +36,7 @@ public class LogFragment extends Fragment implements
 	MainLogCursorAdapter mainAdapter;
 
 	public static LogFragment newInstance() {
-		Bundle args = new Bundle();
-		LogFragment fragment = new LogFragment();
-		fragment.setArguments(args);
-		return fragment;
+		return new LogFragment();
 	}
 
 	@Override

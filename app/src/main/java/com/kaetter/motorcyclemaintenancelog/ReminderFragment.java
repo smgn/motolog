@@ -11,10 +11,7 @@ import butterknife.ButterKnife;
 public class ReminderFragment extends Fragment {
 
 	public static ReminderFragment newInstance() {
-		Bundle args = new Bundle();
-		ReminderFragment fragment = new ReminderFragment();
-		fragment.setArguments(args);
-		return fragment;
+		return new ReminderFragment();
 	}
 
 	@Override

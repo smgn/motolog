@@ -57,10 +57,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 	View root;
 
 	public static ConfigFragment newInstance() {
-		Bundle args = new Bundle();
-		ConfigFragment fragment = new ConfigFragment();
-		fragment.setArguments(args);
-		return fragment;
+        return new ConfigFragment();
 	}
 
 	@Override
