@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name="com.kaetter.motorcyclemaintenancelog.NewRem"
+            android:name=".NewRem"
             android:label="@string/title_activity_new_rem"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name="com.kaetter.motorcyclemaintenancelog.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -56,7 +56,7 @@
         </activity>
 
         <activity
-            android:name="com.kaetter.motorcyclemaintenancelog.DeleteElem"
+            android:name=".DeleteElem"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
             android:theme="@android:style/Theme.Black">
@@ -67,7 +67,7 @@
         </activity>
 
         <activity
-            android:name="com.kaetter.motorcyclemaintenancelog.RefuelActivity"
+            android:name=".RefuelActivity"
             android:label="@string/title_activity_refuel"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="stateVisible">
