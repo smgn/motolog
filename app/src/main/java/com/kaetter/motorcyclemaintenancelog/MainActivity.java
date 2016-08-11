@@ -41,7 +41,7 @@ import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
 import events.CopyDatabaseEvent;
 
-public class Main extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 	@BindView(R.id.toolbar) Toolbar mToolbar;
 	@BindView(R.id.tabLayout) TabLayout mTabLayout;
@@ -53,7 +53,7 @@ public class Main extends AppCompatActivity {
 	final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 	final int PERMISSIONS_SETTINGS = 2;
 
-    private final String TAG = "Main";
+    private final String TAG = "MainActivity";
 
 	SharedPreferences sharedPrefs;
 	int mileageType;
