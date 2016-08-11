@@ -78,7 +78,7 @@
 
         <receiver
             android:name="RefuelWidgetProvider"
-            android:icon="@drawable/fuel"
+            android:icon="@drawable/fuelwidget"
             android:label="Refuel Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"

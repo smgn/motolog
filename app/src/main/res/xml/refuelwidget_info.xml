@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appwidget-provider 
-  
-      xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<appwidget-provider -->
+  <!---->
+      <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:initialLayout="@layout/refuelwidget"-->
+    <!--android:minHeight="40dp"-->
+    <!--android:minWidth="40dp">-->
+    <!---->
+<!--&lt;!&ndash;     android:updatePeriodMillis="3000000" &ndash;&gt;-->
+     <!---->
+<!--</appwidget-provider>-->
+
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/refuelwidget"
-    android:minHeight="40dp"
-    android:minWidth="40dp">
-    
-<!--     android:updatePeriodMillis="3000000" -->
-     
+    android:resizeMode="none"
+    android:widgetCategory="home_screen">
 </appwidget-provider>

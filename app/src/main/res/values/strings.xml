@@ -160,5 +160,12 @@
     <string name="text_update">Update</string>
     <string name="text_other">Other</string>
     <string name="text_oil">Oil</string>
+    <string name="widget_refuel">Refuel</string>
+    <string name="activity_refuel_text_add_new_refuel_log">Add New Refuel Log</string>
+    <string name="error_enter_fuel_amount">Required</string>
+    <string name="error_required">Required</string>
+    <string name="text_new_fuel_entry_added">New fuel entry added!</string>
+    <string name="text_fuel_consumption_is">Fuel consumption is: </string>
+    <string name="text_have_a_safe_trip">Have a safe trip!</string>
 
 </resources>

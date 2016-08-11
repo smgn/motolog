@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_refuel_text_gallons">gallons</string>
+    <string name="activity_refuel_text_miles">miles</string>
+    <string name="activity_refuel_text_litres">litres</string>
+    <string name="activity_refuel_text_km">km</string>
+    <string name="activity_refuel_text_price_per_litre">price/litre</string>
+    <string name="activity_refuel_text_price_per_gallon">price/gallon</string>
+    <string name="activity_refuel_hint_fuel_amount_litres">Fuel amount in litres</string>
+    <string name="activity_refuel_hint_fuel_amount_gallons">Fuel amount in gallons</string>
+    <string name="activity_refuel_hint_odometer_reading_km">Odometer reading in km</string>
+    <string name="activity_refuel_hint_odometer_reading_gallons">Odometer reading in gallons</string>
+    <string name="activity_refuel_hint_price_litre">Price per litre</string>
+    <string name="activity_refuel_hint_price_gallon">Price per gallon</string>
+
+</resources>

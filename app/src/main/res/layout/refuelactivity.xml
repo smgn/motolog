@@ -1,121 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/databackgroundColor"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical" >
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
 
     <TextView
-        android:id="@+id/textFuel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="Fuel:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/editTextFuel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textFuel"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textFuel"
-        android:ems="10"
-        android:hint="amount"
-        android:inputType="numberDecimal"
-        android:textColor="@color/tabtextcolor" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/litres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textFuel"
-        android:layout_alignBottom="@id/textFuel"
-        android:layout_toRightOf="@id/editTextFuel"
-        android:text="litres" />
-
-    <TextView
-        android:id="@+id/textOdometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/odoText"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textFuel"
-        android:text="Odo:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/odoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/editTextFuel"
-        android:layout_below="@id/editTextFuel"
-        android:layout_toRightOf="@id/textOdometer"
-        android:ems="10"
-        android:inputType="number"
-        android:textColor="@color/tabtextcolor" />
-
-    <TextView
-        android:id="@+id/odoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/odoText"
-        android:layout_alignBottom="@id/odoText"
-        android:layout_toRightOf="@id/odoText"
-        android:text="km&apos;s" />
-
-    <TextView
-        android:id="@+id/textPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editTextPrice"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/textFuel"
-        android:layout_below="@id/odoLabel"
-        android:layout_toRightOf="@id/textOdometer"
-        android:ems="1"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/activity_refuel_text_add_new_refuel_log"
+        android:textSize="24sp"
         android:gravity="center"
-        android:text="$:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/cashcolor" />
+        />
 
-    <EditText
-        android:id="@+id/editTextPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/odoText"
-        android:layout_below="@+id/odoText"
-        android:ems="6"
-        android:inputType="numberDecimal"
-        android:textColor="@color/tabtextcolor" />
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilFuel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editTextFuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_refuel_hint_fuel_amount_litres"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            />
 
-    <TextView
-        android:id="@+id/cashType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/editTextPrice"
-        android:layout_alignBottom="@+id/editTextPrice"
-        android:layout_toRightOf="@id/editTextPrice"
-        android:text="pret pe litru"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/tabtextcolor" />
-    
-       <TextView
-        android:id="@+id/notification"
-        android:layout_width="wrap_content"
-        android:paddingTop="8sp"
-        android:paddingLeft="8sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPrice"
-        android:text="Price/unit should not be > 15 else 0 will be sent!"
-        android:visibility="invisible"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/tabtextcolor" />
+        <requestFocus/>
+    </android.support.design.widget.TextInputLayout>
 
-</RelativeLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilOdometer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editTextOdometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_refuel_hint_odometer_reading_km"
+            android:inputType="number"
+            android:maxLength="6"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editTextPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="@string/activity_refuel_hint_price_litre"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_create"
+        />
+
+</LinearLayout>
