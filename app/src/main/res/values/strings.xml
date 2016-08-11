@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Moto Log</string>
+    <string name="app_name_no_spaces">MotoLog</string>
     <string name="menu_settings">Settings</string>
     <string name="FuelAmount">Fuel</string>
     <string name="MaintElem">Maint<item>Maintain</item><item>Maintain</item><item>Maintain</item></string>
@@ -121,7 +122,9 @@
     <string name="db_import_error">Failed to import DB.</string>
     <string name="dialog_title_permission_needed">Permission needed</string>
     <string name="dialog_message_read_ext_storage">Motolog needs to read your external storage to find DB files.</string>
-    <string name="dialog_message_read_ext_storage_retry">Motolog was previously denied access to external storage. Tap RETRY to open app settings and grant this permission.</string>
+    <string name="dialog_message_write_ext_storage">Motolog needs to write to your external storage to export DB files.</string>
+    <string name="dialog_message_read_ext_storage_retry">Motolog was previously denied read access to external storage. Tap RETRY to open app settings and grant this permission.</string>
+    <string name="dialog_message_write_ext_storage_retry">Motolog was previously denied write access to external storage. Tap RETRY to open app settings and grant this permission.</string>
     <string name="text_no_logs">No logs yet</string>
     <string name="text_cost_summary">Bike Cost Summary</string>
     <string name="text_sort_by_element">Sort by Element:</string>
@@ -167,5 +170,9 @@
     <string name="text_new_fuel_entry_added">New fuel entry added!</string>
     <string name="text_fuel_consumption_is">Fuel consumption is: </string>
     <string name="text_have_a_safe_trip">Have a safe trip!</string>
+    <string name="text_file_will_be_exported_to">File will be exported to:</string>
+    <string name="text_exporting_database">Exporting Database</string>
+    <string name="error_export_db_failed">Export DB failed!</string>
+    <string name="button_ok">OK</string>
 
 </resources>

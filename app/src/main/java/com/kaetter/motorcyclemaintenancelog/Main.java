@@ -18,6 +18,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,10 +30,15 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
+import dbcontrollers.MainLogSource;
 import events.CopyDatabaseEvent;
 
 public class Main extends AppCompatActivity {
@@ -46,8 +53,12 @@ public class Main extends AppCompatActivity {
 	final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 	final int PERMISSIONS_SETTINGS = 2;
 
+    private final String TAG = "Main";
+
 	SharedPreferences sharedPrefs;
 	int mileageType;
+
+    MainLogSource mainLogSource;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +79,7 @@ public class Main extends AppCompatActivity {
 
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		mileageType = Integer.parseInt(sharedPrefs.getString("pref_MileageType", "0"));
+        mainLogSource = new MainLogSource(this);
 	}
 
 	@Override
@@ -88,7 +100,7 @@ public class Main extends AppCompatActivity {
 				checkReadExternalStoragePermissions();
 				return true;
 			case R.id.menu_exportdb:
-				//TODO: transplant code
+				checkWriteExternalStoragePermissions();
 				return true;
 			case R.id.menu_filter:
 				//TODO: transplant code
@@ -107,6 +119,12 @@ public class Main extends AppCompatActivity {
 				new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
 				PERMISSIONS_READ_EXTERNAL_STORAGE);
 	}
+
+    private void requestWriteExtStoragePermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+    }
 
 	private void checkReadExternalStoragePermissions() {
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -138,6 +156,38 @@ public class Main extends AppCompatActivity {
 		} else {
 			showImportDbDialog();
 		}
+	}
+
+	private void checkWriteExternalStoragePermissions() {
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
+                alertDialog.setMessage(getString(R.string.dialog_message_write_ext_storage));
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestWriteExtStoragePermissions();
+                    }
+                });
+                alertDialog.show();
+
+            } else {
+                // No explanation needed, we can request the permission.
+                requestReadExtStoragePermissions();
+            }
+		} else {
+            showExportDbDialog();
+        }
 	}
 
 	private void showImportDbDialog() {
@@ -200,6 +250,53 @@ public class Main extends AppCompatActivity {
 		}
 	}
 
+    private void showExportDbDialog() {
+        File extSd = Environment.getExternalStorageDirectory();
+
+        Log.d(TAG, "Media is " + Environment.getExternalStorageState());
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm", Locale.US);
+            Date date = new Date();
+
+            final String exportPath = extSd.toString() +
+                    "/" +
+                    getString(R.string.app_name_no_spaces) +
+                    sdf.format(date)  +
+                    ".db";
+            builder.setMessage(getString(R.string.text_file_will_be_exported_to) + exportPath)
+                    .setTitle(getString(R.string.text_exporting_database));
+
+            builder.setPositiveButton(getString(R.string.button_ok),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            File dbFile = getDatabasePath(MainHelper.DATABASE_NAME);
+                            try {
+                                mainLogSource.copyDatabase(dbFile.toString(), exportPath);
+                            } catch (IOException e) {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.error_export_db_failed),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+            builder.setNegativeButton(getString(R.string.button_cancel),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            // do nothing
+                        }
+                    });
+
+            builder.show();
+        }
+    }
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode,
 	                                       @NonNull String permissions[],
@@ -235,7 +332,33 @@ public class Main extends AppCompatActivity {
 				}
 			}
 			case PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
-				//TODO
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showImportDbDialog();
+                } else if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                    alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
+                    alertDialog.setMessage(
+                            getString(R.string.dialog_message_write_ext_storage_retry));
+                    alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent =
+                                    new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, PERMISSIONS_SETTINGS);
+                        }
+                    });
+                    alertDialog.show();
+                }
 			}
 		}
 	}
