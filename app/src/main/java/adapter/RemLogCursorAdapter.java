@@ -22,43 +22,31 @@ import java.util.Date;
 import dbcontrollers.MainHelper;
 
 public class RemLogCursorAdapter extends CursorAdapter implements Filterable {
-	private LayoutInflater mLayoutInflater;
 
+	private LayoutInflater mLayoutInflater;
 	private int lastOdometer, remColor;
 	private Date today, nextIntervalDate;
 	private String distanceLabel;
-	public RemLogCursorAdapter(Context context, Cursor c, int odometer,
-			Date today) {
+
+	public RemLogCursorAdapter(Context context, Cursor c, int odometer, Date today) {
 		super(context, c, 0);
 		mLayoutInflater = LayoutInflater.from(context);
 		lastOdometer = odometer;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
 		this.today = today;
-		
 	}
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		String key = cursor.getString(cursor.getColumnIndex(MainHelper.KEY));
-		String maintElem = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD2R));
-		String maintType = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD3R));
-		int reminderType = cursor.getInt(cursor
-				.getColumnIndex(MainHelper.FIELD4R));
-		String interval = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD5R));
-		String intervalSize = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD5Ra));
-		String lastInterval = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD6R));
-		String nextInterval = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD7R));
-		String details = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD8R));
-		String date = cursor.getString(cursor
-				.getColumnIndex(MainHelper.FIELD9R));
+		String maintElem = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD2R));
+		String maintType = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD3R));
+		int reminderType = cursor.getInt(cursor.getColumnIndex(MainHelper.FIELD4R));
+		String interval = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD5R));
+		String intervalSize = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD5Ra));
+		String lastInterval = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD6R));
+		String nextInterval = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD7R));
+		String details = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD8R));
+		String date = cursor.getString(cursor.getColumnIndex(MainHelper.FIELD9R));
 
 		TextView keyView = (TextView) view.findViewById(R.id.remkey);
 		keyView.setText(key);

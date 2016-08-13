@@ -174,5 +174,6 @@
     <string name="text_exporting_database">Exporting Database</string>
     <string name="error_export_db_failed">Export DB failed!</string>
     <string name="button_ok">OK</string>
+    <string name="text_no_reminders">No reminders yet</string>
 
 </resources>

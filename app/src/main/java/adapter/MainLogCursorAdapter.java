@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dbcontrollers.MainHelper;
 
 public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
@@ -28,59 +30,63 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursora) {
+    public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.position = cursora.getPosition();
-	    rowLoader = new Rowloader(holder, view, cursora);
+        holder.position = cursor.getPosition();
+	    rowLoader = new Rowloader(holder, view, cursor);
 	    rowLoader.execute(context);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.rowmain, parent, false);
-        ViewHolder holder = new ViewHolder();
-        holder.keyView = (TextView) view.findViewById(R.id.key);
-        holder.maintElemView = (TextView) view.findViewById(R.id.rowMaintElem);
-        holder.maintTypeView = (TextView) view.findViewById(R.id.rowMaintType);
-        holder.fuelAmountView = (TextView) view.findViewById(R.id.rowFuelAmount);
-        holder.fuelConsumptionView = (TextView) view.findViewById(R.id.rowConsumption);
-        holder.rowConsumptionLabelView = (TextView) view.findViewById(R.id.rowConsumptionLabel);
-        holder.kmLabelView = (TextView) view.findViewById(R.id.kmLabel);
-        holder.detailsView = (TextView) view.findViewById(R.id.rowDetails);
-        holder.fuelLabelView = (TextView) view.findViewById(R.id.rowFuelLabel);
-        holder.cashView = (TextView) view.findViewById(R.id.cash);
-        holder.odoLabel = (TextView) view.findViewById(R.id.odoLabel);
-        holder.dateView = (TextView) view.findViewById(R.id.rowDate);
-        holder.odometerView = (TextView) view.findViewById(R.id.rowOdometer);
-        holder.cashLabel = (TextView) view.findViewById(R.id.cashLabel);
-        holder.maintTypeImageView = (ImageView) view.findViewById(R.id.imageView1);
+        ViewHolder holder = new ViewHolder(view);
+//        holder.keyView = (TextView) view.findViewById(R.id.key);
+//        holder.maintElemView = (TextView) view.findViewById(R.id.rowMaintElem);
+//        holder.maintTypeView = (TextView) view.findViewById(R.id.rowMaintType);
+//        holder.fuelAmountView = (TextView) view.findViewById(R.id.rowFuelAmount);
+//        holder.fuelConsumptionView = (TextView) view.findViewById(R.id.rowConsumption);
+//        holder.rowConsumptionLabelView = (TextView) view.findViewById(R.id.rowConsumptionLabel);
+//        holder.kmLabelView = (TextView) view.findViewById(R.id.kmLabel);
+//        holder.detailsView = (TextView) view.findViewById(R.id.rowDetails);
+//        holder.fuelLabelView = (TextView) view.findViewById(R.id.rowFuelLabel);
+//        holder.cashView = (TextView) view.findViewById(R.id.cash);
+//        holder.odoLabel = (TextView) view.findViewById(R.id.odoLabel);
+//        holder.dateView = (TextView) view.findViewById(R.id.rowDate);
+//        holder.odometerView = (TextView) view.findViewById(R.id.rowOdometer);
+//        holder.cashLabel = (TextView) view.findViewById(R.id.cashLabel);
+//        holder.maintTypeImageView = (ImageView) view.findViewById(R.id.imageView1);
         view.setTag(holder);
         return view;
     }
 
-    public class ViewHolder {
-        public ImageView maintTypeImageView;
-        public TextView keyView;
-        public TextView maintElemView;
-        public TextView maintTypeView;
-        public TextView fuelAmountView;
-        public TextView fuelConsumptionView;
-        public TextView rowConsumptionLabelView;
-        public TextView kmLabelView;
-        public TextView detailsView;
-        public TextView fuelLabelView;
-        public TextView cashView;
-        public TextView cashLabel;
-        public TextView odoLabel;
-        public TextView dateView;
-        public TextView odometerView;
-        public int position;
+    public static class ViewHolder {
+        @BindView(R.id.imageView1) ImageView maintTypeImageView;
+        @BindView(R.id.key) TextView keyView;
+        @BindView(R.id.rowMaintElem) TextView maintElemView;
+        @BindView(R.id.rowMaintType) public TextView maintTypeView;
+        @BindView(R.id.rowFuelAmount) TextView fuelAmountView;
+        @BindView(R.id.rowConsumption) TextView fuelConsumptionView;
+        @BindView(R.id.rowConsumptionLabel) TextView rowConsumptionLabelView;
+        @BindView(R.id.kmLabel) TextView kmLabelView;
+        @BindView(R.id.rowDetails) TextView detailsView;
+        @BindView(R.id.rowFuelLabel) TextView fuelLabelView;
+        @BindView(R.id.cash) TextView cashView;
+        @BindView(R.id.cashLabel) TextView cashLabel;
+        @BindView(R.id.odoLabel) TextView odoLabel;
+        @BindView(R.id.rowDate) TextView dateView;
+        @BindView(R.id.rowOdometer) TextView odometerView;
+        int position;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
 
 class Rowloader extends AsyncTask<Object, Void, Bundle> {
     static final String MAINT_ELEM = "maintElem";
-    Integer position;
+    int position;
     MainLogCursorAdapter.ViewHolder holder;
     View view;
 	Context context;
