@@ -49,7 +49,7 @@ import beans.ReminderItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dbcontrollers.MainHelper;
+import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
@@ -59,6 +59,8 @@ import dialogs.NewRemDialog;
 import events.DatePickedEvent;
 
 public class NewLogActivity extends AppCompatActivity implements OnNewElementListener {
+
+    public static final String TAG = "NewLogActivity";
 
 	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.spinnerElement) Spinner spinnerElement;
@@ -79,9 +81,8 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 	@BindView(R.id.textPriceUnit) TextView textPriceUnit;
 	@BindView(R.id.layoutReminder) View layoutReminder;
 
-	private final int NEWELEMDIALOG = 10,DELETEELEM=1;
-
-	public static final String TAG = "newLog";
+	private final int NEWELEMDIALOG = 10;
+	private final int DELETEELEM = 1;
 
 	private ArrayAdapter<String> mAdapterSpinnerElement;
 	private ArrayAdapter<String> mAdapterSpinnerType;
@@ -867,14 +868,14 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			double consumption;
 			if (MyListFragment.mileageType == 0) {
 				consumption = 100 * fuel /
-						(odometer - cursor.getDouble(cursor.getColumnIndex(MainHelper.FIELD7)));
+						(odometer - cursor.getDouble(cursor.getColumnIndex(MotoLogHelper.FIELD7)));
 			} else {
 				if (MyListFragment.mileageType == 2) {
 					consumption = fuel /
-							(odometer - cursor.getDouble(cursor.getColumnIndex(MainHelper.FIELD7)));
+							(odometer - cursor.getDouble(cursor.getColumnIndex(MotoLogHelper.FIELD7)));
 				} else { // adica si pe 1 ( mpg ) si pe 3 (km/l)
 					consumption = (odometer -
-							cursor.getDouble(cursor.getColumnIndex(MainHelper.FIELD7))) / fuel;
+							cursor.getDouble(cursor.getColumnIndex(MotoLogHelper.FIELD7))) / fuel;
 				}
 			}
 

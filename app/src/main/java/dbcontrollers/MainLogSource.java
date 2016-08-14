@@ -1,220 +1,205 @@
 package dbcontrollers;
 
-import java.io.IOException;
-import java.sql.Date;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import java.io.IOException;
+
 import beans.MaintenanceItem;
 
 public class MainLogSource {
-	String tag = "MainLogSource";
-	static SQLiteDatabase database;
-	MainHelper dbh;
-	public static MainLogSource singleton;
-	String[] allColumns = { MainHelper.KEY, MainHelper.FIELD1,
-			MainHelper.FIELD2, MainHelper.FIELD3, MainHelper.FIELD4,
-			MainHelper.FIELD5, MainHelper.FIELD6, MainHelper.FIELD7,
-			MainHelper.FIELD8, MainHelper.FIELD9, MainHelper.FIELD10 };
+
+	private final String TAG = "MainLogSource";
+	private SQLiteDatabase database;
+	private MotoLogHelper motoLogHelper;
+
+	String[] allColumns = {
+            MotoLogHelper.KEY,
+            MotoLogHelper.FIELD1,
+			MotoLogHelper.FIELD2,
+            MotoLogHelper.FIELD3,
+            MotoLogHelper.FIELD4,
+			MotoLogHelper.FIELD5,
+            MotoLogHelper.FIELD6,
+            MotoLogHelper.FIELD7,
+			MotoLogHelper.FIELD8,
+            MotoLogHelper.FIELD9,
+            MotoLogHelper.FIELD10
+    };
 
 	public MainLogSource(Context context) {
-		this.dbh = new MainHelper(context);
-
-		open();
-
-	}
-
-	public void open() throws SQLException {
+		motoLogHelper = new MotoLogHelper(context);
 		if (database == null || !database.isOpen()) {
-			database = dbh.getWritableDatabase();
+			database = motoLogHelper.getWritableDatabase();
 		}
-
 	}
 
 	public void addMaintenanceItem(MaintenanceItem item) {
+
 		ContentValues values = new ContentValues();
-		values.put(MainHelper.FIELD1, item.getVehicle());
-		values.put(MainHelper.FIELD2, item.getMaintElem());
-		values.put(MainHelper.FIELD3, item.getMaintType());
-		values.put(MainHelper.FIELD4, item.getFuelAmount());
-		values.put(MainHelper.FIELD5, item.getConsumption());
+		values.put(MotoLogHelper.FIELD1, item.getVehicle());
+		values.put(MotoLogHelper.FIELD2, item.getMaintElem());
+		values.put(MotoLogHelper.FIELD3, item.getMaintType());
+		values.put(MotoLogHelper.FIELD4, item.getFuelAmount());
+		values.put(MotoLogHelper.FIELD5, item.getConsumption());
+
+        // TODO: make it more readable?
 		String formatDate =  item.getDate();
-		
 		if(formatDate.length()==9) {
 			formatDate=formatDate.substring(0, 5) + "0" + formatDate.substring(5);
 		} 
 		formatDate = formatDate.replace("/", "-");
-		values.put(MainHelper.FIELD6, formatDate);
-		values.put(MainHelper.FIELD7, item.getOdometer());
-		values.put(MainHelper.FIELD8, item.getDetails());
-		values.put(MainHelper.FIELD9, item.getMileageType());
-		values.put(MainHelper.FIELD10, item.getCash());
-		Log.d(tag, "MainHelper.FIELD9=" + item.getMileageType());
-		database.insert(MainHelper.DATABASE_TABLE, null, values);
 
+		values.put(MotoLogHelper.FIELD6, formatDate);
+		values.put(MotoLogHelper.FIELD7, item.getOdometer());
+		values.put(MotoLogHelper.FIELD8, item.getDetails());
+		values.put(MotoLogHelper.FIELD9, item.getMileageType());
+		values.put(MotoLogHelper.FIELD10, item.getCash());
+
+		Log.d(TAG, "MotoLogHelper.FIELD9=" + item.getMileageType());
+		database.insert(MotoLogHelper.DATABASE_TABLE, null, values);
 	}
 
 	public Cursor getCursor() {
-
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
-				null, null, null, null, null);
-
-		return cursor;
-
+		return database.query(
+                MotoLogHelper.DATABASE_TABLE, allColumns, null, null, null, null, null);
 	}
 	
 	public Cursor getConfCursor(String dateFrom, String dateTo) {
-		
-		Cursor cursor=database.rawQuery("select * from mainlog where date(date) between  date(?) and date(?) order by date desc;", new String[] {dateFrom.replace("/", "-"),dateTo.replace("/", "-")});
-		
-		return cursor;
+		return database.rawQuery(
+                "select * " +
+                        "from mainlog " +
+                        "where date(date) between date(?) and date(?) order by date desc;",
+                new String[] {dateFrom.replace("/", "-"),dateTo.replace("/", "-")});
 	}
 
 	public Cursor getCursor(String maintElem) {
 
-		String whereClause = MainHelper.FIELD2 + "= ?";
+		String whereClause = MotoLogHelper.FIELD2 + "= ?";
 
 		String[] whereArgs = { maintElem };
-		String orderBy = MainHelper.FIELD7;
+		String orderBy = MotoLogHelper.FIELD7;
 
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
-				whereClause, whereArgs, null, null, orderBy);
+		Cursor cursor = database.query(
+                MotoLogHelper.DATABASE_TABLE, allColumns,
+                whereClause, whereArgs, null, null, orderBy);
 
-		boolean isNotEmpty = cursor.moveToFirst();
-
-		if (isNotEmpty) {
-
-			return (cursor);
+		if (cursor.moveToFirst()) {
+			return cursor;
 		} else {
 			return null;
 		}
-
 	}
 
 	public int getItemsCount() {
-
-		return (int) DatabaseUtils.queryNumEntries(database,
-				MainHelper.DATABASE_TABLE);
-
+		return (int) DatabaseUtils.queryNumEntries(database, MotoLogHelper.DATABASE_TABLE);
 	}
 
 	public void updateEntry(MaintenanceItem item) {
 
-		String whereClause = MainHelper.KEY + "= ?";
+		String whereClause = MotoLogHelper.KEY + "= ?";
 		String[] whereArgs = { Integer.toString(item.getKey()) };
 		ContentValues valuesToPut = new ContentValues();
-		valuesToPut.put(MainHelper.FIELD2, item.getMaintElem());
-		valuesToPut.put(MainHelper.FIELD3, item.getMaintType());
-		valuesToPut.put(MainHelper.FIELD4, item.getFuelAmount());
-		String formatDate =  item.getDate();
-		
-		if(formatDate.length()==9) {
-			formatDate=formatDate.substring(0, 5) + "0" + formatDate.substring(5);
+		valuesToPut.put(MotoLogHelper.FIELD2, item.getMaintElem());
+		valuesToPut.put(MotoLogHelper.FIELD3, item.getMaintType());
+		valuesToPut.put(MotoLogHelper.FIELD4, item.getFuelAmount());
+
+        // TODO: make it more readable?
+		String formatDate = item.getDate();
+		if (formatDate.length() == 9) {
+			formatDate = formatDate.substring(0, 5) + "0" + formatDate.substring(5);
 		} 
 		formatDate = formatDate.replace("/", "-");
-		valuesToPut.put(MainHelper.FIELD6, formatDate);
-		valuesToPut.put(MainHelper.FIELD7, item.getOdometer());
-		valuesToPut.put(MainHelper.FIELD8, item.getDetails());
-		valuesToPut.put(MainHelper.FIELD5, item.getConsumption());
-		valuesToPut.put(MainHelper.FIELD9, item.getMileageType());
-		valuesToPut.put(MainHelper.FIELD10, item.getCash());
 
-		Log.d(tag, "MainHelper.FIELD9=" + item.getMileageType());
+		valuesToPut.put(MotoLogHelper.FIELD6, formatDate);
+		valuesToPut.put(MotoLogHelper.FIELD7, item.getOdometer());
+		valuesToPut.put(MotoLogHelper.FIELD8, item.getDetails());
+		valuesToPut.put(MotoLogHelper.FIELD5, item.getConsumption());
+		valuesToPut.put(MotoLogHelper.FIELD9, item.getMileageType());
+		valuesToPut.put(MotoLogHelper.FIELD10, item.getCash());
 
-		database.update(MainHelper.DATABASE_TABLE, valuesToPut, whereClause,
+		Log.d(TAG, "MotoLogHelper.FIELD9 =" + item.getMileageType());
+		database.update(MotoLogHelper.DATABASE_TABLE, valuesToPut, whereClause,
 				whereArgs);
 
 	}
 
 	public void deleteEntry(MaintenanceItem item) {
-
-		database.delete(MainHelper.DATABASE_TABLE,
-				MainHelper.KEY + "= " + item.getKey(), null);
-
+		database.delete(MotoLogHelper.DATABASE_TABLE,
+                MotoLogHelper.KEY + "= " + item.getKey(), null);
 	}
 
 	public int getLastItem() {
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
+		Cursor cursor = database.query(MotoLogHelper.DATABASE_TABLE, allColumns,
 				null, null, null, null, null);
 		cursor.moveToLast();
-		return (cursor.getInt(cursor.getColumnIndex(MainHelper.KEY)));
 
+        int retVal;
+		retVal = cursor.getInt(cursor.getColumnIndex(MotoLogHelper.KEY));
+        cursor.close();
+
+        return retVal;
 	}
 
 	public Cursor getLastItem(String vehicle, String maintItem) {
 
-		String whereClause = MainHelper.FIELD1 + "= ? and " + MainHelper.FIELD2
+		String whereClause = MotoLogHelper.FIELD1 + "= ? and " + MotoLogHelper.FIELD2
 				+ " =?";
 
 		String[] whereArgs = { vehicle, maintItem };
-		String orderBy = MainHelper.FIELD7 + " desc";
+		String orderBy = MotoLogHelper.FIELD7 + " desc";
 
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
+		Cursor cursor = database.query(MotoLogHelper.DATABASE_TABLE, allColumns,
 				whereClause, whereArgs, null, null, orderBy);
 
 		boolean isNotEmpty = cursor.moveToFirst();
 
 		if (isNotEmpty) {
-
 			return (cursor);
 		} else {
 			return null;
 		}
-
 	}
 
 	public Cursor getItemAtKey(String key, String maintItem) {
 
-		String whereClause = MainHelper.KEY + "<= ? and " + MainHelper.FIELD2
-				+ " =?";
-
+		String whereClause = MotoLogHelper.KEY + "<= ? and " + MotoLogHelper.FIELD2 + " =?";
 		String[] whereArgs = { key, maintItem };
-		String orderBy = MainHelper.FIELD7 + " desc";
+		String orderBy = MotoLogHelper.FIELD7 + " desc";
 
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
+		Cursor cursor = database.query(MotoLogHelper.DATABASE_TABLE, allColumns,
 				whereClause, whereArgs, null, null, orderBy);
 
-		boolean isNotEmpty = cursor.moveToFirst();
-
-		if (isNotEmpty) {
-
-			return (cursor);
+		if (cursor.moveToFirst()) {
+			return cursor;
 		} else {
 			return null;
 		}
-
 	}
 
 	public int getLastOdometer(String vehicle) {
 
-		String whereClause = MainHelper.FIELD1 + "= ?";
-
+		String whereClause = MotoLogHelper.FIELD1 + "= ?";
 		String[] whereArgs = { vehicle };
-		String orderBy = MainHelper.FIELD7 + " desc";
+		String orderBy = MotoLogHelper.FIELD7 + " desc";
 
-		Cursor cursor = database.query(MainHelper.DATABASE_TABLE, allColumns,
+		Cursor cursor = database.query(MotoLogHelper.DATABASE_TABLE, allColumns,
 				whereClause, whereArgs, null, null, orderBy);
 
-		boolean isNotEmpty = cursor.moveToFirst();
-
-		if (isNotEmpty) {
-			return (cursor.getInt(cursor.getColumnIndex(MainHelper.FIELD7)));
+		if (cursor.moveToFirst()) {
+            int retVal = cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7));
+			cursor.close();
+            return retVal;
 		} else {
 			return 0;
 		}
-
 	}
 
-	public boolean copyDatabase(String fromDbPath, String toDbPath)
-			throws IOException {
-
-		return dbh.copyDatabase(fromDbPath, toDbPath);
-
+	public boolean copyDatabase(String fromDbPath, String toDbPath) throws IOException {
+		return motoLogHelper.copyDatabase(fromDbPath, toDbPath);
 	}
-
 }

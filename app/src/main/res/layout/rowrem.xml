@@ -1,87 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/databackgroundColor" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/lastIntervalLabel"
+        android:id="@+id/image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="8dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@android:drawable/stat_notify_error" />
+        android:src="@drawable/ic_warning"
+        />
 
     <TextView
-        android:id="@+id/maintInfo"
-        android:layout_width="wrap_content"
+        android:id="@+id/textReminder"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/imageView2"
-        android:layout_toRightOf="@id/imageView1"
-        android:text="Maintain aureeeee every 4 months"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/image"
+        tools:text="Maintain aureeeee every 4 months"
         android:textColor="@color/tabselected"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
 
-    <TextView
-        android:id="@+id/lastIntervalLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/maintInfo"
-        android:layout_toRightOf="@id/imageView1"
-        android:text="Previous: "
-        android:textColor="@color/tabtextcolor"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:layout_below="@id/textReminder"
+        android:layout_toRightOf="@id/image">
 
-    <TextView
-        android:id="@+id/LastInterval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/lastIntervalLabel"
-        android:layout_below="@id/maintInfo"
-        android:layout_toRightOf="@id/lastIntervalLabel"
-        android:ems="5"
-        android:text="2005/01/03"
-        android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
+        <!--<TextView-->
+        <!--android:id="@+id/lastIntervalLabel"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/maintInfo"-->
+        <!--android:layout_toRightOf="@id/imageView1"-->
+        <!--android:text="Previous: "-->
+        <!--android:textColor="@color/tabtextcolor"-->
+        <!--android:textStyle="bold"-->
+        <!--/>-->
 
-    <TextView
-        android:id="@+id/nextIntervalLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/maintInfo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/LastInterval"
-        android:text="Next: "
-        android:textColor="@color/tabtextcolor"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textLastInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Previous: 2005/01/03"
+            android:textSize="12sp"
+            />
 
-    <TextView
-        android:id="@+id/nextInterval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/nextIntervalLabel"
-        android:layout_below="@id/maintInfo"
-        android:layout_toRightOf="@id/nextIntervalLabel"
-        android:text="2007/01/03"
-        android:textColor="@color/tabtextcolor"
-        android:textSize="12sp" />
+        <!--<TextView-->
+            <!--android:id="@+id/nextIntervalLabel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/maintInfo"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_toRightOf="@id/LastInterval"-->
+            <!--android:text="Next: "-->
+            <!--android:textColor="@color/tabtextcolor"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-    <TextView
-        android:id="@+id/remkey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/textNextInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            tools:text="Next: 2007/01/03"
+            android:textSize="12sp"
+            />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_above="@id/nextInterval"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true" />
-
+    </LinearLayout>
 
 </RelativeLayout>

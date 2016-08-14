@@ -5,31 +5,22 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import beans.MaintenanceItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dbcontrollers.MainHelper;
+import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
 
 public class RefuelActivity extends AppCompatActivity {
@@ -117,16 +108,16 @@ public class RefuelActivity extends AppCompatActivity {
                     consumption = 100
                             * fuel
                             / (odometer - cursor.getDouble(cursor
-                            .getColumnIndex(MainHelper.FIELD7)));
+                            .getColumnIndex(MotoLogHelper.FIELD7)));
                     break;
                 case 2:
                     consumption = fuel
                             / (odometer - cursor.getDouble(cursor
-                            .getColumnIndex(MainHelper.FIELD7)));
+                            .getColumnIndex(MotoLogHelper.FIELD7)));
                     break;
                 default:
                     consumption = (odometer - cursor.getDouble(cursor
-                            .getColumnIndex(MainHelper.FIELD7))) / fuel;
+                            .getColumnIndex(MotoLogHelper.FIELD7))) / fuel;
                     break;
             }
 

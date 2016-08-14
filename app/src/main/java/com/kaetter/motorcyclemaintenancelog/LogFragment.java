@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,16 @@ import org.greenrobot.eventbus.Subscribe;
 import adapter.MainLogCursorAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
+import dbcontrollers.MotoLogHelper;
 import events.CopyDatabaseEvent;
+import events.ReloadMainLogEvent;
+import events.ReloadReminderLogEvent;
 
-public class LogFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+public class LogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final String TAG = "LogFragment";
+    private final int LOADER_ID = 1;
 
 	@BindView(R.id.filter) Spinner filter;
 	@BindView(R.id.mainList) ListView mainLogListView;
@@ -57,19 +62,22 @@ public class LogFragment extends Fragment implements
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+
+				Log.d(TAG, "Item clicked in mainLogListView");
+
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				Cursor cursorAt = (Cursor) mainLogListView.getItemAtPosition(position);
-				int key = cursorAt.getInt(cursorAt.getColumnIndex(MainHelper.KEY));
+				int key = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.KEY));
 
-				String vehicle = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD1));
-				String maintElem = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD2));
-				String maintType = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD3));
-				double fuelAmount = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD4));
-				double consumption = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD5));
-				String date = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD6));
-				int odometer = cursorAt.getInt(cursorAt.getColumnIndex(MainHelper.FIELD7));
-				String details = cursorAt.getString(cursorAt.getColumnIndex(MainHelper.FIELD8));
-				double cash = cursorAt.getFloat(cursorAt.getColumnIndex(MainHelper.FIELD10));
+				String vehicle = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD1));
+				String maintElem = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD2));
+				String maintType = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD3));
+				double fuelAmount = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD4));
+				double consumption = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD5));
+				String date = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD6));
+				int odometer = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.FIELD7));
+				String details = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD8));
+				double cash = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD10));
 
 //				MaintenanceItem item = new MaintenanceItem(key, vehicle,
 //						maintElem, maintType, fuelAmount, consumption, date,
@@ -89,27 +97,42 @@ public class LogFragment extends Fragment implements
 
 		});
 
-		getLoaderManager().initLoader(1, null, this);
+		getLoaderManager().initLoader(LOADER_ID, null, this);
 
 		return root;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		EventBus.getDefault().register(this);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+        Log.d(TAG, "LogFragment registered on EventBus");
+    }
 
-	@Override
-	public void onPause() {
-		EventBus.getDefault().unregister(this);
-		super.onPause();
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        Log.d(TAG, "LogFragment unregistered on EventBus");
+        super.onPause();
+    }
+
+	@Subscribe(sticky = true)
+	public void onEvent(ReloadMainLogEvent event) {
+        Log.d(TAG, "Event: ReloadMainLogEvent");
+        ReloadMainLogEvent stickyEvent =
+                EventBus.getDefault().removeStickyEvent(ReloadMainLogEvent.class);
+        if (stickyEvent != null) {
+            getLoaderManager().restartLoader(LOADER_ID, null, this);
+        }
 	}
 
 	@Subscribe
 	public void onEvent(CopyDatabaseEvent event) {
 		try {
-			mainLogSource.copyDatabase(event.fromDbPath, event.toDbPath);
+			if (mainLogSource.copyDatabase(event.fromDbPath, event.toDbPath)) {
+                EventBus.getDefault().post(new ReloadMainLogEvent());
+                EventBus.getDefault().post(new ReloadReminderLogEvent());
+            }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,8 +140,8 @@ public class LogFragment extends Fragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
-		AsyncTaskLoader<Cursor> loader=null;
-		if (id == 1) {
+		AsyncTaskLoader<Cursor> loader = null;
+		if (id == LOADER_ID) {
 			loader = new AsyncTaskLoader<Cursor>(getActivity()) {
 				@Override
 				public Cursor loadInBackground() {
@@ -142,8 +165,8 @@ public class LogFragment extends Fragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader.getId() == 1) {
-			mainAdapter.swapCursor(data);
+		if (loader.getId() == LOADER_ID) {
+			mainAdapter.changeCursor(data);
 		}
 	}
 

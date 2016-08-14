@@ -87,7 +87,7 @@ public class NewRemDialog extends DialogFragment {
 			rml.updateEntry(remItem);
 
 		} else {
-			rml.addMaintenanceItem(remItem);
+			rml.addReminderItem(remItem);
 		}
 
 		dismiss();

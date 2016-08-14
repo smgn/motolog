@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-
-
 public class FileUtils {
     /**
      * Creates the specified <code>toFile</code> as a byte for byte copy of the
@@ -22,7 +20,8 @@ public class FileUtils {
      * @param toFile
      *            - FileInputStream for the file to copy to.
      */
-    public static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+    public static void copyFile(FileInputStream fromFile, FileOutputStream toFile)
+            throws IOException {
         FileChannel fromChannel = null;
         FileChannel toChannel = null;
         try {

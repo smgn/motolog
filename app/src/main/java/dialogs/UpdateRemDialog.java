@@ -114,17 +114,17 @@ public class UpdateRemDialog extends DialogFragment {
 						.append(cal.get(Calendar.MONTH) + 1).append("-")
 						.append(cal.get(Calendar.DAY_OF_MONTH)).toString();
 
-				MaintenanceItem item = new MaintenanceItem(
-						remItem.getVehicle(), remItem.getMaintElem(), remItem
-								.getMaintType(), 0, 0, today, 0, remItem
-								.getDetails(), MyListFragment.mileageType);
-
-				Intent intent = new Intent(getActivity(), NewLogActivity.class);
-				intent.putExtra("Maintenanceitem", item);
-				intent.putExtra("isModification", false);
-				intent.putExtra("ReminderItem", remItem);
-
-				startActivityForResult(intent, START_NEW_LOG);
+//				MaintenanceItem item = new MaintenanceItem(
+//						remItem.getVehicle(), remItem.getMaintElem(), remItem
+//								.getMaintType(), 0, 0, today, 0, remItem
+//								.getDetails(), MyListFragment.mileageType);
+//
+//				Intent intent = new Intent(getActivity(), NewLogActivity.class);
+//				intent.putExtra("Maintenanceitem", item);
+//				intent.putExtra("isModification", false);
+//				intent.putExtra("ReminderItem", remItem);
+//
+//				startActivityForResult(intent, START_NEW_LOG);
 
 			}
 		});

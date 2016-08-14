@@ -112,7 +112,7 @@ public class UpdateDialog extends DialogFragment {
 			public void onClick(View v) {
 
 				Intent intent = new Intent(getActivity(), NewLogActivity.class);
-				intent.putExtra("Maintenanceitem", item);
+//				intent.putExtra("Maintenanceitem", item);
 				intent.putExtra("isModification", true);
 
 				startActivityForResult(intent, START_NEW_LOG);

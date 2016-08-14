@@ -175,5 +175,9 @@
     <string name="error_export_db_failed">Export DB failed!</string>
     <string name="button_ok">OK</string>
     <string name="text_no_reminders">No reminders yet</string>
+    <string name="wrap_with_parentheses">(%s)</string>
+    <string name="text_reminder_last_interval">Previous: %1$s %2$s</string>
+    <string name="text_reminder_next_interval">Next: %1$s %2$s</string>
+    <string name="text_reminder_description">%1$s %2$s every %3$s %4$s</string>
 
 </resources>

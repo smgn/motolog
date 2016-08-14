@@ -18,7 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,9 +36,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dbcontrollers.MainHelper;
+import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
 import events.CopyDatabaseEvent;
+import events.ReloadMainLogEvent;
+import events.ReloadReminderLogEvent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
 	@BindView(R.id.tabLayout) TabLayout mTabLayout;
 	@BindView(R.id.viewPager) ViewPager mViewPager;
 
-	final int START_NEW_LOG = 0;
-	final int START_SETTINGS = 1;
-	final int PERMISSIONS_READ_EXTERNAL_STORAGE = 0;
-	final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
-	final int PERMISSIONS_SETTINGS = 2;
+	private final int REQUEST_LOG = 0;
+	private final int REQUEST_SETTINGS = 1;
+	private final int PERMISSIONS_READ_EXTERNAL_STORAGE = 0;
+	private final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
+	private final int PERMISSIONS_SETTINGS = 2;
 
     private final String TAG = "MainActivity";
 
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 		switch (item.getItemId()) {
 			case R.id.menu_addLogEntry:
 				Intent intent = new Intent(this, NewLogActivity.class);
-				startActivityForResult(intent, START_NEW_LOG);
+				startActivityForResult(intent, REQUEST_LOG);
 				return true;
 			case R.id.menu_importdb:
 				checkReadExternalStoragePermissions();
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 				return true;
 			case R.id.menu_settings:
 				Intent intent2 = new Intent(this, SettingsActivity.class);
-				startActivityForResult(intent2, START_SETTINGS);
+				startActivityForResult(intent2, REQUEST_SETTINGS);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 			File[] listOfFiles = extSdImport.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File dir, String filename) {
-					return filename.toLowerCase().startsWith("motolog");
+					return filename.toLowerCase().endsWith(".db");
 				}
 			});
 
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 					builderInner.setPositiveButton("Import", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							File toDbPath = getDatabasePath(MainHelper.DATABASE_NAME);
+							File toDbPath = getDatabasePath(MotoLogHelper.DATABASE_NAME);
 							try {
 								EventBus.getDefault().post(
 										new CopyDatabaseEvent(fromDbPath, toDbPath.toString()));
@@ -273,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            File dbFile = getDatabasePath(MainHelper.DATABASE_NAME);
+                            File dbFile = getDatabasePath(MotoLogHelper.DATABASE_NAME);
                             try {
                                 mainLogSource.copyDatabase(dbFile.toString(), exportPath);
                             } catch (IOException e) {
@@ -362,4 +363,26 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_LOG:
+                if (resultCode == RESULT_OK) {
+                    // post sticky because I don't have time to figure out lifecycles
+                    EventBus.getDefault().postSticky(new ReloadMainLogEvent());
+                    EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+                } else {
+                    // TODO: Show error
+                }
+                break;
+            case REQUEST_SETTINGS:
+                if (resultCode == RESULT_OK) {
+
+                } else {
+                    // TODO: Show error
+                }
+                break;
+        }
+    }
 }

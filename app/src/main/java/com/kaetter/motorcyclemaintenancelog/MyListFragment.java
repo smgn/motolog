@@ -11,7 +11,6 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -57,8 +56,8 @@ import adapter.MainLogCursorAdapter;
 import adapter.RemLogCursorAdapter;
 import beans.MaintenanceItem;
 import beans.ReminderItem;
-import dbcontrollers.MainHelper;
 import dbcontrollers.MainLogSource;
+import dbcontrollers.MotoLogHelper;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
 import dialogs.DatePickerFragment.EditDateDialogListener;
@@ -250,27 +249,27 @@ public class MyListFragment extends Fragment implements
 							.getItemAtPosition(position);
 
 					int key = cursorAt.getInt(cursorAt
-							.getColumnIndex(MainHelper.KEY));
+							.getColumnIndex(MotoLogHelper.KEY));
 					String vehicle = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD1R));
+							.getColumnIndex(MotoLogHelper.FIELD1R));
 					String maintElem = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD2R));
+							.getColumnIndex(MotoLogHelper.FIELD2R));
 					String maintType = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD3R));
+							.getColumnIndex(MotoLogHelper.FIELD3R));
 					int reminderType = cursorAt.getInt(cursorAt
-							.getColumnIndex(MainHelper.FIELD4R));
+							.getColumnIndex(MotoLogHelper.FIELD4R));
 					String interval = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD5R));
+							.getColumnIndex(MotoLogHelper.FIELD5R));
 					String intervalSize = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD5Ra));
+							.getColumnIndex(MotoLogHelper.FIELD5Ra));
 					String lastInterval = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD6R));
+							.getColumnIndex(MotoLogHelper.FIELD6R));
 					String nextInterval = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD7R));
+							.getColumnIndex(MotoLogHelper.FIELD7R));
 					String details = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD8R));
+							.getColumnIndex(MotoLogHelper.FIELD8R));
 					String dateInserted = cursorAt.getString(cursorAt
-							.getColumnIndex(MainHelper.FIELD9R));
+							.getColumnIndex(MotoLogHelper.FIELD9R));
 
 					ReminderItem item = new ReminderItem(key, vehicle,
 							maintElem, maintType, reminderType, interval,
@@ -281,11 +280,11 @@ public class MyListFragment extends Fragment implements
 
 					b.putSerializable("ReminderItem", item);
 
-					TextView descriptionView = (TextView) arg1
-							.findViewById(R.id.maintInfo);
+//					TextView descriptionView = (TextView) arg1
+//							.findViewById(R.id.maintInfo);
 
-					b.putString("Description", descriptionView.getText()
-							.toString());
+//					b.putString("Description", descriptionView.getText()
+//							.toString());
 
 					UpdateRemDialog updateRemDialog = new UpdateRemDialog();
 
@@ -481,29 +480,29 @@ public class MyListFragment extends Fragment implements
 				Cursor cursorAt = (Cursor) mainLogListView
 						.getItemAtPosition(position);
 				int key = cursorAt.getInt(cursorAt
-						.getColumnIndex(MainHelper.KEY));
+						.getColumnIndex(MotoLogHelper.KEY));
 
 				String vehicle = cursorAt.getString(cursorAt
-						.getColumnIndex(MainHelper.FIELD1));
+						.getColumnIndex(MotoLogHelper.FIELD1));
 
 				String maintElem = cursorAt.getString(cursorAt
-						.getColumnIndex(MainHelper.FIELD2));
+						.getColumnIndex(MotoLogHelper.FIELD2));
 
 				String maintType = cursorAt.getString(cursorAt
-						.getColumnIndex(MainHelper.FIELD3));
+						.getColumnIndex(MotoLogHelper.FIELD3));
 
 				double fuelAmount = cursorAt.getFloat(cursorAt
-						.getColumnIndex(MainHelper.FIELD4));
+						.getColumnIndex(MotoLogHelper.FIELD4));
 				double consumption = cursorAt.getFloat(cursorAt
-						.getColumnIndex(MainHelper.FIELD5));
+						.getColumnIndex(MotoLogHelper.FIELD5));
 				String date = cursorAt.getString(cursorAt
-						.getColumnIndex(MainHelper.FIELD6));
+						.getColumnIndex(MotoLogHelper.FIELD6));
 				int odometer = cursorAt.getInt(cursorAt
-						.getColumnIndex(MainHelper.FIELD7));
+						.getColumnIndex(MotoLogHelper.FIELD7));
 				String details = cursorAt.getString(cursorAt
-						.getColumnIndex(MainHelper.FIELD8));
+						.getColumnIndex(MotoLogHelper.FIELD8));
 				double cash = cursorAt.getFloat(cursorAt
-						.getColumnIndex(MainHelper.FIELD10));
+						.getColumnIndex(MotoLogHelper.FIELD10));
 
 				MaintenanceItem item = new MaintenanceItem(key, vehicle,
 						maintElem, maintType, fuelAmount, consumption, date,
@@ -514,7 +513,7 @@ public class MyListFragment extends Fragment implements
 				UpdateDialog updateDialog1 = new UpdateDialog();
 
 				Bundle args = new Bundle();
-				args.putSerializable("MaintItem", item);
+//				args.putSerializable("MaintItem", item);
 				updateDialog1.setArguments(args);
 
 				updateDialog1.show(fm, "fragment_edit_name");
@@ -822,7 +821,7 @@ public class MyListFragment extends Fragment implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								File dbFile = getActivity().getDatabasePath(
-										MainHelper.DATABASE_NAME);
+										MotoLogHelper.DATABASE_NAME);
 								try {
 									mainLogSource.copyDatabase(
 											dbFile.toString(), exportPath);
@@ -900,7 +899,7 @@ public class MyListFragment extends Fragment implements
 
 												File toDbPath = getActivity()
 														.getDatabasePath(
-																MainHelper.DATABASE_NAME);
+																MotoLogHelper.DATABASE_NAME);
 												Log.d(TAG, toDbPath.toString()
 														+ " " + fromDbPath);
 												boolean failed = false;

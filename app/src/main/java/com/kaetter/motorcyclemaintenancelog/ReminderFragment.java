@@ -4,9 +4,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,9 @@ import dbcontrollers.RemLogSource;
 
 public class ReminderFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final String TAG = "ReminderFragment";
+    private final int LOADER_ID = 2;
 
     @BindView(R.id.filter) Spinner filter;
     @BindView(R.id.reminderList) ListView reminderLogListView;
@@ -55,23 +57,36 @@ public class ReminderFragment extends Fragment implements
         reminderLogListView.setEmptyView(textNoRemindersYet);
         reminderLogListView.setAdapter(remAdapter);
 
-        //TODO: Loader
+        getLoaderManager().initLoader(LOADER_ID, null, this);
 
 		return root;
 	}
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
+        AsyncTaskLoader<Cursor> loader = null;
+        if (id == LOADER_ID) {
+            loader = new AsyncTaskLoader<Cursor>(getActivity()) {
+                @Override
+                public Cursor loadInBackground() {
+                    if (remLogSource == null) {
+                        remLogSource = new RemLogSource(getContext());
+                    }
+                    return remLogSource.getCursor();
+                }
+            };
+            loader.forceLoad();
+        }
+        return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        if (loader.getId() == LOADER_ID) {
+            remAdapter.changeCursor(data);
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }

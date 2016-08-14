@@ -17,7 +17,8 @@ import com.kaetter.motorcyclemaintenancelog.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dbcontrollers.MainHelper;
+import dbcontrollers.MotoLogHelper;
+import utils.Utils;
 
 public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
     Context mContext;
@@ -41,26 +42,12 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.rowmain, parent, false);
         ViewHolder holder = new ViewHolder(view);
-//        holder.keyView = (TextView) view.findViewById(R.id.key);
-//        holder.maintElemView = (TextView) view.findViewById(R.id.rowMaintElem);
-//        holder.maintTypeView = (TextView) view.findViewById(R.id.rowMaintType);
-//        holder.fuelAmountView = (TextView) view.findViewById(R.id.rowFuelAmount);
-//        holder.fuelConsumptionView = (TextView) view.findViewById(R.id.rowConsumption);
-//        holder.rowConsumptionLabelView = (TextView) view.findViewById(R.id.rowConsumptionLabel);
-//        holder.kmLabelView = (TextView) view.findViewById(R.id.kmLabel);
-//        holder.detailsView = (TextView) view.findViewById(R.id.rowDetails);
-//        holder.fuelLabelView = (TextView) view.findViewById(R.id.rowFuelLabel);
-//        holder.cashView = (TextView) view.findViewById(R.id.cash);
-//        holder.odoLabel = (TextView) view.findViewById(R.id.odoLabel);
-//        holder.dateView = (TextView) view.findViewById(R.id.rowDate);
-//        holder.odometerView = (TextView) view.findViewById(R.id.rowOdometer);
-//        holder.cashLabel = (TextView) view.findViewById(R.id.cashLabel);
-//        holder.maintTypeImageView = (ImageView) view.findViewById(R.id.imageView1);
         view.setTag(holder);
         return view;
     }
 
     public static class ViewHolder {
+
         @BindView(R.id.imageView1) ImageView maintTypeImageView;
         @BindView(R.id.key) TextView keyView;
         @BindView(R.id.rowMaintElem) TextView maintElemView;
@@ -104,30 +91,29 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
         context = (Context) params[0];
         Bundle b = new Bundle();
 
-        this.cursor.moveToPosition(holder.position);
-        b.putString("key", cursor.getString(this.cursor.getColumnIndex(MainHelper.KEY)));
-        b.putString(MAINT_ELEM, this.cursor.getString(this.cursor
-                .getColumnIndex(MainHelper.FIELD2)));
-        b.putString("maintType", this.cursor.getString(this.cursor
-                .getColumnIndex(MainHelper.FIELD3)));
-        b.putString("fuelAmount", String.valueOf(this.cursor.getDouble(this.cursor
-                .getColumnIndex(MainHelper.FIELD4))));
-        b.putString("consumption", String.valueOf(this.cursor.getString(this.cursor
-                .getColumnIndex(MainHelper.FIELD5))));
-        b.putString("date", this.cursor
-                .getString(this.cursor.getColumnIndex(MainHelper.FIELD6)));
-        b.putString("odometer", String.valueOf(this.cursor.getString(this.cursor
-                .getColumnIndex(MainHelper.FIELD7))));
-        b.putString("details", this.cursor.getString(this.cursor
-                .getColumnIndex(MainHelper.FIELD8)));
-        b.putInt("mileageType", this.cursor.getInt(this.cursor
-                .getColumnIndex(MainHelper.FIELD9)));
-        b.putString("cash", String.valueOf(this.cursor.getDouble(this.cursor
-                .getColumnIndex(MainHelper.FIELD10))));
+        cursor.moveToPosition(holder.position);
+        b.putString("key", cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.KEY)));
+        b.putString(MAINT_ELEM, cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD2)));
+        b.putString("maintType", cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD3)));
+        b.putString("fuelAmount", String.valueOf(cursor.getDouble(cursor.getColumnIndex(
+                MotoLogHelper.FIELD4))));
+        b.putString("consumption", String.valueOf(cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD5))));
+        b.putString("date", this.cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD6)));
+        b.putString("odometer", String.valueOf(cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD7))));
+        b.putString("details", cursor.getString(cursor.getColumnIndex(
+                MotoLogHelper.FIELD8)));
+        b.putInt("mileageType", cursor.getInt(cursor.getColumnIndex(
+                MotoLogHelper.FIELD9)));
+        b.putString("cash", String.valueOf(cursor.getDouble(cursor.getColumnIndex(
+                MotoLogHelper.FIELD10))));
 
-        switch (this.cursor.getInt(this.cursor
-                .getColumnIndex(MainHelper.FIELD9))) {
-
+        switch (cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD9))) {
             case 0:
                 b.putString("kmLabel", "l/100km");
                 b.putString("fuelLabel", "L");
@@ -162,12 +148,14 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
         if (holder.position == position && holder == view.getTag()) {
             holder.keyView.setText(b.getString("key"));
             holder.maintElemView.setText(b.getString(MAINT_ELEM));
-            holder.maintTypeView.setText("(" + b.getString("maintType") + ")");
-            holder.dateView.setText(b.getString("date"));
+            holder.maintTypeView.setText(context.getString(R.string.wrap_with_parentheses,
+                    b.getString("maintType")));
+            holder.dateView.setText(Utils.formatDate(b.getString("date")));
             holder.odometerView.setText(b.getString("odometer"));
             holder.cashView.setText(b.getString("cash"));
-            if (b.getString("cash").equals("0"))
+            if (b.getString("cash").equals("0")) {
                 holder.cashLabel.setVisibility(View.GONE);
+            }
             holder.odoLabel.setText(b.getString("odoLabel"));
             holder.detailsView.setText(b.getString("details"));
 
@@ -190,7 +178,6 @@ class Rowloader extends AsyncTask<Object, Void, Bundle> {
                 holder.fuelLabelView.setVisibility(View.VISIBLE);
                 holder.fuelConsumptionView.setVisibility(View.VISIBLE);
                 holder.kmLabelView.setVisibility(View.VISIBLE);
-
             } else {
                 holder.detailsView.setVisibility(View.VISIBLE);
                 holder.rowConsumptionLabelView.setVisibility(View.INVISIBLE);
