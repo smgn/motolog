@@ -135,6 +135,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
         DialogFragment newFragment = new DatePickerFragment();
         Bundle args = new Bundle();
         args.putInt("type", 0);
+		args.putString("currentlySetDate", bikeDate.getText().toString()); // format: yyyy-MM-dd
         newFragment.setArguments(args);
         newFragment.show(getChildFragmentManager(), "");
     }
@@ -280,13 +281,26 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 		@NonNull
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
+
+            if (!TextUtils.isEmpty(getArguments().getString("currentlySetDate"))) {
+                String currentlySelectedDate =
+                        getArguments().getString("currentlySetDate", "");
+
+                String[] splitStr = currentlySelectedDate.split("-");
+
+                // Create a new instance of DatePickerDialog and return it
+                return new DatePickerDialog(getActivity(), this, Integer.parseInt(splitStr[0]),
+                        Integer.parseInt(splitStr[1]) - 1 , Integer.parseInt(splitStr[2]));
+            } else {
+                // Use the current date as the default date in the picker
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                // Create a new instance of DatePickerDialog and return it
+                return new DatePickerDialog(getActivity(), this, year, month, day);
+            }
 		}
 
 		public void onDateSet(DatePicker view, int year, int month, int day) {
