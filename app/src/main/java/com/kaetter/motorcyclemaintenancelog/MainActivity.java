@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
 	@BindView(R.id.tabLayout) TabLayout mTabLayout;
 	@BindView(R.id.viewPager) ViewPager mViewPager;
 
-	private final int REQUEST_LOG = 0;
-	private final int REQUEST_SETTINGS = 1;
+	public static final int REQUEST_LOG = 0;
+	public static final int REQUEST_SETTINGS = 1;
+	public static final int REQUEST_UPDATE_LOG = 2;
 	private final int PERMISSIONS_READ_EXTERNAL_STORAGE = 0;
 	private final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 	private final int PERMISSIONS_SETTINGS = 2;
@@ -366,8 +367,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(TAG, "onActivityResult");
+
         switch (requestCode) {
             case REQUEST_LOG:
+	            Log.d(TAG, "From NewLogActivity");
                 if (resultCode == RESULT_OK) {
                     // post sticky because I don't have time to figure out lifecycles
                     EventBus.getDefault().postSticky(new ReloadMainLogEvent());
@@ -377,12 +381,23 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case REQUEST_SETTINGS:
+	            Log.d(TAG, "From SettingsActivity");
                 if (resultCode == RESULT_OK) {
 
                 } else {
                     // TODO: Show error
                 }
                 break;
+	        case REQUEST_UPDATE_LOG:
+		        Log.d(TAG, "From NewLogActivity, updated log");
+		        if (resultCode == RESULT_OK) {
+			        // post sticky because I don't have time to figure out lifecycles
+			        EventBus.getDefault().postSticky(new ReloadMainLogEvent());
+			        EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+		        } else {
+			        // TODO: Show error
+		        }
+		        break;
         }
     }
 }

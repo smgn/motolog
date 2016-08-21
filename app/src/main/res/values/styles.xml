@@ -6,6 +6,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="md_dark_theme">true</item>
+        <item name="md_negative_color">@color/dialogNegativeColor</item>
+
     </style>
 
     <!--&lt;!&ndash; Application theme. &ndash;&gt;-->

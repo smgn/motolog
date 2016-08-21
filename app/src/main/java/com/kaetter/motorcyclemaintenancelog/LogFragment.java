@@ -1,12 +1,16 @@
 package com.kaetter.motorcyclemaintenancelog;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +20,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import adapter.MainLogCursorAdapter;
+import beans.MaintenanceItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dbcontrollers.MainLogSource;
@@ -39,12 +47,23 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
 	MainLogSource mainLogSource;
 	MainLogCursorAdapter mainAdapter;
+    SharedPreferences sharedPref;
+
+    private int mileageType;
 
 	public static LogFragment newInstance() {
 		return new LogFragment();
 	}
 
-	@Override
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        mileageType = Integer.parseInt(sharedPref.getString("pref_MileageType", "0"));
+    }
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_log, container, false);
@@ -63,36 +82,88 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 
-				Log.d(TAG, "Item clicked in mainLogListView");
+                Log.d(TAG, "Item clicked in mainLogListView at position " + position);
 
-				FragmentManager fm = getActivity().getSupportFragmentManager();
-				Cursor cursorAt = (Cursor) mainLogListView.getItemAtPosition(position);
-				int key = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.KEY));
+                Cursor cursorAt = (Cursor) mainLogListView.getItemAtPosition(position);
+                int key = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.KEY));
 
-				String vehicle = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD1));
-				String maintElem = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD2));
-				String maintType = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD3));
-				double fuelAmount = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD4));
-				double consumption = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD5));
-				String date = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD6));
-				int odometer = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.FIELD7));
-				String details = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD8));
-				double cash = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD10));
+                String vehicle = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD1));
+                String maintElem =
+                        cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD2));
+                String maintType =
+                        cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD3));
+                double fuelAmount =
+                        cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD4));
+                double consumption =
+                        cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD5));
+                String date = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD6));
+                int odometer = cursorAt.getInt(cursorAt.getColumnIndex(MotoLogHelper.FIELD7));
+                String details = cursorAt.getString(cursorAt.getColumnIndex(MotoLogHelper.FIELD8));
+                double cash = cursorAt.getFloat(cursorAt.getColumnIndex(MotoLogHelper.FIELD10));
 
-//				MaintenanceItem item = new MaintenanceItem(key, vehicle,
-//						maintElem, maintType, fuelAmount, consumption, date,
-//						odometer, details, mileageType, cash);
+                final MaintenanceItem item = new MaintenanceItem(key, vehicle, maintElem, maintType,
+                        fuelAmount, consumption, date, odometer, details, mileageType, cash);
 
-				// UpdateDialog updateDialog = new UpdateDialog(item);
+                MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                        .title(getString(R.string.dialog_main_log_title,
+                                item.getMaintElem(), item.getMaintType()))
+                        .customView(R.layout.dialogmainupdate, true)
+                        .negativeText(R.string.dialog_button_cancel)
+                        .positiveText(R.string.dialog_button_update)
+                        .neutralText(R.string.dialog_button_delete)
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                // delete this log entry
+                                new MaterialDialog.Builder(getContext())
+                                        .title(R.string.dialog_title_warning)
+                                        .content(R.string.dialog_text_delete_entry)
+                                        .positiveText(R.string.dialog_button_yes)
+                                        .negativeText(R.string.dialog_button_no)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog,
+                                                                @NonNull DialogAction which) {
+                                                if (mainLogSource.deleteEntry(item) != 0) {
+                                                    EventBus.getDefault().postSticky(
+                                                            new ReloadMainLogEvent());
+                                                }
+                                            }
+                                        })
+                                        .show();
+                            }
+                        })
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                // update this log entry
+                                Intent intent = new Intent(getActivity(), NewLogActivity.class);
+                                intent.putExtra("isModification", true);
+	                            intent.putExtra("Maintenanceitem", item);
+                                startActivityForResult(intent, MainActivity.REQUEST_UPDATE_LOG);
+                            }
+                        })
+                        .build();
 
-//				UpdateDialog updateDialog1 = new UpdateDialog();
-//
-//				Bundle args = new Bundle();
-//				args.putSerializable("MaintItem", item);
-//				updateDialog1.setArguments(args);
-//
-//				updateDialog1.show(fm, "fragment_edit_name");
+                View dialogView = dialog.getCustomView();
 
+                if (dialogView != null) {
+                    TextView textDate = ButterKnife.findById(dialogView, R.id.maintElemDate);
+                    TextView textOdometer = ButterKnife.findById(dialogView, R.id.odometerInDialog);
+                    TextView textDetails = ButterKnife.findById(dialogView, R.id.maintElemDetails);
+
+                    textDate.setText(item.getDate());
+                    textOdometer.setText(
+                            getString(R.string.dialog_text_odometer,
+                                    item.getOdometer(),
+                                    mileageType == 0 ? getString(R.string.text_miles) :
+                                            getString(R.string.text_km)));
+                    textDetails.setText(item.getDetails());
+
+                    dialog.show();
+                }
 			}
 
 		});

@@ -84,18 +84,18 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 	private final int NEWELEMDIALOG = 10;
 	private final int DELETEELEM = 1;
 
-	private ArrayAdapter<String> mAdapterSpinnerElement;
-	private ArrayAdapter<String> mAdapterSpinnerType;
+	private ArrayAdapter<String> adapterSpinnerElement;
+	private ArrayAdapter<String> adapterSpinnerType;
 	private ArrayAdapter<String> intervalDateAdapter;
 	private ArrayAdapter<String> intervalDateAdapterP;
 	private ArrayList<String> maintElemArrayList;
 	private ArrayList<String> maintTypeArrayList;
 
-	private MaintenanceItem mItem;
+	private MaintenanceItem item;
 	private MainLogSource mainlogSource;
-	private ReminderItem mRemItemSent;
+	private ReminderItem remItemSent;
 
-	private boolean mIsModification;
+	private boolean isModification;
 
 	private SharedPreferences intervalPref;
 	private SharedPreferences elemTypePref;
@@ -121,7 +121,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 		setSupportActionBar(toolbar);
 		if (getSupportActionBar() != null) {
-			getSupportActionBar().setTitle(getString(R.string.text_new_log_entry));
+			getSupportActionBar().setTitle(getString(R.string.toolbar_title_new_log_entry));
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
@@ -135,10 +135,10 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 				getString(R.string.elem_preference_file_key), MODE_PRIVATE);
 		setPreferences();
 
-		// these are sent from update in LogFragment
-		mItem = (MaintenanceItem) getIntent().getSerializableExtra("Maintenanceitem");
-		mIsModification = getIntent().getBooleanExtra("isModification", false);
-		mRemItemSent = (ReminderItem) getIntent().getSerializableExtra("ReminderItem");
+		// these arguments are sent from update in LogFragment
+		item = (MaintenanceItem) getIntent().getSerializableExtra("Maintenanceitem");
+		isModification = getIntent().getBooleanExtra("isModification", false);
+		remItemSent = (ReminderItem) getIntent().getSerializableExtra("ReminderItem");
 
 		// set units according to user specified mileageType
 		if (sharedPrefs.getString("pref_CashType", "0").equals("0")) {
@@ -152,10 +152,10 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		populateSpinnerElement(-1);
 		populateSpinnerType(-1);
 
-		initialiseDatePicker();
+		initialiseDatePicker(null);
 		initialiseCheckBoxes();
 
-		if (mItem != null) {
+		if (item != null) {
 			setValues();
 		}
 	}
@@ -357,11 +357,11 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 	}
 
 	public void populateSpinnerElement(int pos) {
-		mAdapterSpinnerElement =
+		adapterSpinnerElement =
 				new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, maintElemArrayList);
-		mAdapterSpinnerElement.setDropDownViewResource(
+		adapterSpinnerElement.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
-		spinnerElement.setAdapter(mAdapterSpinnerElement);
+		spinnerElement.setAdapter(adapterSpinnerElement);
 
 		spinnerElement.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -380,7 +380,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 //					elemDialog.setArguments(b);
 //					elemDialog.show(fm, tag);
 				} else {
-					if (mItem == null) {
+					if (item == null) {
 						populateSpinnerType(-1);
 					}
 
@@ -413,7 +413,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			selectedElement = spinnerElement.getSelectedItem().toString();
 		}
 
-		if (mItem == null) {
+		if (item == null) {
 			if (selectedElement.equalsIgnoreCase("Fuel")) {
 				maintTypeArrayList.clear();
 				maintTypeArrayList.add("Refuel");
@@ -435,10 +435,10 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			}
 		}
 
-		mAdapterSpinnerType = new ArrayAdapter<>(
+		adapterSpinnerType = new ArrayAdapter<>(
 				this, android.R.layout.simple_spinner_item, maintTypeArrayList);
-		mAdapterSpinnerType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerType.setAdapter(mAdapterSpinnerType);
+		adapterSpinnerType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerType.setAdapter(adapterSpinnerType);
 
 		spinnerType.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -587,9 +587,14 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			e.printStackTrace();
 		}
 	}
-	
-	private void initialiseDatePicker() {
-		final Date date = new Date();
+
+	/**
+	 * Initialise buttonDate with optional preselected Date
+	 */
+	private void initialiseDatePicker(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.US);
 		buttonDate.setText(sdf.format(date));
 	}
@@ -613,9 +618,13 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		String notes = editTextMemo.getText().toString();
 		String dateStr;
 
+		if (mainlogSource == null) {
+			mainlogSource = new MainLogSource(this);
+		}
+
 		// get date of this log
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.US);
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy MM dd", Locale.US);
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		try {
 			dateStr = sdf2.format(sdf.parse(buttonDate.getText().toString()));
 		} catch (ParseException e) {
@@ -679,21 +688,20 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		}
 
 		// add/update database
-		mainlogSource = new MainLogSource(this);
-		if (mItem != null && mIsModification) { // modification
-			mItem = new MaintenanceItem(mItem.getKey(), vehicle, element, type, fuelAmount,
+		if (item != null && isModification) { // modification
+			item = new MaintenanceItem(item.getKey(), vehicle, element, type, fuelAmount,
 					consumption, dateStr, odometer, notes, MyListFragment.mileageType, price);
 
-			mainlogSource.updateEntry(mItem);
+			mainlogSource.updateEntry(item);
 
 			setResult(Activity.RESULT_OK);
 			Toast.makeText(
 					this, getString(R.string.text_log_entry_updated), Toast.LENGTH_SHORT).show();
 		} else { // creation
-			mItem = new MaintenanceItem(vehicle, element, type, fuelAmount, consumption, dateStr,
+			item = new MaintenanceItem(vehicle, element, type, fuelAmount, consumption, dateStr,
 					odometer, notes, MyListFragment.mileageType, price);
 
-			mainlogSource.addMaintenanceItem(mItem);
+			mainlogSource.addMaintenanceItem(item);
 
 			setResult(Activity.RESULT_OK);
 			Toast.makeText(
@@ -723,14 +731,14 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 			// if checkbox is checked (new reminder) and isModification is false and
 			// we have remItem <> null, delete other reminder
-			if (!mIsModification && mRemItemSent != null) {
+			if (!isModification && remItemSent != null) {
 				RemLogSource rLS = new RemLogSource(this);
-				rLS.deleteEntry(mRemItemSent);
+				rLS.deleteEntry(remItemSent);
 			}
 		} else {
 			// if checkbox is not checked ( no new reminder ) and isModification is false and
 			// we have remItem <> null, regen other reminder with new interval
-			if (!mIsModification && mRemItemSent != null) {
+			if (!isModification && remItemSent != null) {
 
 				RemLogSource rLS = new RemLogSource(this);
 
@@ -742,14 +750,14 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 				NewRemDialog newRemDialog = new NewRemDialog();
 				newRemDialog.setArguments(b);
-				if (mRemItemSent.getReminderType() == 0) {
-					mRemItemSent.setLastInterval(String.valueOf(odometer));
+				if (remItemSent.getReminderType() == 0) {
+					remItemSent.setLastInterval(String.valueOf(odometer));
 				} else {
-					mRemItemSent.setLastInterval(dateStr);
+					remItemSent.setLastInterval(dateStr);
 				}
 
-				mRemItemSent = newRemDialog.setNextInterval(mRemItemSent);
-				rLS.updateEntry(mRemItemSent);
+				remItemSent = newRemDialog.setNextInterval(remItemSent);
+				rLS.updateEntry(remItemSent);
 				Toast.makeText(this, getString(R.string.text_reminder_regenerated),
 						Toast.LENGTH_SHORT).show();
 			}
@@ -759,15 +767,26 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 	public void setValues() {
 
-		spinnerElement.setSelection(mAdapterSpinnerElement.getPosition(mItem.getMaintElem()));
+		if (isModification) {
+			buttonCreate.setText(getString(R.string.button_update));
+			if (getSupportActionBar() != null) {
+				getSupportActionBar().setTitle(getString(R.string.text_update_log_entry));
+			}
+		}
 
-		spinnerType.setSelection(mAdapterSpinnerType.getPosition(mItem.getMaintType()));
+		spinnerElement.setSelection(adapterSpinnerElement.getPosition(item.getMaintElem()));
+
+		spinnerType.setSelection(adapterSpinnerType.getPosition(item.getMaintType()));
 
 		DecimalFormat df = new DecimalFormat("####.00");
 
-		editTextFuel.setText(String.valueOf(df.format(mItem.getFuelAmount())));
+		if (item.getMaintElem().equals(getString(R.string.element_type_fuel))) {
+			editTextFuel.setText(df.format(item.getFuelAmount()));
+		} else {
+			editTextFuel.setVisibility(View.GONE);
+		}
 
-		editTextPrice.setText(df.format(mItem.getCash()));
+		editTextPrice.setText(df.format(item.getCash()));
 		editTextPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -781,13 +800,13 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 		int cashType = Integer.parseInt(sharedPrefs.getString("pref_CashType", "0"));
 
-		if (cashType == 0 && mItem.getMaintElem().equals("Fuel")) {
-			double cash = mItem.getCash() / mItem.getFuelAmount();
+		if (cashType == 0 && item.getMaintElem().equals("Fuel")) {
+			double cash = item.getCash() / item.getFuelAmount();
 			cash = Math.round(cash * 100.0) / 100.0;
 			editTextPrice.setText(String.valueOf(cash));
 		}
 
-		editTextOdometer.setText(String.valueOf(mItem.getOdometer()));
+		editTextOdometer.setText(String.valueOf(item.getOdometer()));
 		editTextOdometer.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
@@ -800,22 +819,15 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			}
 		});
 
-		editTextMemo.setText(String.valueOf(mItem.getDetails()));
+		editTextMemo.setText(item.getDetails());
 
-		Integer indexOfSecondSlash = mItem.getDate().indexOf("-", 5);
-
-		int yearInt = Integer.parseInt(mItem.getDate().substring(0, 4));
-		int monthInt = Integer.parseInt(mItem.getDate().substring(5, indexOfSecondSlash));
-		int dayInt = Integer.parseInt(
-				mItem.getDate().substring(indexOfSecondSlash + 1, mItem.getDate().length()));
-
-//		datePicker.updateDate(yearInt, monthInt - 1, dayInt); //TODO
-
-		if (mIsModification) {
-			buttonCreate.setText(getString(R.string.button_update));
-			if (getSupportActionBar() != null) {
-				getSupportActionBar().setTitle(getString(R.string.text_update_log_entry));
-			}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		try {
+			initialiseDatePicker(sdf.parse(item.getDate()));
+		} catch (ParseException e) {
+			Log.e(TAG, "Unable to parse item date, wrong format?", e);
+			Toast.makeText(this, R.string.error_corrupt_data, Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 
@@ -853,10 +865,10 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 	public double calculateConsumption(String vehicle, String element, double fuel, int odometer) {
 		Cursor cursor;
-		if (!mIsModification) {
+		if (!isModification) {
 			cursor = mainlogSource.getLastItem(vehicle, element);
 		} else {
-			cursor = mainlogSource.getItemAtKey(Integer.toString(mItem.getKey()), element);
+			cursor = mainlogSource.getItemAtKey(Integer.toString(item.getKey()), element);
 			if (cursor.getCount() > 1) { // modification
 				cursor.moveToNext();
 			} else {

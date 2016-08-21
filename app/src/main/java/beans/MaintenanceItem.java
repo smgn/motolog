@@ -1,6 +1,8 @@
 package beans;
 
-public class MaintenanceItem {
+import java.io.Serializable;
+
+public class MaintenanceItem implements Serializable {
 
     int key;
 	String Vehicle;

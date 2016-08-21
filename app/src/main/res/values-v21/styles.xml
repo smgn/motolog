@@ -7,5 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorEdgeEffect">@color/colorAccent</item>
 
+        <item name="md_dark_theme">true</item>
+        <item name="md_negative_color">@color/dialogNegativeColor</item>
+
     </style>
 </resources>

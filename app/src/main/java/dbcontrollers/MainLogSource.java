@@ -128,9 +128,16 @@ public class MainLogSource {
 
 	}
 
-	public void deleteEntry(MaintenanceItem item) {
-		database.delete(MotoLogHelper.DATABASE_TABLE,
+	public int deleteEntry(MaintenanceItem item) {
+        int result = database.delete(MotoLogHelper.DATABASE_TABLE,
                 MotoLogHelper.KEY + "= " + item.getKey(), null);
+		if (result == 0) {
+            Log.w(TAG, "Unable to delete entry, does not exist?");
+        } else {
+            Log.d(TAG, "Entry deleted: " + item.toString());
+        }
+
+        return result;
 	}
 
 	public int getLastItem() {

@@ -145,7 +145,8 @@
     <string name="text_fuel_price">Price</string>
     <string name="text_price">Price</string>
     <string name="hint_price">Price</string>
-    <string name="text_new_log_entry">New Log Entry</string>
+    <string name="toolbar_title_new_log_entry">New Log Entry</string>
+    <string name="toolbar_title_update_log_entry">Update Log Entry</string>
     <string name="button_update">Update</string>
     <string name="text_update_log_entry">Update Log Entry</string>
     <string name="text_odometer_reading">Odometer reading</string>
@@ -179,5 +180,19 @@
     <string name="text_reminder_last_interval">Previous: %1$s %2$s</string>
     <string name="text_reminder_next_interval">Next: %1$s %2$s</string>
     <string name="text_reminder_description">%1$s %2$s every %3$s %4$s</string>
+    <string name="dialog_date">Date</string>
+    <string name="dialog_odo">Odo</string>
+    <string name="dialog_details">Details</string>
+    <string name="dialog_main_log_title">%1$s (%2$s)</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_update">Update</string>
+    <string name="dialog_button_delete">Delete</string>
+    <string name="dialog_text_odometer">%1$s %2$s</string>
+    <string name="dialog_title_warning">Warning</string>
+    <string name="dialog_text_delete_entry">Are you sure you want to delete this entry?</string>
+    <string name="dialog_button_yes">Yes</string>
+    <string name="dialog_button_no">No</string>
+    <string name="element_type_fuel">Fuel</string>
+    <string name="error_corrupt_data">Corrupt data in entry!</string>
 
 </resources>

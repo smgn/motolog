@@ -61,7 +61,6 @@ import dbcontrollers.MotoLogHelper;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
 import dialogs.DatePickerFragment.EditDateDialogListener;
-import dialogs.UpdateDialog;
 import dialogs.UpdateRemDialog;
 import listeners.OnItemChangedListener;
 import utils.Summarize;
@@ -510,13 +509,13 @@ public class MyListFragment extends Fragment implements
 
 				// UpdateDialog updateDialog = new UpdateDialog(item);
 
-				UpdateDialog updateDialog1 = new UpdateDialog();
-
-				Bundle args = new Bundle();
-//				args.putSerializable("MaintItem", item);
-				updateDialog1.setArguments(args);
-
-				updateDialog1.show(fm, "fragment_edit_name");
+//				UpdateDialog updateDialog1 = new UpdateDialog();
+//
+//				Bundle args = new Bundle();
+////				args.putSerializable("MaintItem", item);
+//				updateDialog1.setArguments(args);
+//
+//				updateDialog1.show(fm, "fragment_edit_name");
 
 			}
 
