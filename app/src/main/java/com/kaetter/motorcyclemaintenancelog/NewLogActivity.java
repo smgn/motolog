@@ -49,8 +49,8 @@ import beans.ReminderItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
+import dbcontrollers.MotoLogHelper;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
 import dialogs.NewElementDialog;
@@ -162,69 +162,99 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 	public void setPreferences() {
 
+		Editor intervalEditor = intervalPref.edit();
+		Editor elemTypeEditor = elemTypePref.edit();
+		Editor elemEditor = elemPref.edit();
+
+		// set intervals defined by user from preferences
+		// these are used to populate spinners
+		int intervalCount = intervalPref.getInt(INTERVALCOUNTSTRING, 0);
+		String[] intervalNumberList = getResources().getStringArray(R.array.intervalNumberArray);
+		ArrayList<String> intervalNumberArrayList =
+				new ArrayList<>(Arrays.asList(intervalNumberList));
+
+		if (intervalCount == 0) { // populate
+			intervalCount = intervalNumberList.length - 1;
+
+			intervalEditor.putInt(INTERVALCOUNTSTRING, intervalCount);
+			intervalEditor.apply();
+
+			for (int i = 0; i <= intervalCount; i++) {
+				intervalEditor.putString(INTERVALVAL + i, intervalNumberList[i]);
+				intervalEditor.apply();
+			}
+		}
+
+		if (intervalCount > intervalNumberList.length - 1) {
+			for (int i = intervalNumberList.length; i <= intervalCount; i++) {
+				intervalNumberArrayList.add(intervalPref.getString(INTERVALVAL
+						+ i, " "));
+			}
+		}
+
 		// Set maintElemList from preferences
-		// populate maintSpiner
+		// populate maintSpinner
+		int elemCount = elemPref.getInt(ELEMCOUNTSTRING, 0);
 		String[] maintElemList = getResources().getStringArray(R.array.maintElemArray);
 		maintElemArrayList = new ArrayList<>(Arrays.asList(maintElemList));
-		int elemCount = elemPref.getInt(ELEMCOUNTSTRING, 0);
+
 		if (elemCount == 0) { // populate preferences
 			elemCount = maintElemList.length;
-			elemPref.edit().putInt(ELEMCOUNTSTRING, elemCount).apply();
+			elemEditor.putInt(ELEMCOUNTSTRING, elemCount);
+			elemEditor.apply();
 
 			for (int i = 0; i < elemCount; i++) {
-				elemPref.edit().putString(ELEMVAL + i, maintElemList[i]).apply();
+				elemEditor.putString(ELEMVAL + i, maintElemList[i]);
+				elemEditor.apply();
 			}
 		}
 
 		// populate from preferences array that fills elemTypespinner
-
-		String[] maintTypeList = getResources().getStringArray(
-				R.array.maintTypeArray);
-
-		maintTypeArrayList = new ArrayList<>(Arrays.asList(maintTypeList));
 		elemTypeCount = elemTypePref.getInt(ELEMTYPECOUNTSTRING, 0);
+		String[] maintTypeList = getResources().getStringArray(R.array.maintTypeArray);
+		maintTypeArrayList = new ArrayList<>(Arrays.asList(maintTypeList));
 
 		if (elemTypeCount == 0) {
 			elemTypeCount = maintTypeList.length ;
-			elemTypePref.edit().putInt(ELEMTYPECOUNTSTRING, elemTypeCount).apply();
+			elemTypeEditor.putInt(ELEMTYPECOUNTSTRING, elemTypeCount);
+			elemTypeEditor.apply();
 
 			for (int i = 0; i < elemTypeCount; i++) {
-				elemTypePref.edit().putString(ELEMTYPEVAL + i, maintTypeList[i]).apply();
+				elemTypeEditor.putString(ELEMTYPEVAL + i, maintTypeList[i]);
+				elemTypeEditor.apply();
 			}
 		}
 
-
-		boolean onFirstRun= elemPref.getBoolean("firstrun", true);
-		if(onFirstRun) {
-			//let's recount elemcount and set it to the new value. 
-			  int elemcount = 0;
-			  Editor ed = elemPref.edit();
-			  Map<String, ?> m =elemPref.getAll();
+		if(elemPref.getBoolean("firstrun", true)) {
+			// let's recount elemcount and set it to the new value
+			int elemcount = 0;
+			Editor ed = elemPref.edit();
+			Map<String, ?> m =elemPref.getAll();
 			for (Object o : m.entrySet()) {
 				Entry<String, ?> me = (Entry<String, ?>) o;
-				if (me.getKey().startsWith(NewLogActivity.ELEMVAL.toString())) {
+				if (me.getKey().startsWith(ELEMVAL)) {
 					elemcount++;
 				}
 			}
-			  elemCount =elemcount;
-			  ed.putInt(ELEMCOUNTSTRING,elemcount).commit();
-				
-			  int elemtypecount = 0;
-			  Editor edType = elemTypePref.edit();
-			  Map<String, ?> mt =elemTypePref.getAll();
+			elemCount=elemcount;
+			ed.putInt(ELEMCOUNTSTRING,elemcount).apply();
+
+			int elemtypecount = 0;
+			Editor edType = elemTypePref.edit();
+			Map<String, ?> mt =elemTypePref.getAll();
 
 			for (Object o : mt.entrySet()) {
 				Entry<String, ?> mte = (Entry<String, ?>) o;
-				if (mte.getKey().startsWith(NewLogActivity.ELEMTYPEVAL.toString())) {
+				if (mte.getKey().startsWith(ELEMTYPEVAL)) {
 					elemtypecount++;
 				}
 			}
-			elemTypeCount=elemtypecount;
-			edType.putInt(ELEMTYPECOUNTSTRING,elemtypecount).apply();
+			elemTypeCount = elemtypecount;
+			edType.putInt(ELEMTYPECOUNTSTRING, elemtypecount).apply();
 			elemPref.edit().putBoolean("firstrun", false).apply();
 		}
 
-		if (elemCount > maintElemList.length ) { 
+		if (elemCount > maintElemList.length ) {
 			for (int i = maintElemList.length; i < elemCount; i++) {
 				maintElemArrayList.add(elemPref.getString(ELEMVAL + i, " "));
 			}
@@ -385,14 +415,11 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 					}
 
 					if (position != 0) {
-//						textView.setVisibility(View.GONE);
-//						fuelTextView.setVisibility(View.GONE);
-//						fuelTextView.setText("0");
-//						perLitreView.setVisibility(View.GONE);
+						editTextFuel.setVisibility(View.GONE);
+						textPriceUnit.setVisibility(View.GONE);
 					} else {
-//						fuelView.setVisibility(View.VISIBLE);
-//						fuelTextView.setVisibility(View.VISIBLE);
-//						perLitreView.setVisibility(View.VISIBLE);
+						editTextFuel.setVisibility(View.VISIBLE);
+						textPriceUnit.setVisibility(View.VISIBLE);
 					}
 				}
 			}
@@ -401,9 +428,9 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
 
-//		if (pos > -1 ) {
-//			maintElemSpinner.setSelection(pos-1);
-//		}
+		if (pos > -1 ) {
+			spinnerElement.setSelection(pos-1);
+		}
 	}
 
 	public void populateSpinnerType(final int pos) {
