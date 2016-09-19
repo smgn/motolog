@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "com.kaetter.motorcyclemaintenancelog"
@@ -25,12 +25,12 @@ android {
 dependencies {
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    compile 'com.android.support:support-v4:24.2.0'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:gridlayout-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:percent:24.2.0'
-    compile 'com.android.support:preference-v7:24.2.0'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:gridlayout-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:percent:24.2.1'
+    compile 'com.android.support:preference-v7:24.2.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.facebook.stetho:stetho:1.3.1'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
