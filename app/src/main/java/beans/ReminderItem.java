@@ -152,13 +152,11 @@ public class ReminderItem implements Serializable {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		String toString = new String(vehicle + " vehicle  " + maintElem
+		return vehicle + " vehicle  " + maintElem
 				+ " maintElem " + maintType + " maintType " + interval
 				+ " interval " + intervalSize + " intervalSize " + lastInterval
 				+ "lastInterval   " + nextInterval + " nextInterval " + details
-				+ " details " + dateInserted + " " + key + " " + reminderType);
-		return toString;
+				+ " details " + dateInserted + " " + key + " " + reminderType;
 	}
 
 }
