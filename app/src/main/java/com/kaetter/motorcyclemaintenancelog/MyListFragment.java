@@ -203,7 +203,7 @@ public class MyListFragment extends Fragment implements
 
 			mainLogListView.setAdapter(mainAdapter);
 
-			mainLogListView.setSelection(mainAdapter.getCount() - 1);
+//			mainLogListView.setSelection(mainAdapter.getCount() - 1);
 			
 			mainLogListView.setOnTouchListener(gestureListener);
 			
@@ -602,7 +602,7 @@ public class MyListFragment extends Fragment implements
 
 		if (loader.getId()==1) {
 			mainAdapter.swapCursor(cursor);
-			mainLogListView.setSelection(mainAdapter.getCount() - 1);
+//			mainLogListView.setSelection(mainAdapter.getCount() - 1);
 		}
 		
 		if(loader.getId()==2) { 
@@ -685,7 +685,7 @@ public class MyListFragment extends Fragment implements
 
 				
 			}
-			mainLogListView.setSelection(mainAdapter.getCount() - 1);
+//			mainLogListView.setSelection(mainAdapter.getCount() - 1);
 		}
 
 		if (mTag.equals(TabsFragment.TAB_REM)) {
