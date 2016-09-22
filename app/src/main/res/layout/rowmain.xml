@@ -190,6 +190,8 @@
         android:text="@string/Details"
         android:textColor="@color/tabtextcolor"
         android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         />
 
     <View
