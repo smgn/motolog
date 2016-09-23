@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -41,7 +40,6 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
     private final String TAG = "LogFragment";
     private final int LOADER_ID = 1;
 
-	@BindView(R.id.filter) Spinner filter;
 	@BindView(R.id.mainList) ListView mainLogListView;
 	@BindView(R.id.textNoLogsYet) TextView textNoLogsYet;
 
@@ -127,7 +125,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                                                 @NonNull DialogAction which) {
                                                 if (mainLogSource.deleteEntry(item) != 0) {
                                                     EventBus.getDefault().postSticky(
-                                                            new ReloadMainLogEvent());
+                                                            new ReloadMainLogEvent(null));
                                                 }
                                             }
                                         })
@@ -193,7 +191,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         ReloadMainLogEvent stickyEvent =
                 EventBus.getDefault().removeStickyEvent(ReloadMainLogEvent.class);
         if (stickyEvent != null) {
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            getLoaderManager().restartLoader(LOADER_ID, event.getBundle(), this);
         }
 	}
 
@@ -201,7 +199,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 	public void onEvent(CopyDatabaseEvent event) {
 		try {
 			if (mainLogSource.copyDatabase(event.fromDbPath, event.toDbPath)) {
-                EventBus.getDefault().post(new ReloadMainLogEvent());
+                EventBus.getDefault().post(new ReloadMainLogEvent(null));
                 EventBus.getDefault().post(new ReloadReminderLogEvent());
             }
 		} catch (Exception e) {
@@ -211,36 +209,34 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
-		AsyncTaskLoader<Cursor> loader = null;
-		if (id == LOADER_ID) {
-			loader = new AsyncTaskLoader<Cursor>(getActivity()) {
-				@Override
-				public Cursor loadInBackground() {
-					if (mainLogSource == null) {
-						mainLogSource = new MainLogSource(getContext());
-					}
-					Cursor cursor;
-					if (args == null) {
-						cursor = mainLogSource.getCursor();
-					}
-					else  {
-						cursor = mainLogSource.getCursor(args.getString("filter"));
-					}
-					return cursor;
+		AsyncTaskLoader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
+			@Override
+			public Cursor loadInBackground() {
+				if (mainLogSource == null) {
+					mainLogSource = new MainLogSource(getContext());
 				}
-			};
-			loader.forceLoad();
-		}
+				Cursor cursor;
+				if (args == null) {
+					cursor = mainLogSource.getCursor();
+				}
+				else  {
+					cursor = mainLogSource.getCursor(args.getString("filter"));
+				}
+				return cursor;
+			}
+		};
+		loader.forceLoad();
+
 		return loader;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader.getId() == LOADER_ID) {
-			mainAdapter.changeCursor(data);
-		}
+		mainAdapter.changeCursor(data);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {}
+	public void onLoaderReset(Loader<Cursor> loader) {
+		Log.d(TAG, "onLoaderReset");
+	}
 }

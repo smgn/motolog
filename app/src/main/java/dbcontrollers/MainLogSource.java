@@ -65,7 +65,7 @@ public class MainLogSource {
 	}
 
 	public Cursor getCursor() {
-		return database.rawQuery("select * from mainlog order by _id desc;", null);
+		return database.rawQuery("select * from mainlog order by date desc, _id desc;", null);
 //		return database.query(
 //                MotoLogHelper.DATABASE_TABLE, allColumns, null, null, null, null, null);
 	}

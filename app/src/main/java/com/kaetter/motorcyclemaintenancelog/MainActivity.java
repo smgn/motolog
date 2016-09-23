@@ -22,8 +22,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,13 +35,15 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
+import dbcontrollers.MotoLogHelper;
 import events.CopyDatabaseEvent;
 import events.ReloadMainLogEvent;
 import events.ReloadReminderLogEvent;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 	SharedPreferences sharedPrefs;
 	int mileageType;
+	int selectedFilterIndex = -1;
 
     MainLogSource mainLogSource;
 
@@ -105,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 				checkWriteExternalStoragePermissions();
 				return true;
 			case R.id.menu_filter:
-				//TODO: transplant code
+				showFilterDialog();
 				return true;
 			case R.id.menu_settings:
 				Intent intent2 = new Intent(this, SettingsActivity.class);
@@ -299,6 +306,65 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	private void showFilterDialog() {
+
+		SharedPreferences elemPref = getSharedPreferences(
+				getString(R.string.elem_preference_file_key), MODE_PRIVATE);
+
+		SharedPreferences.Editor elemEditor = elemPref.edit();
+
+		String[] maintElemArray = getResources().getStringArray(R.array.maintElemArray);
+		ArrayList<String> maintElemArrayList = new ArrayList<>(Arrays.asList(maintElemArray));
+
+		int elemCount = elemPref.getInt("elemCountString", 0);
+
+		if (elemCount == 0) {
+			elemCount = maintElemArray.length - 1;
+			elemEditor.putInt("elemTypeCount", elemCount);
+			elemEditor.apply();
+
+			for (int i = 0; i <= elemCount; i++) {
+				elemEditor.putString("elemVal_" + i, maintElemArray[i]);
+				elemEditor.commit();
+			}
+		}
+
+		if (elemCount > maintElemArray.length - 1) {
+			for (int i = maintElemArray.length; i < elemCount; i++) {
+				maintElemArrayList.add(elemPref.getString("elemVal_" + i, " "));
+			}
+		}
+
+		new MaterialDialog.Builder(this)
+				.title(R.string.dialog_filter)
+				.items(maintElemArrayList)
+				.itemsCallbackSingleChoice(selectedFilterIndex,
+						new MaterialDialog.ListCallbackSingleChoice() {
+					@Override
+					public boolean onSelection(MaterialDialog dialog, View view, int which,
+					                           CharSequence text) {
+						selectedFilterIndex = which;
+
+						Bundle b = new Bundle();
+						b.putString("filter", text.toString());
+						EventBus.getDefault().postSticky(new ReloadMainLogEvent(b));
+						return true;
+					}
+				})
+				.onNeutral(new MaterialDialog.SingleButtonCallback() {
+					@Override
+					public void onClick(@NonNull MaterialDialog dialog,
+					                    @NonNull DialogAction which) {
+						selectedFilterIndex = -1;
+						EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+					}
+				})
+				.neutralText(R.string.button_select_all)
+				.negativeText(R.string.button_cancel)
+				.positiveText(R.string.button_apply)
+				.show();
+	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode,
 	                                       @NonNull String permissions[],
@@ -374,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
 	            Log.d(TAG, "From NewLogActivity");
                 if (resultCode == RESULT_OK) {
                     // post sticky because I don't have time to figure out lifecycles
-                    EventBus.getDefault().postSticky(new ReloadMainLogEvent());
+                    EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
                     EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
                 } else {
                     // TODO: Show error
@@ -392,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
 		        Log.d(TAG, "From NewLogActivity, updated log");
 		        if (resultCode == RESULT_OK) {
 			        // post sticky because I don't have time to figure out lifecycles
-			        EventBus.getDefault().postSticky(new ReloadMainLogEvent());
+			        EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
 			        EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
 		        } else {
 			        // TODO: Show error

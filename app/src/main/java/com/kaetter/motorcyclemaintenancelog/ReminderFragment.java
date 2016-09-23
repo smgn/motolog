@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -27,7 +26,6 @@ public class ReminderFragment extends Fragment implements
     private final String TAG = "ReminderFragment";
     private final int LOADER_ID = 2;
 
-    @BindView(R.id.filter) Spinner filter;
     @BindView(R.id.reminderList) ListView reminderLogListView;
     @BindView(R.id.textNoRemindersYet) TextView textNoRemindersYet;
 
