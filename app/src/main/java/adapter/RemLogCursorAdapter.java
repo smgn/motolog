@@ -2,7 +2,6 @@ package adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.PorterDuff.Mode;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -76,7 +75,7 @@ public class RemLogCursorAdapter extends CursorAdapter implements Filterable {
 			remColor = ContextCompat.getColor(context, R.color.othercolor);
 		}
 
-		holder.imageLabel.setColorFilter(remColor, Mode.MULTIPLY);
+		holder.imageLabel.setBackgroundColor(remColor);
 		
 		if (MyListFragment.mileageType == 1) {
 			distanceLabel = context.getString(R.string.text_miles);
