@@ -48,6 +48,7 @@
             android:layout_marginLeft="8dp"
             tools:text="Fuel"
             android:textSize="18sp"
+            android:textStyle="bold"
             />
 
         <TextView
