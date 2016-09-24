@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -45,6 +46,7 @@ import dbcontrollers.MotoLogHelper;
 import events.CopyDatabaseEvent;
 import events.ReloadMainLogEvent;
 import events.ReloadReminderLogEvent;
+import events.ScrollViewPagerEvent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		mileageType = Integer.parseInt(sharedPrefs.getString("pref_MileageType", "0"));
         mainLogSource = new MainLogSource(this);
+
+		EventBus.getDefault().register(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
 	}
 
 	@Override
@@ -313,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
 						Bundle b = new Bundle();
 						b.putString("filter", text.toString());
+						EventBus.getDefault().post(new ScrollViewPagerEvent());
 						EventBus.getDefault().postSticky(new ReloadMainLogEvent(b));
 						return true;
 					}
@@ -322,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
 					public void onClick(@NonNull MaterialDialog dialog,
 					                    @NonNull DialogAction which) {
 						selectedFilterIndex = -1;
+						EventBus.getDefault().post(new ScrollViewPagerEvent());
 						EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
 					}
 				})
@@ -432,4 +444,9 @@ public class MainActivity extends AppCompatActivity {
 		        break;
         }
     }
+
+	@Subscribe
+	public void onEvent(ScrollViewPagerEvent event) {
+		mViewPager.setCurrentItem(0);
+	}
 }
