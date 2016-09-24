@@ -195,6 +195,7 @@
                     android:hint="@string/hint_fuel_amount"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
+                    android:maxLength="5"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -211,6 +212,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:maxLines="1"
                         android:hint="@string/hint_price"
                         />
                 </android.support.design.widget.TextInputLayout>
@@ -234,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/text_odometer_reading"
                     android:inputType="number"
-                    android:maxLength="6"
+                    android:maxLength="8"
                     />
             </android.support.design.widget.TextInputLayout>
 
