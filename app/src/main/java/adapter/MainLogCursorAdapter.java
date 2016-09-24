@@ -3,6 +3,7 @@ package adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 	    TextView textOdo = ButterKnife.findById(view, R.id.rowOdometer);
 	    TextView textOdoLabel = ButterKnife.findById(view, R.id.odoLabel);
 	    TextView textDate = ButterKnife.findById(view, R.id.rowDate);
+	    View separator = ButterKnife.findById(view, R.id.separator);
 
 	    textKey.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.KEY)));
 	    textMaintElem.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)));
@@ -104,6 +106,7 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 		    textFuelLabel.setVisibility(View.VISIBLE);
 		    textConsumption.setVisibility(View.VISIBLE);
 		    textUnitLabel.setVisibility(View.VISIBLE);
+		    separator.setVisibility(View.VISIBLE);
 	    } else {
 		    textDetails.setVisibility(View.VISIBLE);
 		    textConsumptionLabel.setVisibility(View.INVISIBLE);
@@ -113,6 +116,11 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 		    textFuelAmount.setText("");
 		    textFuelLabel.setText("");
 		    textUnitLabel.setText("");
+		    if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD8)))) {
+			    separator.setVisibility(View.INVISIBLE);
+		    } else {
+			    separator.setVisibility(View.VISIBLE);
+		    }
 	    }
     }
 
