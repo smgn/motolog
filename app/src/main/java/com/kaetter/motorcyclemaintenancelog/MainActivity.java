@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.d(TAG, "onActivityResult");
+		Log.d(TAG, "onActivityResult, requestCode = " + requestCode);
 
         switch (requestCode) {
             case REQUEST_LOG:
@@ -482,7 +482,9 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_SETTINGS:
 	            Log.d(TAG, "From SettingsActivity");
                 if (resultCode == RESULT_OK) {
-
+	                // post sticky because I don't have time to figure out lifecycles
+	                EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+	                EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
                 } else {
                     // TODO: Show error
                 }

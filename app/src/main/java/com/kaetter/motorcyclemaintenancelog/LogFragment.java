@@ -140,7 +140,8 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
                                 Intent intent = new Intent(getActivity(), NewLogActivity.class);
                                 intent.putExtra("isModification", true);
 	                            intent.putExtra("Maintenanceitem", item);
-                                startActivityForResult(intent, MainActivity.REQUEST_UPDATE_LOG);
+                                getActivity().startActivityForResult(
+		                                intent, MainActivity.REQUEST_UPDATE_LOG);
                             }
                         })
                         .build();
@@ -209,6 +210,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
+		Log.d(TAG, "onCreateLoader");
 		AsyncTaskLoader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
 			@Override
 			public Cursor loadInBackground() {
