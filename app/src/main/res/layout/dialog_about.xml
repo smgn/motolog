@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This app is open source.\nhttps://github.com/kaetter/motolog\n"
+        android:autoLink="web"
+        android:textColorLink="@color/colorAccent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/offwhite"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nContributors:\n\nCosmin\nkaetter@gmail.com\n\nTerence\nterenceyeong@gmail.com"
+        android:autoLink="email"
+        android:textColorLink="@color/colorAccent"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nIcons made by kasmq@yahoo.com\n\nSome icons are also made by\nhttp://www.freepik.com\nfrom\nhttp://www.flaticon.com\nlicensed by Creative Commons BY 3.0.\n"
+        android:autoLink="web|email"
+        android:textColorLink="@color/colorAccent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/offwhite"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nThis app uses the following open source libraries:\n\nhttps://github.com/JakeWharton/butterknife\n\nhttps://github.com/greenrobot/EventBus\n\nhttps://github.com/afollestad/material-dialogs"
+        android:autoLink="web"
+        android:textColorLink="@color/colorAccent"
+        />
+
+
+
+</LinearLayout>

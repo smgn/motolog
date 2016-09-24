@@ -32,5 +32,6 @@
     <color name="dialogNegativeColor">#BDBDBD</color>
 
     <color name="black">#000000</color>
+    <color name="offwhite">#DEFFFFFF</color>
 
 </resources>

@@ -118,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
 				Intent intent2 = new Intent(this, SettingsActivity.class);
 				startActivityForResult(intent2, REQUEST_SETTINGS);
 				return true;
+			case R.id.menu_about:
+				showAboutDialog();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -362,6 +365,14 @@ public class MainActivity extends AppCompatActivity {
 				.neutralText(R.string.button_select_all)
 				.negativeText(R.string.button_cancel)
 				.positiveText(R.string.button_apply)
+				.show();
+	}
+
+	private void showAboutDialog() {
+		new MaterialDialog.Builder(this)
+				.title(R.string.dialog_about)
+				.customView(R.layout.dialog_about, true)
+				.positiveText(R.string.button_ok)
 				.show();
 	}
 
