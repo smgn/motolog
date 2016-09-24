@@ -253,24 +253,35 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Media is " + Environment.getExternalStorageState());
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            final String exportPath = extSd.toString() +
-                    "/" +
-                    getString(R.string.app_name_no_spaces) +
+
+            final String exportPath = extSd.toString() + "/";
+            final String filename = getString(R.string.app_name_no_spaces) +
 		            new SimpleDateFormat("yyyyMMddHHmm", Locale.US).format(new Date())  +
                     ".db";
 
 	        new MaterialDialog.Builder(this)
 			        .title(getString(R.string.text_exporting_database))
-			        .content(getString(R.string.text_file_will_be_exported_to, exportPath))
+			        .content(getString(R.string.text_file_will_be_exported_to,
+					        exportPath + filename))
 			        .positiveText(R.string.button_ok)
 			        .negativeText(R.string.button_cancel)
+			        .neutralText(R.string.button_rename)
 			        .onPositive(new MaterialDialog.SingleButtonCallback() {
 				        @Override
 				        public void onClick(@NonNull MaterialDialog dialog,
 				                            @NonNull DialogAction which) {
 					        File dbFile = getDatabasePath(MotoLogHelper.DATABASE_NAME);
 					        try {
-						        mainLogSource.copyDatabase(dbFile.toString(), exportPath);
+						        if (mainLogSource.copyDatabase(dbFile.toString(),
+								        exportPath + filename)) {
+							        Toast.makeText(dialog.getContext(),
+									        R.string.text_export_database_success,
+									        Toast.LENGTH_LONG).show();
+						        } else {
+							        Toast.makeText(getApplicationContext(),
+									        getString(R.string.error_export_db_failed),
+									        Toast.LENGTH_LONG).show();
+						        }
 					        } catch (IOException e) {
 						        Toast.makeText(getApplicationContext(),
 								        getString(R.string.error_export_db_failed),
@@ -278,9 +289,53 @@ public class MainActivity extends AppCompatActivity {
 					        }
 				        }
 			        })
+			        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+				        @Override
+				        public void onClick(@NonNull MaterialDialog dialog,
+				                            @NonNull DialogAction which) {
+					        showCustomExportDbDialog(exportPath, filename);
+				        }
+			        })
 			        .show();
         }
     }
+
+	private void showCustomExportDbDialog(final String exportPath, final String originalFilename) {
+		new MaterialDialog.Builder(this)
+				.title(R.string.text_exporting_database)
+				.content(R.string.text_enter_filename)
+				.negativeText(R.string.button_cancel)
+				.inputRange(1, -1)
+				.input("", originalFilename, new MaterialDialog.InputCallback() {
+					@Override
+					public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+						File dbFile = getDatabasePath(MotoLogHelper.DATABASE_NAME);
+
+						String filename = input.toString().trim();
+
+						if (!filename.endsWith(".db")) {
+							filename = filename + ".db";
+						}
+
+						try {
+							if (mainLogSource.copyDatabase(dbFile.toString(), exportPath +
+									filename)) {
+								Toast.makeText(dialog.getContext(),
+										R.string.text_export_database_success,
+										Toast.LENGTH_LONG).show();
+							} else {
+								Toast.makeText(getApplicationContext(),
+										getString(R.string.error_export_db_failed),
+										Toast.LENGTH_LONG).show();
+							}
+						} catch (IOException e) {
+							Toast.makeText(getApplicationContext(),
+									getString(R.string.error_export_db_failed),
+									Toast.LENGTH_LONG).show();
+						}
+					}
+				}).show();
+	}
 
 	private void showFilterDialog() {
 
