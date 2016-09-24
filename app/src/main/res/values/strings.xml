@@ -172,7 +172,7 @@
     <string name="text_new_fuel_entry_added">New fuel entry added!</string>
     <string name="text_fuel_consumption_is">Fuel consumption is: </string>
     <string name="text_have_a_safe_trip">Have a safe trip!</string>
-    <string name="text_file_will_be_exported_to">File will be exported to:</string>
+    <string name="text_file_will_be_exported_to">File will be exported to: %s</string>
     <string name="text_exporting_database">Exporting Database</string>
     <string name="error_export_db_failed">Export DB failed!</string>
     <string name="button_ok">OK</string>
@@ -199,5 +199,7 @@
     <string name="button_apply">Apply</string>
     <string name="button_select_all">Select All</string>
     <string name="dialog_about">About</string>
+    <string name="button_import">Import</string>
+    <string name="button_retry">Retry</string>
 
 </resources>

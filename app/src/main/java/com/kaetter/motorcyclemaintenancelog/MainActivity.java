@@ -1,8 +1,6 @@
 package com.kaetter.motorcyclemaintenancelog;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -38,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -142,27 +140,22 @@ public class MainActivity extends AppCompatActivity {
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 				!= PackageManager.PERMISSION_GRANTED) {
 
-			// Should we show an explanation?
 			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
 					Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-				// Show an expanation to the user *asynchronously* -- don't block
-				// this thread waiting for the user's response! After the user
-				// sees the explanation, try again to request the permission.
-
-				final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-				alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
-				alertDialog.setMessage(getString(R.string.dialog_message_read_ext_storage));
-				alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						requestReadExtStoragePermissions();
-					}
-				});
-				alertDialog.show();
-
+				new MaterialDialog.Builder(this)
+						.title(R.string.dialog_title_permission_needed)
+						.content(R.string.dialog_message_read_ext_storage)
+						.positiveText(R.string.button_ok)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+							@Override
+							public void onClick(@NonNull MaterialDialog dialog,
+							                    @NonNull DialogAction which) {
+								requestReadExtStoragePermissions();
+							}
+						})
+						.show();
 			} else {
-				// No explanation needed, we can request the permission.
 				requestReadExtStoragePermissions();
 			}
 		} else {
@@ -174,27 +167,22 @@ public class MainActivity extends AppCompatActivity {
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				!= PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
-                alertDialog.setMessage(getString(R.string.dialog_message_write_ext_storage));
-                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        requestWriteExtStoragePermissions();
-                    }
-                });
-                alertDialog.show();
-
+	            new MaterialDialog.Builder(this)
+			            .title(R.string.dialog_title_permission_needed)
+			            .content(R.string.dialog_message_write_ext_storage)
+			            .positiveText(R.string.button_ok)
+			            .onPositive(new MaterialDialog.SingleButtonCallback() {
+				            @Override
+				            public void onClick(@NonNull MaterialDialog dialog,
+				                                @NonNull DialogAction which) {
+					            requestWriteExtStoragePermissions();
+				            }
+			            })
+			            .show();
             } else {
-                // No explanation needed, we can request the permission.
                 requestReadExtStoragePermissions();
             }
 		} else {
@@ -204,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
 	private void showImportDbDialog() {
 		File extSdImport = Environment.getExternalStorageDirectory();
+
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-			File[] list = extSdImport.listFiles();
 			File[] listOfFiles = extSdImport.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File dir, String filename) {
@@ -213,38 +201,28 @@ public class MainActivity extends AppCompatActivity {
 				}
 			});
 
-			if (listOfFiles == null) {
-				return;
+			if (listOfFiles == null) { return; }
+
+			List<String> listFiles = new ArrayList<>();
+
+			for (File file : listOfFiles) {
+				listFiles.add(file.getAbsolutePath());
 			}
 
-			final ArrayAdapter<File> arrayAdapter = new ArrayAdapter<>(this,
-					android.R.layout.select_dialog_singlechoice,
-					listOfFiles);
-
-			final AlertDialog.Builder builderImport = new AlertDialog.Builder(this);
-			builderImport.setTitle(getString(R.string.dialog_title_choose_db_to_import));
-			builderImport.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface arg0, int position) {
-
-					AlertDialog.Builder builderInner =
-							new AlertDialog.Builder(builderImport.getContext());
-
-					String message = getString(R.string.importing) + " " +
-							arrayAdapter.getItem(position) + System.getProperty("line.separator") +
-							System.getProperty("line.separator") +
-							getString(R.string.your_current_data_will_be_overwritten);
-
-					builderInner.setMessage(message);
-					final String fromDbPath = arrayAdapter.getItem(position).toString();
-
-					builderInner.setPositiveButton("Import", new DialogInterface.OnClickListener() {
+			new MaterialDialog.Builder(this)
+					.title(getString(R.string.dialog_title_choose_db_to_import))
+					.items(listFiles)
+					.negativeText(R.string.button_cancel)
+					.positiveText(R.string.button_import)
+					.itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							File toDbPath = getDatabasePath(MotoLogHelper.DATABASE_NAME);
+						public boolean onSelection(MaterialDialog dialog, View itemView,
+						                           int which, CharSequence text) {
 							try {
 								EventBus.getDefault().post(
-										new CopyDatabaseEvent(fromDbPath, toDbPath.toString()));
+										new CopyDatabaseEvent(text.toString(),
+												getDatabasePath(MotoLogHelper.DATABASE_NAME)
+														.toString()));
 								recreate();
 							} catch (Exception e) {
 								Toast.makeText(getApplicationContext(),
@@ -252,13 +230,10 @@ public class MainActivity extends AppCompatActivity {
 										Toast.LENGTH_LONG)
 										.show();
 							}
+							return false;
 						}
-					});
-					builderInner.setNegativeButton("Cancel", null);
-					builderInner.show();
-				}
-			});
-			builderImport.show();
+					})
+					.show();
 		}
 	}
 
@@ -268,44 +243,32 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Media is " + Environment.getExternalStorageState());
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm", Locale.US);
-            Date date = new Date();
-
             final String exportPath = extSd.toString() +
                     "/" +
                     getString(R.string.app_name_no_spaces) +
-                    sdf.format(date)  +
+		            new SimpleDateFormat("yyyyMMddHHmm", Locale.US).format(new Date())  +
                     ".db";
-            builder.setMessage(getString(R.string.text_file_will_be_exported_to) + exportPath)
-                    .setTitle(getString(R.string.text_exporting_database));
 
-            builder.setPositiveButton(getString(R.string.button_ok),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            File dbFile = getDatabasePath(MotoLogHelper.DATABASE_NAME);
-                            try {
-                                mainLogSource.copyDatabase(dbFile.toString(), exportPath);
-                            } catch (IOException e) {
-                                Toast.makeText(getApplicationContext(),
-                                        getString(R.string.error_export_db_failed),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-            builder.setNegativeButton(getString(R.string.button_cancel),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            // do nothing
-                        }
-                    });
-
-            builder.show();
+	        new MaterialDialog.Builder(this)
+			        .title(getString(R.string.text_exporting_database))
+			        .content(getString(R.string.text_file_will_be_exported_to, exportPath))
+			        .positiveText(R.string.button_ok)
+			        .negativeText(R.string.button_cancel)
+			        .onPositive(new MaterialDialog.SingleButtonCallback() {
+				        @Override
+				        public void onClick(@NonNull MaterialDialog dialog,
+				                            @NonNull DialogAction which) {
+					        File dbFile = getDatabasePath(MotoLogHelper.DATABASE_NAME);
+					        try {
+						        mainLogSource.copyDatabase(dbFile.toString(), exportPath);
+					        } catch (IOException e) {
+						        Toast.makeText(getApplicationContext(),
+								        getString(R.string.error_export_db_failed),
+								        Toast.LENGTH_LONG).show();
+					        }
+				        }
+			        })
+			        .show();
         }
     }
 
@@ -387,27 +350,23 @@ public class MainActivity extends AppCompatActivity {
 					showImportDbDialog();
 				} else if (grantResults.length > 0
 						&& grantResults[0] == PackageManager.PERMISSION_DENIED) {
-					final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-					alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
-					alertDialog.setMessage(
-							getString(R.string.dialog_message_read_ext_storage_retry));
-					alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
-					alertDialog.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent =
-									new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-							Uri uri = Uri.fromParts("package", getPackageName(), null);
-							intent.setData(uri);
-							startActivityForResult(intent, PERMISSIONS_SETTINGS);
-						}
-					});
-					alertDialog.show();
+					new MaterialDialog.Builder(this)
+							.title(R.string.dialog_title_permission_needed)
+							.content(R.string.dialog_message_read_ext_storage_retry)
+							.positiveText(R.string.button_ok)
+							.neutralText(R.string.button_retry)
+							.onNeutral(new MaterialDialog.SingleButtonCallback() {
+								@Override
+								public void onClick(@NonNull MaterialDialog dialog,
+								                    @NonNull DialogAction which) {
+									Intent intent = new Intent(
+											Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+									Uri uri = Uri.fromParts("package", getPackageName(), null);
+									intent.setData(uri);
+									startActivityForResult(intent, PERMISSIONS_SETTINGS);
+								}
+							})
+							.show();
 				}
 			}
 			case PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
@@ -416,27 +375,23 @@ public class MainActivity extends AppCompatActivity {
                     showImportDbDialog();
                 } else if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                    alertDialog.setTitle(getString(R.string.dialog_title_permission_needed));
-                    alertDialog.setMessage(
-                            getString(R.string.dialog_message_write_ext_storage_retry));
-                    alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alertDialog.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent =
-                                    new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                            intent.setData(uri);
-                            startActivityForResult(intent, PERMISSIONS_SETTINGS);
-                        }
-                    });
-                    alertDialog.show();
+	                new MaterialDialog.Builder(this)
+			                .title(R.string.dialog_title_permission_needed)
+			                .content(R.string.dialog_message_write_ext_storage_retry)
+			                .positiveText(R.string.button_ok)
+			                .neutralText(R.string.button_retry)
+			                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+				                @Override
+				                public void onClick(@NonNull MaterialDialog dialog,
+				                                    @NonNull DialogAction which) {
+					                Intent intent = new Intent(
+							                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+					                Uri uri = Uri.fromParts("package", getPackageName(), null);
+					                intent.setData(uri);
+					                startActivityForResult(intent, PERMISSIONS_SETTINGS);
+				                }
+			                })
+			                .show();
                 }
 			}
 		}
