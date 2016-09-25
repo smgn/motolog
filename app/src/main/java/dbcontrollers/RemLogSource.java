@@ -28,7 +28,7 @@ public class RemLogSource {
     };
 
 	public RemLogSource(Context context) {
-        MotoLogHelper motoLogHelper = new MotoLogHelper(context);
+        MotoLogHelper motoLogHelper = MotoLogHelper.getInstance(context);
         if (database == null || !database.isOpen()) {
             database = motoLogHelper.getWritableDatabase();
         }

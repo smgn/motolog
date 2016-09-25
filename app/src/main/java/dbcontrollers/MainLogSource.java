@@ -32,7 +32,7 @@ public class MainLogSource {
     };
 
 	public MainLogSource(Context context) {
-		motoLogHelper = new MotoLogHelper(context);
+		motoLogHelper = MotoLogHelper.getInstance(context);
 		if (database == null || !database.isOpen()) {
 			database = motoLogHelper.getWritableDatabase();
 		}

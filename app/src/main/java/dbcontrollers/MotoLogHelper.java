@@ -17,10 +17,12 @@ public class MotoLogHelper extends SQLiteOpenHelper {
     private final String TAG = "MotoLogHelper";
 
 	public static final String DATABASE_NAME = "MainDB";
-    public static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 12;
+
+	private static MotoLogHelper mInstance = null;
 
 	// Main Log table
-	public static final String DATABASE_TABLE = "MainLog";
+	static final String DATABASE_TABLE = "MainLog";
 	public static final String KEY = "_id";
 	public static final String FIELD1 = "Vehicle";
 	public static final String FIELD2 = "MaintElem";// FUEL ...
@@ -34,7 +36,7 @@ public class MotoLogHelper extends SQLiteOpenHelper {
 	public static final String FIELD10 = "Cash";
 
     // Reminder Log table
-	public static final String DATABASE_TABLER = "RemLog";
+	static final String DATABASE_TABLER = "RemLog";
 	public static final String FIELD1R = "Vehicle";
 	public static final String FIELD2R = "MaintElem";// FUEL ...
 	public static final String FIELD3R = "MaintType"; // REPLACE; Maintain; OTHER;
@@ -46,7 +48,22 @@ public class MotoLogHelper extends SQLiteOpenHelper {
 	public static final String FIELD8R = "Details";
 	public static final String FIELD9R = "DateInserted";
 
-	public MotoLogHelper(Context context) {
+	public static MotoLogHelper getInstance(Context ctx) {
+
+		// Use the application context, which will ensure that you
+		// don't accidentally leak an Activity's context.
+		// See this article for more information: http://bit.ly/6LRzfx
+		if (mInstance == null) {
+			mInstance = new MotoLogHelper(ctx.getApplicationContext());
+		}
+		return mInstance;
+	}
+
+	/**
+	 * Constructor should be private to prevent direct instantiation.
+	 * make call to static factory method "getInstance()" instead.
+	 */
+	private MotoLogHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
