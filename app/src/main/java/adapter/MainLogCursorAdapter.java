@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +50,17 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 
 	    textKey.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.KEY)));
 	    textMaintElem.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)));
-	    textMaintType.setText(context.getString(R.string.wrap_with_parentheses, cursor.getString(cursor.getColumnIndex(
+	    textMaintType.setText(context.getString(R.string.wrap_with_parentheses,
+			    cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD3))));
 	    textDate.setText(Utils.formatDate(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD6))));
 	    textOdo.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD7))));
+
+	    Log.d(TAG, " " + cursor.getDouble(cursor.getColumnIndex(
+			    MotoLogHelper.FIELD10)));
+
 	    textCash.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD10))));
 	    if (String.valueOf(cursor.getDouble(cursor.getColumnIndex(
@@ -69,11 +75,12 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 	    textDetails.setText(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD8)));
 
-	    if (context.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)).toLowerCase(),
+	    if (context.getResources().getIdentifier(
+			    cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)).toLowerCase(),
 			    "drawable", context.getPackageName()) != 0) {
 		    imageMaintType.setImageResource(context.getResources()
-				    .getIdentifier(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)).toLowerCase(), "drawable",
-						    context.getPackageName()));
+				    .getIdentifier(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2))
+						    .toLowerCase(), "drawable", context.getPackageName()));
 	    } else {
 		    imageMaintType.setImageResource(R.drawable.other);
 	    }

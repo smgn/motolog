@@ -204,5 +204,7 @@
     <string name="button_rename">Rename</string>
     <string name="text_enter_filename">Enter filename</string>
     <string name="text_export_database_success">Successfully exported database</string>
+    <string name="dialog_error">Error</string>
+    <string name="text_price_invalid">Motolog only allows prices up to %s</string>
 
 </resources>

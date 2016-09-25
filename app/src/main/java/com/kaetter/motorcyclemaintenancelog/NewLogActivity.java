@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -317,7 +321,8 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 		String[] intervalNumberList = getResources().getStringArray(R.array.intervalNumberArray);
 
-		ArrayList<String> intervalNumberArrayList = new ArrayList<>(Arrays.asList(intervalNumberList));
+		ArrayList<String> intervalNumberArrayList =
+				new ArrayList<>(Arrays.asList(intervalNumberList));
 
 		if (intervalCount == 0) { // populate
 			intervalCount = intervalNumberList.length - 1;
@@ -399,6 +404,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
 				final String select = spinnerElement.getItemAtPosition(position).toString();
 
+				//TODO: Deal with hardcoded text
 				// if user selected "Other", show dialog for entering custom element
 				if (select.equalsIgnoreCase("Other")) {
 					// TODO change to material-dialogs
@@ -644,6 +650,27 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		String fuelAmtStr = editTextFuel.getText().toString();
 		String notes = editTextMemo.getText().toString();
 		String dateStr;
+
+		// validate price input first
+		Double priceCheck = Double.parseDouble(editTextPrice.getText().toString());
+		Double priceLimit = 99999.99;
+		if (priceCheck > priceLimit) {
+			DecimalFormat df = new DecimalFormat("#.00");
+
+			new MaterialDialog.Builder(this)
+					.title(R.string.dialog_error)
+					.content(getString(R.string.text_price_invalid, df.format(priceLimit)))
+					.positiveText(R.string.button_ok)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
+						@Override
+						public void onClick(@NonNull MaterialDialog dialog,
+						                    @NonNull DialogAction which) {
+							editTextPrice.requestFocus();
+						}
+					})
+					.show();
+			return;
+		}
 
 		if (mainlogSource == null) {
 			mainlogSource = new MainLogSource(this);
