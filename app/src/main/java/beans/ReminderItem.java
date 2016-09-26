@@ -4,13 +4,18 @@ import java.io.Serializable;
 
 public class ReminderItem implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7552815792716092868L;
-	String vehicle, maintElem, maintType, interval, intervalSize, lastInterval,
-			nextInterval, details, dateInserted;
-	int key, reminderType;
+	private String vehicle;
+	private String maintElem;
+	private String maintType;
+	private String interval;
+	private String intervalSize;
+	private String lastInterval;
+	private String nextInterval;
+	private String details;
+	private String dateInserted;
+	private int key;
+	private int reminderType;
 
 	public ReminderItem(int key, String vehicle, String maintElem,
 			String maintType, int reminderType, String interval,

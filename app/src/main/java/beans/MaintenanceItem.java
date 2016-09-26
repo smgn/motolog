@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class MaintenanceItem implements Serializable {
 
-    int key;
-	String Vehicle;
-	String MaintElem;
-	String MaintType;
-	double FuelAmount;
-	double Consumption;
-	String Date;
-	int Odometer;
-	String Details;
-	int MileageType;
-	double Cash;
+    private int key;
+	private String Vehicle;
+	private String MaintElem;
+	private String MaintType;
+	private double FuelAmount;
+	private double Consumption;
+	private String Date;
+	private int Odometer;
+	private String Details;
+	private int MileageType;
+	private double Cash;
 
 	public MaintenanceItem(String vehicle,
                            String maintElem,
