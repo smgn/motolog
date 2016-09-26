@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 import dbcontrollers.MainLogSource;
 import dbcontrollers.MotoLogHelper;
 import events.CopyDatabaseEvent;
+import events.ReloadConfigLoader;
 import events.ReloadMainLogEvent;
 import events.ReloadReminderLogEvent;
 import events.ScrollViewPagerEvent;
@@ -380,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
 						b.putString("filter", text.toString());
 						EventBus.getDefault().post(new ScrollViewPagerEvent());
 						EventBus.getDefault().postSticky(new ReloadMainLogEvent(b));
+						EventBus.getDefault().postSticky(new ReloadConfigLoader());
 						return true;
 					}
 				})
@@ -390,6 +392,7 @@ public class MainActivity extends AppCompatActivity {
 						selectedFilterIndex = -1;
 						EventBus.getDefault().post(new ScrollViewPagerEvent());
 						EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+						EventBus.getDefault().postSticky(new ReloadConfigLoader());
 					}
 				})
 				.neutralText(R.string.button_select_all)
@@ -475,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
                     // post sticky because I don't have time to figure out lifecycles
                     EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
                     EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+	                EventBus.getDefault().postSticky(new ReloadConfigLoader());
                 } else {
                     // TODO: Show error
                 }
@@ -485,6 +489,7 @@ public class MainActivity extends AppCompatActivity {
 	                // post sticky because I don't have time to figure out lifecycles
 	                EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
 	                EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+	                EventBus.getDefault().postSticky(new ReloadConfigLoader());
                 } else {
                     // TODO: Show error
                 }
@@ -495,6 +500,7 @@ public class MainActivity extends AppCompatActivity {
 			        // post sticky because I don't have time to figure out lifecycles
 			        EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
 			        EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+			        EventBus.getDefault().postSticky(new ReloadConfigLoader());
 		        } else {
 			        // TODO: Show error
 		        }

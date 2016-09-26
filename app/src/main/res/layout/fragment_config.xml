@@ -115,7 +115,7 @@
             android:layout_height="48dp"
             app:layout_widthPercent="15%"
             android:layout_below="@id/labelCostSummary"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="@string/text_from"
             />
 

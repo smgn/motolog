@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dbcontrollers.MainLogSource;
 import events.DatePickedEvent;
+import events.ReloadConfigLoader;
 import utils.Summarize;
 
 public class ConfigFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -49,6 +51,9 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 	@BindView(R.id.to) Button to;
 	@BindView(R.id.spinnerElement) Spinner maintelemspinner;
 	@BindView(R.id.cashperelementvalue) TextView cashperelementvalue;
+
+	private final String TAG = "ConfigFragment";
+	private final int LOADER_ID = 3;
 
 	MainLogSource mainLogSource;
 	Cursor currentCursor;
@@ -176,6 +181,20 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 		}
 	}
 
+	@Subscribe(sticky = true)
+	public void onEvent(ReloadConfigLoader event) {
+		Log.d(TAG, "Event: ReloadConfigLoaderEvent");
+		ReloadConfigLoader stickyEvent =
+				EventBus.getDefault().removeStickyEvent(ReloadConfigLoader.class);
+		if (stickyEvent != null) {
+			Bundle b = new Bundle();
+			b.putString("from", from.getText().toString());
+			b.putString("to", to.getText().toString());
+
+			getLoaderManager().restartLoader(LOADER_ID, b, this);
+		}
+	}
+
 	public void getGeneralBikeData() {
 
 		SharedPreferences generalPref = getActivity().getSharedPreferences(
@@ -229,37 +248,31 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
-		AsyncTaskLoader<Cursor> loader = null;
-		if (id == 2) {
-			loader = new AsyncTaskLoader<Cursor>(getActivity()) {
-				@Override
-				public Cursor loadInBackground() {
-					if (mainLogSource == null) {
-						mainLogSource = new MainLogSource(getContext());
-					}
-					return mainLogSource.getConfCursor(
-							args.getString("from"), args.getString("to"));
+		AsyncTaskLoader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
+			@Override
+			public Cursor loadInBackground() {
+				if (mainLogSource == null) {
+					mainLogSource = new MainLogSource(getContext());
 				}
-			};
-			loader.forceLoad();
-		}
+				return mainLogSource.getConfCursor(args.getString("from"), args.getString("to"));
+			}
+		};
+
+		loader.forceLoad();
 		return loader;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if(loader.getId()==2) {
-			currentCursor = data;
-			if(!data.isAfterLast()) {
-				sum = new Summarize();
-				sum.execute(1, data, from.getText().toString(), root,
-						bikeDate.getText().toString());
-			} else {
-				sum = new Summarize();
-				sum.execute(0, data, from.getText().toString(), root,
-						bikeDate.getText().toString());
-			}
-
+		currentCursor = data;
+		if(!data.isAfterLast()) {
+			sum = new Summarize();
+			sum.execute(1, data, from.getText().toString(), root,
+					bikeDate.getText().toString());
+		} else {
+			sum = new Summarize();
+			sum.execute(0, data, from.getText().toString(), root,
+					bikeDate.getText().toString());
 		}
 	}
 
