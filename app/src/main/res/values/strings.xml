@@ -106,7 +106,7 @@
     <string name="menu_add_log_entry">Add Log Entry</string>
     <string name="text_general_data">General Data</string>
     <string name="text_bike_name">Bike Name</string>
-    <string name="text_date_of_purchase">Date of Purchase</string>
+    <string name="text_date_of_purchase">Purchase Date</string>
     <string name="text_initial_odo">Initial Odo</string>
     <string name="text_other_details">Other details</string>
     <string name="text_from">From</string>
@@ -128,7 +128,7 @@
     <string name="dialog_message_write_ext_storage_retry">Motolog was previously denied write access to external storage. Tap RETRY to open app settings and grant this permission.</string>
     <string name="text_no_logs">No logs yet</string>
     <string name="text_cost_summary">Bike Cost Summary</string>
-    <string name="text_sort_by_element">Sort by Element:</string>
+    <string name="text_sort_by_element">Element Cost Summary</string>
     <string name="button_create">Create</string>
     <string name="button_cancel">Cancel</string>
     <string name="text_maintenance_element">Element</string>
@@ -206,5 +206,14 @@
     <string name="text_export_database_success">Successfully exported database</string>
     <string name="dialog_error">Error</string>
     <string name="text_price_invalid">Motolog only allows prices up to %s</string>
+    <string name="text_prices_in_entry_empty">0\u0024 in 0 entries</string>
+    <string name="text_prices_in_entry_1">%s\u0024 in 1 entry</string>
+    <string name="text_prices_in_entry">%1$s\u0024 in %2$s entries </string>
+
+    <plurals name="entries">
+        <item quantity="zero">entries</item>
+        <item quantity="one">entry</item>
+        <item quantity="other">entries</item>
+    </plurals>
 
 </resources>

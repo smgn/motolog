@@ -63,7 +63,7 @@ import dialogs.DatePickerFragment;
 import dialogs.DatePickerFragment.EditDateDialogListener;
 import dialogs.UpdateRemDialog;
 import listeners.OnItemChangedListener;
-import utils.Summarize;
+import utils.SummarizeAsyncTask;
 
 @SuppressLint("ValidFragment")
 public class MyListFragment extends Fragment implements
@@ -91,7 +91,7 @@ public class MyListFragment extends Fragment implements
 	public static int mileageType;
 	private  Button from,to ;
 	private View confView;
-	private Summarize sum;
+	private SummarizeAsyncTask sum;
 	private Cursor currentCursor ;
 	   private static final int SWIPE_MIN_DISTANCE = 120;
 	    private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -380,11 +380,11 @@ public class MyListFragment extends Fragment implements
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int pos , long id) {
 					if(pos!=0) {
-						sum = new Summarize();						
+						sum = new SummarizeAsyncTask();
 						
 						sum.execute(2,currentCursor,from.getText().toString(), confView,MyListFragment.this);
 					} else {
-						TextView cashperelementvalue = (TextView)  confView.findViewById(R.id.cashperelementvalue);
+						TextView cashperelementvalue = (TextView)  confView.findViewById(R.id.textPricesInEntry);
 						 cashperelementvalue.setText("0");
 					}
 				}
@@ -609,10 +609,10 @@ public class MyListFragment extends Fragment implements
 			
 			currentCursor =cursor;
 			if(!cursor.isAfterLast()) {
-				sum = new Summarize();
+				sum = new SummarizeAsyncTask();
 				sum.execute(1,cursor,from.getText().toString(), confView,this);
 			} else {
-				sum = new Summarize();
+				sum = new SummarizeAsyncTask();
 				sum.execute(0,cursor,from.getText().toString(), confView,this);
 			}
 			

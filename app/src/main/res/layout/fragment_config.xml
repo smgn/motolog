@@ -65,7 +65,7 @@
             android:gravity="center_vertical"
             android:layout_below="@id/bikename"
             android:text="@string/text_date_of_purchase"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -238,10 +238,12 @@
             android:id="@+id/labelSortByElement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:layout_below="@id/textNumberOfEntries"
-            android:text="@string/text_sort_by_element"/>
+            android:textSize="18sp"
+            android:text="@string/text_sort_by_element"
+            />
 
         <Spinner
             android:id="@+id/spinnerElement"
@@ -251,62 +253,18 @@
             app:layout_widthPercent="50%"
             />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textPricesInEntry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/spinnerElement"
             android:layout_toRightOf="@id/spinnerElement"
             android:layout_below="@id/labelSortByElement"
             android:layout_marginLeft="8dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/cashperelementvalue"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/spinnerElement"
-                android:layout_below="@id/textNumberOfEntries"
-                android:layout_marginLeft="8dp"
-                android:singleLine="true"
-                tools:text="$123"
-                />
-
-            <TextView
-                android:id="@+id/cashperelement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cashperelementvalue"
-                android:layout_below="@id/textNumberOfEntries"
-                android:layout_marginLeft="4dp"
-                android:text="@string/text_in"
-                />
-
-            <TextView
-                android:id="@+id/countperelementvalue"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cashperelement"
-                android:layout_below="@id/textNumberOfEntries"
-                android:singleLine="true"
-                android:layout_marginLeft="4dp"
-                android:text="0"
-                />
-
-            <TextView
-                android:id="@+id/countperelementLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/countperelementvalue"
-                android:layout_below="@id/textNumberOfEntries"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="4dp"
-                android:text="entries"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-        </LinearLayout>
+            android:gravity="center_vertical"
+            android:textColor="@color/tabselected"
+            tools:text="$XXX in X entries"
+            />
 
     </android.support.percent.PercentRelativeLayout>
 

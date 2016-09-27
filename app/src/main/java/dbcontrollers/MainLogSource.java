@@ -74,7 +74,7 @@ public class MainLogSource {
 		return database.rawQuery(
                 "select * " +
                         "from mainlog " +
-                        "where date(date) between date(?) and date(?) order by date desc;",
+                        "where Date between ? and ? order by date desc;",
                 new String[] {dateFrom.replace("/", "-"),dateTo.replace("/", "-")});
 	}
 

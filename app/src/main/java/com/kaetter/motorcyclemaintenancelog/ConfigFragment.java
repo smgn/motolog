@@ -28,8 +28,8 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -39,7 +39,10 @@ import butterknife.OnClick;
 import dbcontrollers.MainLogSource;
 import events.DatePickedEvent;
 import events.ReloadConfigLoader;
-import utils.Summarize;
+import events.SummarizeByElementEvent;
+import events.SummarizeEvent;
+import utils.SummarizeAsyncTask;
+import utils.SummarizeByElementAsyncTask;
 
 public class ConfigFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -50,14 +53,18 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 	@BindView(R.id.from) Button from;
 	@BindView(R.id.to) Button to;
 	@BindView(R.id.spinnerElement) Spinner maintelemspinner;
-	@BindView(R.id.cashperelementvalue) TextView cashperelementvalue;
+	@BindView(R.id.textPricesInEntry) TextView textPricesInEntry;
+	@BindView(R.id.totalcash) TextView textTotalCash;
+	@BindView(R.id.totalkm) TextView textTotalDistance;
+	@BindView(R.id.cashperday) TextView textCostPerDay;
+	@BindView(R.id.cashperkm) TextView textCostPerDistance;
+	@BindView(R.id.entries) TextView textNumEntries;
 
 	private final String TAG = "ConfigFragment";
 	private final int LOADER_ID = 3;
 
 	MainLogSource mainLogSource;
 	Cursor currentCursor;
-	Summarize sum;
 
 	View root;
 
@@ -86,33 +93,19 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 		to.setText(sdf.format(Calendar.getInstance().getTime()));
 
 		// populate spinner
-		ArrayList<String> list = new ArrayList<>();
-		list.add("...");
-
-		ArrayAdapter<String> maintElemAdapter = new ArrayAdapter<>(
-				getActivity(), android.R.layout.simple_list_item_1, list);
-
-		maintelemspinner.setAdapter(maintElemAdapter);
-		maintelemspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int pos , long id) {
-				if (pos != 0) {
-					sum = new Summarize();
-					sum.execute(2,currentCursor,from.getText().toString(), root,
-							bikeDate.getText().toString());
-				} else {
-					cashperelementvalue.setText("0");
-				}
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {}
-		});
+//		ArrayList<String> list = new ArrayList<>();
+//		list.add("...");
+//
+//		ArrayAdapter<String> maintElemAdapter = new ArrayAdapter<>(
+//				getActivity(), android.R.layout.simple_list_item_1, list);
+//
+//		maintelemspinner.setAdapter(maintElemAdapter);
 
 		Bundle b = new Bundle();
 		b.putString("from", "1800-01-01");
 		b.putString("to", "2200-01-01");
 
-		getLoaderManager().initLoader(2, b, this);
+		getLoaderManager().initLoader(LOADER_ID, b, this);
 
 		return root;
 	}
@@ -122,6 +115,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
         DialogFragment newFragment = new DatePickerFragment();
         Bundle args = new Bundle();
         args.putInt("type", 1);
+	    args.putString("currentlySetDate", from.getText().toString());
         newFragment.setArguments(args);
         newFragment.show(getChildFragmentManager(), "");
     }
@@ -131,6 +125,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
         DialogFragment newFragment = new DatePickerFragment();
         Bundle args = new Bundle();
         args.putInt("type", 2);
+	    args.putString("currentlySetDate", to.getText().toString());
         newFragment.setArguments(args);
         newFragment.show(getChildFragmentManager(), "");
     }
@@ -167,6 +162,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 
 		if (event.type == 0) {
 			bikeDate.setText(sdf.format(cal.getTime()));
+			from.setText(sdf.format(cal.getTime()));
 
 			SharedPreferences generalPref = getActivity().getSharedPreferences(
 					getString(R.string.general_preference_file_key),
@@ -179,6 +175,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 		} else if (event.type == 2) {
 			to.setText(sdf.format(cal.getTime()));
 		}
+		EventBus.getDefault().postSticky(new ReloadConfigLoader());
 	}
 
 	@Subscribe(sticky = true)
@@ -193,6 +190,44 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 
 			getLoaderManager().restartLoader(LOADER_ID, b, this);
 		}
+	}
+
+	@Subscribe
+	public void onEvent(SummarizeEvent event) {
+		Log.d(TAG, "onEvent: SummarizeEvent");
+		textTotalCash.setText(String.valueOf(event.getTotalCost()));
+		textTotalDistance.setText(String.valueOf(event.getTotalDistance()));
+		textCostPerDay.setText(String.valueOf(event.getCostPerDay()));
+		textCostPerDistance.setText(String.valueOf(event.getCostPerDistance()));
+		textNumEntries.setText(String.valueOf(event.getNumEntries()));
+		maintelemspinner.setAdapter(
+				new ArrayAdapter<>(getActivity(),
+						android.R.layout.simple_list_item_1, event.getListElements()));
+		maintelemspinner.post(new Runnable() {
+			public void run() {
+				maintelemspinner.setOnItemSelectedListener(
+						new AdapterView.OnItemSelectedListener() {
+							@Override
+							public void onItemSelected(AdapterView<?> parent, View view,
+							                           int pos , long id) {
+								doSummaryByElement();
+							}
+							@Override
+							public void onNothingSelected(AdapterView<?> arg0) {}
+						});
+			}
+		});
+	}
+
+	@Subscribe
+	public void onEvent(SummarizeByElementEvent event) {
+		Log.d(TAG, "onEvent: SummarizeByElementEvent");
+
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+		textPricesInEntry.setText(decimalFormat.format(event.getAmountInEntries()) + " in " +
+				event.getNumInEntries() + " " +
+				getResources().getQuantityString(R.plurals.entries, event.getNumInEntries()));
 	}
 
 	public void getGeneralBikeData() {
@@ -246,6 +281,23 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 		});
 	}
 
+	private void doSummary() {
+		new SummarizeAsyncTask().execute(
+				currentCursor, from.getText().toString(), to.getText().toString());
+	}
+
+	private void doSummaryByElement() {
+		SummarizeByElementAsyncTask sum = new SummarizeByElementAsyncTask();
+		if (maintelemspinner.getSelectedItem() == null) {
+			sum.execute(currentCursor, "...");
+		} else {
+			sum.execute(
+					currentCursor,
+					TextUtils.isEmpty(maintelemspinner.getSelectedItem().toString())
+							? "..." : maintelemspinner.getSelectedItem().toString());
+		}
+	}
+
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 		AsyncTaskLoader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
@@ -265,15 +317,8 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		currentCursor = data;
-		if(!data.isAfterLast()) {
-			sum = new Summarize();
-			sum.execute(1, data, from.getText().toString(), root,
-					bikeDate.getText().toString());
-		} else {
-			sum = new Summarize();
-			sum.execute(0, data, from.getText().toString(), root,
-					bikeDate.getText().toString());
-		}
+		doSummary();
+		doSummaryByElement();
 	}
 
 	@Override
