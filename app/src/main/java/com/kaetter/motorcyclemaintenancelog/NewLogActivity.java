@@ -665,20 +665,35 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		this.onBackPressed();
 	}
 
-	@OnClick(R.id.buttonCreate)
-	public void createLog() {
-		String vehicle = "default";
+	/*
+	Return false if input is invalid.
+	 */
+	private boolean validateInput() {
 		String element = spinnerElement.getSelectedItem().toString();
 		String type = spinnerType.getSelectedItem().toString();
-		int odometer = 0;
-		double fuelAmount;
-		double price;
-		double consumption;
-		String fuelAmtStr = editTextFuel.getText().toString();
-		String notes = editTextMemo.getText().toString();
-		String dateStr;
 
-		// validate price input first
+		if (element.equalsIgnoreCase(getString(R.string.text_fuel))) {
+			if (TextUtils.isEmpty(editTextFuel.getText().toString())) {
+				new MaterialDialog.Builder(this)
+						.title(R.string.dialog_error)
+						.content(R.string.text_fuel_amount_required)
+						.positiveText(R.string.button_ok)
+						.show();
+
+				return false;
+			}
+		}
+
+		if (TextUtils.isEmpty(editTextPrice.getText().toString())) {
+			new MaterialDialog.Builder(this)
+					.title(R.string.dialog_error)
+					.content(R.string.text_price_required)
+					.positiveText(R.string.button_ok)
+					.show();
+
+			return false;
+		}
+
 		Double priceCheck = Double.parseDouble(editTextPrice.getText().toString());
 		Double priceLimit = 99999.99;
 		if (priceCheck > priceLimit) {
@@ -696,6 +711,39 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 						}
 					})
 					.show();
+
+			return false;
+		}
+
+		if (TextUtils.isEmpty(editTextOdometer.getText().toString())) {
+			new MaterialDialog.Builder(this)
+					.title(R.string.dialog_error)
+					.content(R.string.text_odo_required)
+					.positiveText(R.string.button_ok)
+					.show();
+
+			return false;
+		}
+
+		return true;
+	}
+
+	@OnClick(R.id.buttonCreate)
+	public void createLog() {
+		String vehicle = "default";
+		String element = spinnerElement.getSelectedItem().toString();
+		String type = spinnerType.getSelectedItem().toString();
+		int odometer = 0;
+		double fuelAmount;
+		double price;
+		double consumption;
+		String fuelAmtStr = editTextFuel.getText().toString();
+		String notes = editTextMemo.getText().toString();
+		String dateStr;
+
+		// validate price input first
+
+		if (!validateInput()) {
 			return;
 		}
 

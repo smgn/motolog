@@ -140,7 +140,7 @@
     <string name="text_fuel">Fuel</string>
     <string name="hint_fuel_amount">Fuel amount in litres</string>
     <string name="text_memo">Notes</string>
-    <string name="hint_notes">Notes for this log entry</string>
+    <string name="hint_notes">Notes for this log entry (optional)</string>
     <string name="text_odometer">Odometer</string>
     <string name="text_odo">Odo</string>
     <string name="text_fuel_price">Price</string>
@@ -214,6 +214,9 @@
     <string name="button_add">Add</string>
     <string name="button_use_other">Use \"Other\"</string>
     <string name="dialog_title_add_new_element_type">Add New Element Type</string>
+    <string name="text_price_required">Price required. Enter 0 if no price.</string>
+    <string name="text_fuel_amount_required">Fuel amount required.</string>
+    <string name="text_odo_required">Odometer reading required.</string>
 
     <plurals name="entries">
         <item quantity="zero">entries</item>
