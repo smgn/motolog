@@ -148,8 +148,25 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 
 	@Override
 	public void onPause() {
+		saveValues();
 		EventBus.getDefault().unregister(this);
 		super.onPause();
+	}
+
+	private void saveValues() {
+
+		SharedPreferences generalPref = getActivity().getSharedPreferences(
+				getString(R.string.general_preference_file_key),
+				Context.MODE_PRIVATE);
+
+		final SharedPreferences.Editor generalEditor = generalPref.edit();
+
+		generalEditor.putString("bikenametext", bikeName.getText().toString().trim()).apply();
+
+		generalEditor.putString("initialodometert", bikeOdo.getText().toString().trim()).apply();
+
+		generalEditor.putString("otherdetails",
+				bikeOtherDetails.getText().toString().trim()).apply();
 	}
 
 	@Subscribe
@@ -245,8 +262,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					generalEditor.putString("bikenametext", bikeName
-							.getText().toString().trim());
-					generalEditor.apply();
+							.getText().toString().trim()).apply();
 				}
 			}
 		});
@@ -261,8 +277,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					generalEditor.putString("initialodometert", bikeOdo
-							.getText().toString().trim());
-					generalEditor.apply();
+							.getText().toString().trim()).apply();
 				}
 			}
 		});
@@ -274,8 +289,7 @@ public class ConfigFragment extends Fragment implements LoaderManager.LoaderCall
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					generalEditor.putString("otherdetails", bikeOtherDetails
-							.getText().toString().trim());
-					generalEditor.apply();
+							.getText().toString().trim()).apply();
 				}
 			}
 		});
