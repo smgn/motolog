@@ -15,125 +15,135 @@ import android.widget.TextView;
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import dbcontrollers.MotoLogHelper;
 import utils.Utils;
 
 public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
-    private Context mContext;
 	private final String TAG = "MainLogCursorAdapter";
 
     public MainLogCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
-        mContext = context;
         mCursor = c;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-	    ImageView imageMaintType = ButterKnife.findById(view, R.id.imageView1);
-	    TextView textKey = ButterKnife.findById(view, R.id.key);
-	    TextView textMaintElem = ButterKnife.findById(view, R.id.rowMaintElem);
-	    TextView textMaintType = ButterKnife.findById(view, R.id.rowMaintType);
-	    TextView textFuelAmount = ButterKnife.findById(view, R.id.rowFuelAmount);
-	    TextView textFuelLabel = ButterKnife.findById(view, R.id.rowFuelLabel);
-	    TextView textConsumption = ButterKnife.findById(view, R.id.rowConsumption);
-	    TextView textConsumptionLabel = ButterKnife.findById(view, R.id.rowConsumptionLabel);
-	    TextView textUnitLabel = ButterKnife.findById(view, R.id.kmLabel);
-	    TextView textDetails = ButterKnife.findById(view, R.id.rowDetails);
-	    TextView textCash = ButterKnife.findById(view, R.id.cash);
-	    TextView textCashLabel = ButterKnife.findById(view, R.id.cashLabel);
-	    TextView textOdo = ButterKnife.findById(view, R.id.rowOdometer);
-	    TextView textOdoLabel = ButterKnife.findById(view, R.id.odoLabel);
-	    TextView textDate = ButterKnife.findById(view, R.id.rowDate);
-	    View separator = ButterKnife.findById(view, R.id.separator);
+	    ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-	    textKey.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.KEY)));
-	    textMaintElem.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)));
-	    textMaintType.setText(context.getString(R.string.wrap_with_parentheses,
+	    viewHolder.textKey.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.KEY)));
+	    viewHolder.textMaintElem.setText(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)));
+	    viewHolder.textMaintType.setText(context.getString(R.string.wrap_with_parentheses,
 			    cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD3))));
-	    textDate.setText(Utils.formatDate(cursor.getString(cursor.getColumnIndex(
+	    viewHolder.textDate.setText(Utils.formatDate(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD6))));
-	    textOdo.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(
+	    viewHolder.textOdo.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD7))));
 
 	    Log.d(TAG, " " + cursor.getDouble(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD10)));
 
-	    textCash.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndex(
+	    viewHolder.textCash.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD10))));
 	    if (String.valueOf(cursor.getDouble(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD10))).equals("0")) {
-		    textCashLabel.setVisibility(View.GONE);
+		    viewHolder.textCashLabel.setVisibility(View.GONE);
 	    }
 	    if (MyListFragment.mileageType == 1) {
-		    textOdoLabel.setText("Mi");
+		    viewHolder.textOdoLabel.setText("Mi");
 	    } else {
-		    textOdoLabel.setText("km");
+		    viewHolder.textOdoLabel.setText("km");
 	    }
-	    textDetails.setText(cursor.getString(cursor.getColumnIndex(
+	    viewHolder.textDetails.setText(cursor.getString(cursor.getColumnIndex(
 			    MotoLogHelper.FIELD8)));
 
 	    if (context.getResources().getIdentifier(
 			    cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)).toLowerCase(),
 			    "drawable", context.getPackageName()) != 0) {
-		    imageMaintType.setImageResource(context.getResources()
+		    viewHolder.imageMaintType.setImageResource(context.getResources()
 				    .getIdentifier(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2))
 						    .toLowerCase(), "drawable", context.getPackageName()));
 	    } else {
-		    imageMaintType.setImageResource(R.drawable.other);
+		    viewHolder.imageMaintType.setImageResource(R.drawable.other);
 	    }
 
 	    if (cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD2)).equals("Fuel")) {
-		    textDetails.setVisibility(View.INVISIBLE);
-		    textFuelAmount.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndex(
+		    viewHolder.textDetails.setVisibility(View.INVISIBLE);
+		    viewHolder.textFuelAmount.setText(String.valueOf(cursor.getDouble(cursor.getColumnIndex(
 				    MotoLogHelper.FIELD4))));
-		    textConsumption.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(
+		    viewHolder.textConsumption.setText(String.valueOf(cursor.getString(cursor.getColumnIndex(
 				    MotoLogHelper.FIELD5))));
 		    switch (cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD9))) {
 			    case 0:
-				    textUnitLabel.setText("l/100km");
-				    textFuelLabel.setText("L");
+				    viewHolder.textUnitLabel.setText("l/100km");
+				    viewHolder.textFuelLabel.setText("L");
 				    break;
 			    case 1:
-				    textUnitLabel.setText("MPG");
-				    textFuelLabel.setText("gl");
+				    viewHolder.textUnitLabel.setText("MPG");
+				    viewHolder.textFuelLabel.setText("gl");
 				    break;
 			    case 2:
-				    textUnitLabel.setText("l/km");
-				    textFuelLabel.setText("L");
+				    viewHolder.textUnitLabel.setText("l/km");
+				    viewHolder.textFuelLabel.setText("L");
 				    break;
 			    case 3:
-				    textUnitLabel.setText("km/l");
-				    textFuelLabel.setText("L");
+				    viewHolder.textUnitLabel.setText("km/l");
+				    viewHolder.textFuelLabel.setText("L");
 				    break;
 		    }
-		    textConsumptionLabel.setVisibility(View.VISIBLE);
-		    textFuelLabel.setVisibility(View.VISIBLE);
-		    textConsumption.setVisibility(View.VISIBLE);
-		    textUnitLabel.setVisibility(View.VISIBLE);
-		    separator.setVisibility(View.VISIBLE);
+		    viewHolder.textConsumptionLabel.setVisibility(View.VISIBLE);
+		    viewHolder.textFuelLabel.setVisibility(View.VISIBLE);
+		    viewHolder.textConsumption.setVisibility(View.VISIBLE);
+		    viewHolder.textUnitLabel.setVisibility(View.VISIBLE);
+		    viewHolder.separator.setVisibility(View.VISIBLE);
 	    } else {
-		    textDetails.setVisibility(View.VISIBLE);
-		    textConsumptionLabel.setVisibility(View.INVISIBLE);
-		    textFuelLabel.setVisibility(View.INVISIBLE);
-		    textConsumption.setVisibility(View.INVISIBLE);
-		    textUnitLabel.setVisibility(View.INVISIBLE);
-		    textFuelAmount.setText("");
-		    textFuelLabel.setText("");
-		    textUnitLabel.setText("");
+		    viewHolder.textDetails.setVisibility(View.VISIBLE);
+		    viewHolder.textConsumptionLabel.setVisibility(View.INVISIBLE);
+		    viewHolder.textFuelLabel.setVisibility(View.INVISIBLE);
+		    viewHolder.textConsumption.setVisibility(View.INVISIBLE);
+		    viewHolder.textUnitLabel.setVisibility(View.INVISIBLE);
+		    viewHolder.textFuelAmount.setText("");
+		    viewHolder.textFuelLabel.setText("");
+		    viewHolder.textUnitLabel.setText("");
 		    if (TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(MotoLogHelper.FIELD8)))) {
-			    separator.setVisibility(View.INVISIBLE);
+			    viewHolder.separator.setVisibility(View.INVISIBLE);
 		    } else {
-			    separator.setVisibility(View.VISIBLE);
+			    viewHolder.separator.setVisibility(View.VISIBLE);
 		    }
 	    }
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-	    return LayoutInflater.from(mContext).inflate(R.layout.rowmain, parent, false);
+	    View view = LayoutInflater.from(context).inflate(R.layout.rowmain, parent, false);
+	    ViewHolder viewHolder = new ViewHolder(view);
+	    view.setTag(viewHolder);
+	    return view;
     }
+
+	public static class ViewHolder {
+		@BindView(R.id.imageView1) ImageView imageMaintType;
+		@BindView(R.id.key) TextView textKey;
+		@BindView(R.id.rowMaintElem) TextView textMaintElem;
+		@BindView(R.id.rowMaintType) TextView textMaintType;
+		@BindView(R.id.rowFuelAmount) TextView textFuelAmount;
+		@BindView(R.id.rowFuelLabel) TextView textFuelLabel;
+		@BindView(R.id.rowConsumption) TextView textConsumption;
+		@BindView(R.id.rowConsumptionLabel) TextView textConsumptionLabel;
+		@BindView(R.id.kmLabel) TextView textUnitLabel;
+		@BindView(R.id.rowDetails) TextView textDetails;
+		@BindView(R.id.cash) TextView textCash;
+		@BindView(R.id.cashLabel) TextView textCashLabel;
+		@BindView(R.id.rowOdometer) TextView textOdo;
+		@BindView(R.id.odoLabel) TextView textOdoLabel;
+		@BindView(R.id.rowDate) TextView textDate;
+		@BindView(R.id.separator) View separator;
+
+		ViewHolder(View view) {
+			ButterKnife.bind(this, view);
+		}
+	}
 }
 
