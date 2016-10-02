@@ -209,6 +209,11 @@
     <string name="text_prices_in_entry_empty">0\u0024 in 0 entries</string>
     <string name="text_prices_in_entry_1">%s\u0024 in 1 entry</string>
     <string name="text_prices_in_entry">%1$s\u0024 in %2$s entries </string>
+    <string name="dialog_title_add_new_element">Add New Element</string>
+    <string name="hint_add_new_element">Element name</string>
+    <string name="button_add">Add</string>
+    <string name="button_use_other">Use \"Other\"</string>
+    <string name="dialog_title_add_new_element_type">Add New Element Type</string>
 
     <plurals name="entries">
         <item quantity="zero">entries</item>

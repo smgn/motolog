@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -57,7 +57,6 @@ import dbcontrollers.MainLogSource;
 import dbcontrollers.MotoLogHelper;
 import dbcontrollers.RemLogSource;
 import dialogs.DatePickerFragment;
-import dialogs.NewElementDialog;
 import dialogs.NewElementDialog.OnNewElementListener;
 import dialogs.NewRemDialog;
 import events.DatePickedEvent;
@@ -407,20 +406,13 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 				//TODO: Deal with hardcoded text
 				// if user selected "Other", show dialog for entering custom element
 				if (select.equalsIgnoreCase("Other")) {
-					// TODO change to material-dialogs
-//					elemDialog = new NewElementDialog();
-//					Bundle b = new Bundle();
-//					FragmentManager fm = getSupportFragmentManager();
-//					b.putString("newelementdialog", ELEMVAL);
-//					b.putString("callingActivity", tag);
-//					elemDialog.setArguments(b);
-//					elemDialog.show(fm, tag);
+					showAddNewElementDialog();
 				} else {
 					if (item == null) {
 						populateSpinnerType(-1);
 					}
 
-					if (position != 0) {
+					if (!select.equalsIgnoreCase("Fuel")) {
 						editTextFuel.setVisibility(View.GONE);
 						textPriceUnit.setVisibility(View.GONE);
 					} else {
@@ -476,21 +468,14 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		spinnerType.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (pos != -1) {
-					String select = spinnerType.getItemAtPosition(pos).toString();
+				if (position != -1) {
+					String select = spinnerType.getItemAtPosition(position).toString();
 					if (select.equals(getString(R.string.text_other)) &&
 							!spinnerElement.getSelectedItem().toString().equals(
 									getString(R.string.text_fuel)) &&
 							!spinnerElement.getSelectedItem().toString().equals(
 									getString(R.string.text_oil))) {
-
-						NewElementDialog elemDialog = new NewElementDialog();
-						FragmentManager fm = getSupportFragmentManager();
-						Bundle args = new Bundle();
-						args.putString("newelementdialog", ELEMTYPEVAL);
-						args.putString("callingActivity", TAG);
-						elemDialog.setArguments(args);
-						elemDialog.show(fm, TAG);
+						showAddNewElementTypeDialog();
 					}
 				}
 			}
@@ -518,6 +503,48 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 		if (pos >-1 ) {
 			spinnerType.setSelection(pos-2);
 		}
+	}
+
+	private void showAddNewElementDialog() {
+		new MaterialDialog.Builder(this)
+				.title(R.string.dialog_title_add_new_element)
+				.inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+				.inputRangeRes(1, 20, android.R.color.holo_red_light)
+				.input("", "", new MaterialDialog.InputCallback() {
+					@Override
+					public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+						String newElement = input.toString();
+						if (input.toString().equalsIgnoreCase("Other")) {
+							newElement = "Other";
+						}
+
+						addNewSharedPreference(ELEMVAL, newElement.trim());
+					}
+				})
+				.positiveText(R.string.button_add)
+				.neutralText(R.string.button_use_other)
+				.show();
+	}
+
+	private void showAddNewElementTypeDialog() {
+		new MaterialDialog.Builder(this)
+				.title(R.string.dialog_title_add_new_element_type)
+				.inputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+				.inputRangeRes(1, 20, android.R.color.holo_red_light)
+				.input("", "", new MaterialDialog.InputCallback() {
+					@Override
+					public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+						String newElementType = input.toString();
+						if (input.toString().equalsIgnoreCase("Other")) {
+							newElementType = "Other";
+						}
+
+						addNewSharedPreference(ELEMTYPEVAL, newElementType.trim());
+					}
+				})
+				.positiveText(R.string.button_add)
+				.neutralText(R.string.button_use_other)
+				.show();
 	}
 
 	private void deleteSharedPreference(String type, String value) {
@@ -990,7 +1017,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 							"Something wrong with SharedPreferences", Toast.LENGTH_LONG)
 							.show();
 				} else {
-					elemPref.edit().putString(NewLogActivity.ELEMVAL + elemCount, value);
+					elemPref.edit().putString(NewLogActivity.ELEMVAL + elemCount, value).apply();
 					elemCount++;
 					elemPref.edit().putInt(NewLogActivity.ELEMCOUNTSTRING, elemCount).apply();
 
@@ -1008,7 +1035,8 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 									+ NewLogActivity.ELEMTYPECOUNTSTRING, Toast.LENGTH_LONG)
 							.show();
 				} else {
-					elemTypePref.edit().putString(NewLogActivity.ELEMTYPEVAL + elemTypeCount, value);
+					elemTypePref.edit()
+							.putString(NewLogActivity.ELEMTYPEVAL + elemTypeCount, value).apply();
 					elemTypeCount++;
 					elemTypePref.edit().putInt(NewLogActivity.ELEMTYPECOUNTSTRING, elemTypeCount)
 							.apply();
