@@ -34,3 +34,4 @@ build/
 
 #NDK
 obj/
+gradle/wrapper/gradle-wrapper.properties
