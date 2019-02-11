@@ -7,10 +7,6 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,6 +44,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import beans.MaintenanceItem;
 import beans.ReminderItem;
 import butterknife.BindView;
@@ -65,7 +65,7 @@ public class NewLogActivity extends AppCompatActivity implements OnNewElementLis
 
     public static final String TAG = "NewLogActivity";
 
-	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.toolbar)	Toolbar toolbar;
 	@BindView(R.id.spinnerElement) Spinner spinnerElement;
 	@BindView(R.id.spinnerType) Spinner spinnerType;
 	@BindView(R.id.checkBoxReminder) CheckBox checkBoxReminder;

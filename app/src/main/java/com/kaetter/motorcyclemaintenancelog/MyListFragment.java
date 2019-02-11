@@ -14,12 +14,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -54,6 +48,12 @@ import java.util.Date;
 
 import adapter.MainLogCursorAdapter;
 import adapter.RemLogCursorAdapter;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 import beans.MaintenanceItem;
 import beans.ReminderItem;
 import dbcontrollers.MainLogSource;
@@ -67,7 +67,7 @@ import utils.SummarizeAsyncTask;
 
 @SuppressLint("ValidFragment")
 public class MyListFragment extends Fragment implements
-		LoaderCallbacks<Cursor>, OnItemChangedListener, EditDateDialogListener {
+        LoaderManager.LoaderCallbacks<Cursor>, OnItemChangedListener, EditDateDialogListener {
 
 	private static final String TAG = "MyListFragment";
 

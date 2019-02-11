@@ -18,7 +18,7 @@
         android:gravity="center"
         />
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilFuel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,9 +32,9 @@
             />
 
         <requestFocus/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilOdometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -46,9 +46,9 @@
             android:inputType="number"
             android:maxLength="6"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -59,7 +59,7 @@
             android:inputType="numberDecimal"
             android:hint="@string/activity_refuel_hint_price_litre"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonCreate"

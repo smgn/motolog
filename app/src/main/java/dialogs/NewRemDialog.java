@@ -1,8 +1,6 @@
 package dialogs;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import beans.ReminderItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;

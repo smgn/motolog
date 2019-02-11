@@ -1,8 +1,6 @@
 package dialogs;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,8 @@ import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.NewRem;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

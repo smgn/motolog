@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".NewLogActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
-            <android.support.percent.PercentRelativeLayout
+            <androidx.percentlayout.widget.PercentRelativeLayout
                 android:id="@+id/layoutWhen"
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
@@ -57,9 +57,9 @@
                     android:text="@string/button_choose_date"
                     />
 
-            </android.support.percent.PercentRelativeLayout>
+            </androidx.percentlayout.widget.PercentRelativeLayout>
 
-            <android.support.percent.PercentRelativeLayout
+            <androidx.percentlayout.widget.PercentRelativeLayout
                 android:id="@+id/layoutElement"
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
@@ -83,9 +83,9 @@
                     android:layout_toEndOf="@id/textElement"
                     />
 
-            </android.support.percent.PercentRelativeLayout>
+            </androidx.percentlayout.widget.PercentRelativeLayout>
 
-            <android.support.percent.PercentRelativeLayout
+            <androidx.percentlayout.widget.PercentRelativeLayout
                 android:id="@+id/layoutType"
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
@@ -119,9 +119,9 @@
                     android:text="@string/text_remind"
                     />
 
-                </android.support.percent.PercentRelativeLayout>
+                </androidx.percentlayout.widget.PercentRelativeLayout>
 
-            <android.support.percent.PercentRelativeLayout
+            <androidx.percentlayout.widget.PercentRelativeLayout
                 android:id="@+id/layoutReminder"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -183,9 +183,9 @@
                     tools:visibility="visible"
                     />
 
-            </android.support.percent.PercentRelativeLayout>
+            </androidx.percentlayout.widget.PercentRelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -197,13 +197,13 @@
                     android:maxLines="1"
                     android:maxLength="3"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
@@ -215,7 +215,7 @@
                         android:maxLines="1"
                         android:hint="@string/hint_price"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/textPriceUnit"
@@ -227,7 +227,7 @@
 
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -238,9 +238,9 @@
                     android:inputType="number"
                     android:maxLength="8"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -249,13 +249,13 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_notes"
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
-    <android.support.v7.widget.ButtonBarLayout
+    <androidx.appcompat.widget.ButtonBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -275,6 +275,6 @@
             android:text="@string/button_create"
             />
 
-    </android.support.v7.widget.ButtonBarLayout>
+    </androidx.appcompat.widget.ButtonBarLayout>
 
 </LinearLayout>

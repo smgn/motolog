@@ -4,24 +4,25 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.appcompat.app.AppCompatActivity;
 import beans.MaintenanceItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dbcontrollers.MotoLogHelper;
 import dbcontrollers.MainLogSource;
+import dbcontrollers.MotoLogHelper;
 
 public class RefuelActivity extends AppCompatActivity {
 

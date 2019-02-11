@@ -1,11 +1,8 @@
 package dialogs;
 
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import beans.MaintenanceItem;
-import beans.ReminderItem;
 
 import com.kaetter.motorcyclemaintenancelog.MyListFragment;
-import com.kaetter.motorcyclemaintenancelog.NewLogActivity;
 import com.kaetter.motorcyclemaintenancelog.NewRem;
 import com.kaetter.motorcyclemaintenancelog.R;
 
+import java.util.Calendar;
+
+import androidx.fragment.app.DialogFragment;
+import beans.ReminderItem;
 import dbcontrollers.RemLogSource;
 
 public class UpdateRemDialog extends DialogFragment {

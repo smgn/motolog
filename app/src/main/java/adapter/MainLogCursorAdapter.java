@@ -2,12 +2,12 @@ package adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +25,6 @@ public class MainLogCursorAdapter extends CursorAdapter implements Filterable {
 
     public MainLogCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
-        mCursor = c;
     }
 
     @Override

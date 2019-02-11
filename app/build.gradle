@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.kaetter.motorcyclemaintenancelog"
-        minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 16
+        minSdkVersion 19 // Android 4.4 KitKat
+        targetSdkVersion 26
+        versionCode 19
         versionName "1.8.2"
     }
 
@@ -21,16 +21,16 @@ android {
 }
 
 dependencies {
-    compile 'com.jakewharton:butterknife:8.2.1'
+    implementation 'com.jakewharton:butterknife:8.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:gridlayout-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:percent:24.2.1'
-    compile 'com.android.support:preference-v7:24.2.1'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.facebook.stetho:stetho:1.4.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.0.2'
-    compile 'com.afollestad.material-dialogs:commons:0.9.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0-rc01'
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.facebook.stetho:stetho:1.4.1'
+    implementation 'com.afollestad.material-dialogs:core:0.9.0.2'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.0.2'
 }

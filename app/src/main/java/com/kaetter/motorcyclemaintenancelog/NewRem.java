@@ -1,23 +1,10 @@
 package com.kaetter.motorcyclemaintenancelog;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import utils.Helper;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,11 +23,24 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import beans.ReminderItem;
 import dbcontrollers.MainLogSource;
 import dialogs.NewElementDialog;
 import dialogs.NewElementDialog.OnNewElementListener;
 import dialogs.NewRemDialog;
+import utils.Helper;
 
 public class NewRem extends FragmentActivity implements OnNewElementListener {
 	public static String tag = "NewRem";
