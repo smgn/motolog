@@ -38,8 +38,8 @@ public class SummarizeAsyncTask extends AsyncTask<Object, String, Bundle> {
 		String dateMax = (String) params[2];
 		double cash = 0;
 		int firstOdo = 0;
-		int lastOdo = cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7));
-
+		int odoColumnIndex = cursor.getColumnIndex(MotoLogHelper.FIELD7);
+		int lastOdo = cursor.getCount()>0? cursor.getInt(odoColumnIndex) : 0;
 		int numEntriesInDb = cursor.getCount();
 		b.putInt("numEntries", numEntriesInDb);
 		Log.d(TAG, "numEntriesInDb: " + numEntriesInDb);
@@ -56,16 +56,16 @@ public class SummarizeAsyncTask extends AsyncTask<Object, String, Bundle> {
 
 			cash = cash + cursor.getDouble(cursor.getColumnIndex(MotoLogHelper.FIELD10));
 
-			if (cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7)) > lastOdo) {
-				lastOdo = cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7));
+			if (cursor.getInt(odoColumnIndex) > lastOdo) {
+				lastOdo = cursor.getInt(odoColumnIndex);
 			} else {
-				if (cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7)) > firstOdo) {
+				if (cursor.getInt(odoColumnIndex) > firstOdo) {
 					if (firstOdo == 0) {
 						firstOdo =
-								cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7));
+								cursor.getInt(odoColumnIndex);
 					}
 				} else {
-					firstOdo = cursor.getInt(cursor.getColumnIndex(MotoLogHelper.FIELD7));
+					firstOdo = cursor.getInt(odoColumnIndex);
 				}
 			}
 			cursor.moveToNext();
