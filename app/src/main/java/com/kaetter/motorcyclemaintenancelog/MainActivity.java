@@ -12,6 +12,10 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +52,11 @@ import events.ReloadConfigLoader;
 import events.ReloadMainLogEvent;
 import events.ReloadReminderLogEvent;
 import events.ScrollViewPagerEvent;
+
+import static com.kaetter.motorcyclemaintenancelog.TabsFragment.TAB_CONF;
+import static com.kaetter.motorcyclemaintenancelog.TabsFragment.TAB_LOG;
+import static com.kaetter.motorcyclemaintenancelog.TabsFragment.TAB_REM;
+import static com.kaetter.motorcyclemaintenancelog.TabsFragment.newTab;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,6 +101,28 @@ public class MainActivity extends AppCompatActivity {
         mainLogSource = new MainLogSource(this);
 
 		EventBus.getDefault().register(this);
+
+
+		setupTabs();
+	}
+
+	private void setupTabs() {
+		View mRoot = getLayoutInflater().inflate(R.layout.tabs_fragment, null);
+		FragmentTabHost mTabHost = (FragmentTabHost) mRoot.findViewById(android.R.id.tabhost);
+
+		FragmentManager m = getSupportFragmentManager();
+		mTabHost.setup(this, m, android.R.id.tabcontent); // important!
+		TabsFragment tabsFragment = new TabsFragment();
+
+		FragmentTransaction fragmentTransaction = m.beginTransaction();
+		fragmentTransaction.add(android.R.id.tabhost, tabsFragment);
+		fragmentTransaction.commit();
+
+		tabsFragment.getActivity();
+		mTabHost.addTab(newTab(TAB_LOG, R.string.LOG, R.id.tab_1, this, mTabHost));
+		mTabHost.addTab(newTab(TAB_REM, R.string.REM, R.id.tab_2, this, mTabHost));
+		mTabHost.addTab(newTab(TAB_CONF, R.string.CONF, R.id.tab_3, this, mTabHost));
+		mTabHost.setOnTabChangedListener(tabsFragment);
 	}
 
 	@Override
@@ -470,40 +501,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(TAG, "onActivityResult, requestCode = " + requestCode);
-
+		if(resultCode != RESULT_OK){
+			Log.e(TAG, "onActivityResult: request "+requestCode+", result "+resultCode);
+			// TODO: Show error
+			return;
+		}
         switch (requestCode) {
             case REQUEST_LOG:
 	            Log.d(TAG, "From NewLogActivity");
-                if (resultCode == RESULT_OK) {
-                    // post sticky because I don't have time to figure out lifecycles
-                    EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
-                    EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
-	                EventBus.getDefault().postSticky(new ReloadConfigLoader());
-                } else {
-                    // TODO: Show error
-                }
+				// post sticky because I don't have time to figure out lifecycles
+				EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+				EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+				EventBus.getDefault().postSticky(new ReloadConfigLoader());
                 break;
             case REQUEST_SETTINGS:
 	            Log.d(TAG, "From SettingsActivity");
-                if (resultCode == RESULT_OK) {
-	                // post sticky because I don't have time to figure out lifecycles
-	                EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
-	                EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
-	                EventBus.getDefault().postSticky(new ReloadConfigLoader());
-                } else {
-                    // TODO: Show error
-                }
+				// post sticky because I don't have time to figure out lifecycles
+				EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+				EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+				EventBus.getDefault().postSticky(new ReloadConfigLoader());
                 break;
 	        case REQUEST_UPDATE_LOG:
 		        Log.d(TAG, "From NewLogActivity, updated log");
-		        if (resultCode == RESULT_OK) {
-			        // post sticky because I don't have time to figure out lifecycles
-			        EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
-			        EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
-			        EventBus.getDefault().postSticky(new ReloadConfigLoader());
-		        } else {
-			        // TODO: Show error
-		        }
+				// post sticky because I don't have time to figure out lifecycles
+				EventBus.getDefault().postSticky(new ReloadMainLogEvent(null));
+				EventBus.getDefault().postSticky(new ReloadReminderLogEvent());
+				EventBus.getDefault().postSticky(new ReloadConfigLoader());
 		        break;
         }
     }

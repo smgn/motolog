@@ -1,6 +1,7 @@
 package com.kaetter.motorcyclemaintenancelog;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,28 +18,27 @@ import android.widget.TextView;
 
 public class TabsFragment extends Fragment implements OnTabChangeListener {
 
-	private static final String TAG = "FragmentTabs";
+	public static final String TAG = "FragmentTabs";
 	public static final String TAB_LOG = "log";
 	public static final String TAB_REM = "reminder";
 	public static final String TAB_CONF = "config.";
 
-	private View mRoot;
-	private static TabHost mTabHost;
 	public static int mCurrentTab;
 	private Menu cmenu;
 
+
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(Context activity) {
 		super.onAttach(activity);
 	}
 
 	public static void changeTab(boolean b) {
-		 
-		if (b&&mCurrentTab<2)
-			mTabHost.setCurrentTab(mCurrentTab+1);
-		else 
-			if(!b&& mCurrentTab>0 )
-			mTabHost.setCurrentTab(mCurrentTab-1);
+//		if (b&&mCurrentTab<2)
+//			mTabHost.setCurrentTab(mCurrentTab+1);
+//		else
+//			if(!b&& mCurrentTab>0 )
+//			mTabHost.setCurrentTab(mCurrentTab-1);
+		Log.d(TAG,"[skipped] changeTab");
 	}
 	
 	
@@ -46,12 +46,8 @@ public class TabsFragment extends Fragment implements OnTabChangeListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
-		mRoot = inflater.inflate(R.layout.tabs_fragment, null);
-		mTabHost = (TabHost) mRoot.findViewById(android.R.id.tabhost);
-		setupTabs();
 		setHasOptionsMenu(true);
-		return mRoot;
+		return inflater.inflate(R.layout.tabs_fragment, null);
 	}
 
 	@Override
@@ -64,26 +60,18 @@ public class TabsFragment extends Fragment implements OnTabChangeListener {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 
-		mTabHost.setOnTabChangedListener(this);
-		mTabHost.setCurrentTab(mCurrentTab);
 		// manually start loading stuff in the first tab
 		updateTab(TAB_LOG, R.id.tab_1);
 	}
 
-	private void setupTabs() {
-		mTabHost.setup(); // important!
-		mTabHost.addTab(newTab(TAB_LOG, R.string.LOG, R.id.tab_1));
-		mTabHost.addTab(newTab(TAB_REM, R.string.REM, R.id.tab_2));
-		mTabHost.addTab(newTab(TAB_CONF, R.string.CONF, R.id.tab_3));
 
-	}
 
-	private TabSpec newTab(String tag, int labelId, int tabContentId) {
+	public static TabSpec newTab(String tag, int labelId, int tabContentId, Activity activity, TabHost mTabHost) {
 		Log.d(TAG, "buildTab(): tag=" + tag);
 
-		View indicator = LayoutInflater.from(getActivity()).inflate(
+		View indicator = activity.getLayoutInflater().inflate(
 				R.layout.tab,
-				(ViewGroup) mRoot.findViewById(android.R.id.tabs), false);
+				(ViewGroup) activity.findViewById(android.R.id.tabs), false);
 		((TextView) indicator.findViewById(R.id.text)).setText(labelId);
 
 		TabSpec tabSpec = mTabHost.newTabSpec(tag);
@@ -146,16 +134,17 @@ public class TabsFragment extends Fragment implements OnTabChangeListener {
 	}
 
 	private void updateTab(String tabId, int placeholder) {
-
+//		if(getActivity()==null){
+//			Log.d(TAG, "[skipped] updatingTab");
+//			return;
+//		}
 		Log.d(TAG, "updatingTab");
-
 		FragmentManager fm = getActivity().getSupportFragmentManager();
 		if (fm.findFragmentByTag(tabId) == null) {
 
 			fm.beginTransaction()
 					.replace(placeholder, new MyListFragment(tabId), tabId)
 					.commit();
-
 		}
 	}
 

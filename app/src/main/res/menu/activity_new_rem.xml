@@ -1,16 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     
         <item
         android:id="@+id/menu_elem"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="Delete maint. element"/> 
         
         <item
         android:id="@+id/menu_add_maintenance_type"
         android:orderInCategory="200"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="Delete maint. type"/> 
         
 

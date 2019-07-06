@@ -1097,7 +1097,7 @@ public class MyListFragment extends Fragment implements
 
                 }
             } catch (Exception e) {
-                // nothing
+				Log.e(TAG, "onFling:",e);
             }
             return false;
         }
